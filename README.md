@@ -19,7 +19,7 @@ Communication direction.
 git clone https://github.com/nopnop2002/esp-idf-mirf
 cd esp-idf-mirf/
 make menuconfig
-make flash
+make flash monitor
 ```
 
 ![config-1](https://user-images.githubusercontent.com/6020549/73979588-c7c61100-4971-11ea-8540-fd1d4694eb52.jpg)
