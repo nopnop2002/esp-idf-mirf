@@ -12,7 +12,7 @@ GPIO number (IOxx) to CE.
 - CONFIG_CSN_GPIO   
 GPIO number (IOxx) to CSN.
 
-- CONFIG_DIRECTION
+- CONFIG_DIRECTION   
 Communication direction.
 
 ```
