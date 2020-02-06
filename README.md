@@ -51,3 +51,6 @@ I used [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01) library on A
 # Communicat with Raspberry Pi
 I used [this](https://github.com/nopnop2002/Raspberry-Mirf) library on Raspberry Pi.   
 
+# Important point
+When changing the settings of the nRF24L01, it is necessary to power cycle the nRF24L01 before executing.   
+Because nRF24L01 remembers the previous setting.   
