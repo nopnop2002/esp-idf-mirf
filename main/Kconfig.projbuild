@@ -1,0 +1,36 @@
+menu "nRF24L01 Configuration"
+
+	config CE_GPIO
+		int "CE GPIO number"
+		range 0 34
+		default 16
+		help
+			GPIO number (IOxx) to CE.
+			Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used to CS.
+			GPIOs 35-39 are input-only so cannot be used as outputs.
+
+	config CSN_GPIO
+		int "CSN GPIO number"
+		range 0 34
+		default 17
+		help
+			GPIO number (IOxx) to CSN.
+			Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used to DC.
+			GPIOs 35-39 are input-only so cannot be used as outputs.
+
+	choice DIRECTION
+		prompt "Communication direction"
+		default Receiver
+		help
+			Select Communication direction.
+		config RECEIVER
+			bool "Receiver"
+			help
+				Execute Receiver.
+		config TRANSMITTER
+			bool "Transmitter"
+			help
+				Execute Transmitter.
+	endchoice
+
+endmenu 
