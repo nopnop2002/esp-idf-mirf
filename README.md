@@ -5,9 +5,15 @@ The library provides basic control of the Nordic NRF24l01 RF Transceiver.
 I ported from [here](https://github.com/nopnop2002/Arduino-STM32-nRF24L01).   
 
 # Configure
-You have to set this config value with menuconfig.
-CONFIG_CE_GPIO
-CONFIG_CSN_GPIO
+You have to set this config value with menuconfig.   
+- CONFIG_CE_GPIO   
+GPIO number (IOxx) to CE.
+
+- CONFIG_CSN_GPIO   
+GPIO number (IOxx) to CSN.
+
+- CONFIG_DIRECTION
+Communication direction.
 
 ```
 git clone https://github.com/nopnop2002/esp-idf-mirf
@@ -33,6 +39,7 @@ make flash
 
 \*You can change any pin using menuconfig.   
 
+# Screen shot
 ![config-3](https://user-images.githubusercontent.com/6020549/73979603-cd235b80-4971-11ea-8e50-f70b17fea8e4.jpg)
 ![transmitter](https://user-images.githubusercontent.com/6020549/73979625-d3193c80-4971-11ea-9e8a-68b595eeb49a.jpg)
 ![receiver](https://user-images.githubusercontent.com/6020549/73979668-ec21ed80-4971-11ea-9c32-3eaa870219ca.jpg)
