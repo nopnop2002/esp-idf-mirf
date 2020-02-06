@@ -40,9 +40,9 @@ make flash monitor
 \*You can change any pin using menuconfig.   
 
 # Screen shot
-![config-3](https://user-images.githubusercontent.com/6020549/73979603-cd235b80-4971-11ea-8e50-f70b17fea8e4.jpg)
-![transmitter](https://user-images.githubusercontent.com/6020549/73979625-d3193c80-4971-11ea-9e8a-68b595eeb49a.jpg)
-![receiver](https://user-images.githubusercontent.com/6020549/73979668-ec21ed80-4971-11ea-9c32-3eaa870219ca.jpg)
+![config-3](https://user-images.githubusercontent.com/6020549/73982274-47a2aa00-4977-11ea-8bc5-9403050bed70.jpg)
+![transmitter](https://user-images.githubusercontent.com/6020549/73982279-496c6d80-4977-11ea-82c6-f7c62764b18c.jpg)
+![receiver](https://user-images.githubusercontent.com/6020549/73982284-4b363100-4977-11ea-9ae1-af9da92b13fb.jpg)
 
 # Communicat with Arduino
 I used [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01) library on Arduino.   

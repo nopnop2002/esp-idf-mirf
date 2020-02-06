@@ -368,16 +368,16 @@ void Nrf24_printDetails(NRF24_t * dev)
 	Nrf24_print_byte_register(dev, "CONFIG\t", CONFIG, 1);
 	Nrf24_print_byte_register(dev, "DYNPD/FEATURE", DYNPD, 2);
 	//printf("getDataRate()=%d\n",Nrf24_getDataRate(dev));
-	printf("Data Rate\t =%s\n",rf24_datarates[Nrf24_getDataRate(dev)]);
+	printf("Data Rate\t = %s\n",rf24_datarates[Nrf24_getDataRate(dev)]);
 #if 0
 	printf_P(PSTR("Model\t\t = "
 	PRIPSTR
 	"\r\n"),pgm_read_ptr(&rf24_model_e_str_P[isPVariant()]));
 #endif
 	//printf("getCRCLength()=%d\n",Nrf24_getCRCLength(dev));
-	printf("CRC Length\t =%s\n", rf24_crclength[Nrf24_getCRCLength(dev)]);
+	printf("CRC Length\t = %s\n", rf24_crclength[Nrf24_getCRCLength(dev)]);
 	//printf("getPALevel()=%d\n",Nrf24_getPALevel(dev));
-	printf("PA Power\t =%s\n", rf24_pa_dbm[Nrf24_getPALevel(dev)]);
+	printf("PA Power\t = %s\n", rf24_pa_dbm[Nrf24_getPALevel(dev)]);
 
 }
 
