@@ -40,6 +40,7 @@ make flash monitor
 \*You can change any pin using menuconfig.   
 
 # Screen shot
+- Initial screen:   
 ![config-3](https://user-images.githubusercontent.com/6020549/73982274-47a2aa00-4977-11ea-8bc5-9403050bed70.jpg)
 
 - For the transmitter:   
