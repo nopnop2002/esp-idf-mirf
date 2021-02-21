@@ -40,7 +40,7 @@ menu "nRF24L01 Configuration"
 		default 37 if IDF_TARGET_ESP32S2
 		help
 			GPIO number (IOxx) to CE.
-			Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used to CS.
+			Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used to CE.
 			On the ESP32, GPIOs 35-39 are input-only so cannot be used as outputs.
 			On the ESP32-S2, GPIO 46 is input-only so cannot be used as outputs.
 
@@ -51,8 +51,9 @@ menu "nRF24L01 Configuration"
 		default 38 if IDF_TARGET_ESP32S2
 		help
 			GPIO number (IOxx) to CSN.
-			Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used to DC.
-			GPIOs 35-39 are input-only so cannot be used as outputs.
+			Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used to CSN.
+			On the ESP32, GPIOs 35-39 are input-only so cannot be used as outputs.
+			On the ESP32-S2, GPIO 46 is input-only so cannot be used as outputs.
 
 	choice DIRECTION
 		prompt "Communication direction"
