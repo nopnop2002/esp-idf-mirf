@@ -25,11 +25,11 @@ idf.py flash
 ```
 
 You have to set this config value with menuconfig.   
-- CONFIG_MISO_GPIO
+- CONFIG_MISO_GPIO   
  GPIO number(IOxx) to MISO.
-- CONFIG_MOSI_GPIO
+- CONFIG_MOSI_GPIO   
  GPIO number(IOxx) to MOSI.
-- CONFIG_SCLK_GPIO
+- CONFIG_SCLK_GPIO   
  GPIO number(IOxx) to SCLK.
 - CONFIG_CE_GPIO   
  GPIO number(IOxx) to CE.
