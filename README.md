@@ -77,15 +77,15 @@ You need to match the payload size and channel with Arduino and esp-idf.
 
 - Arduino   
 ```
-  Mirf.payload = sizeof(cvalue);
-  Mirf.channel = 90;                      //Set the channel used
-  Mirf.config();
+Mirf.payload = sizeof(mydata.value);
+Mirf.channel = 90;
+Mirf.config();
 ```
 - esp-idf   
 ```
-    uint8_t payload = sizeof(value);
-    uint8_t channel = 90;
-    Nrf24_config(&dev, channel, payload);
+uint8_t payload = sizeof(value);
+uint8_t channel = 90;
+Nrf24_config(&dev, channel, payload);
 ```
 
 # Communicat with Raspberry Pi
