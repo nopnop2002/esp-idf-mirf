@@ -69,10 +69,24 @@ __However, changing to some pins does not work properly.__
 - For the receiver:   
 ![receiver](https://user-images.githubusercontent.com/6020549/73982284-4b363100-4977-11ea-9ae1-af9da92b13fb.jpg)
 
-# Communicat with Arduino/STM32/ESP8266/ESP8285
+# Communicat with Arduino Core(AtMega/STM32/ESP8266/ESP8285)
 I used [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01) library on Arduino.   
 This project communicates with example/Peer-to-peer Communication/TimeTest.   
 
+You need to match the payload size and channel with Arduino and esp-idf.   
+
+- Arduino   
+```
+  Mirf.payload = sizeof(cvalue);
+  Mirf.channel = 90;                      //Set the channel used
+  Mirf.config();
+```
+- esp-idf   
+```
+    uint8_t payload = sizeof(value);
+    uint8_t channel = 90;
+    Nrf24_config(&dev, channel, payload);
+```
 
 # Communicat with Raspberry Pi
 I used [this](https://github.com/nopnop2002/Raspberry-Mirf) library on Raspberry Pi.   
