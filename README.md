@@ -56,7 +56,8 @@ You have to set this config value with menuconfig.
 |GND|--|GND|GND|
 |VCC|--|3.3V|3.3V|
 
-\*You can change any pin using menuconfig.   
+__You can change any pin using menuconfig.__   
+__ However, changing to some pins does not work properly. __
 
 # Screen shot
 - Initial screen:   
