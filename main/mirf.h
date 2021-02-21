@@ -144,7 +144,7 @@ typedef enum {
 } rf24_crclength_e;
 
 
-void spi_master_init(NRF24_t * dev, uint8_t cs_pin, uint8_t csn_pin);
+void spi_master_init(NRF24_t * dev, int8_t ce_pin, int8_t csn_pin, int miso_pin, int mosi_pin, int sclk_pin);
 bool spi_master_write_byte(NRF24_t * dev, uint8_t* Dataout, size_t DataLength );
 bool spi_master_read_byte(NRF24_t * dev, uint8_t* Datain, uint8_t* Dataout, size_t DataLength );
 void Nrf24_transfer(NRF24_t * dev, uint8_t address);

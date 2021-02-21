@@ -4,36 +4,55 @@ The library provides basic control of the Nordic NRF24L01 RF Transceiver.
 
 I ported from [here](https://github.com/nopnop2002/Arduino-STM32-nRF24L01).   
 
-# Configure
-You have to set this config value with menuconfig.   
-- CONFIG_CE_GPIO   
-GPIO number (IOxx) to CE.
-
-- CONFIG_CSN_GPIO   
-GPIO number (IOxx) to CSN.
-
-- CONFIG_DIRECTION   
-Communication direction.
+# Installation for ESP32
 
 ```
 git clone https://github.com/nopnop2002/esp-idf-mirf
-cd esp-idf-mirf/
-make menuconfig
-make flash monitor
+cd esp-idf-mirf
+idf.py set-target esp32
+idf.py menuconfig
+idf.py flash
 ```
 
-![config-1](https://user-images.githubusercontent.com/6020549/73979588-c7c61100-4971-11ea-8540-fd1d4694eb52.jpg)
-![config-2](https://user-images.githubusercontent.com/6020549/73979597-cac10180-4971-11ea-9caf-b1bf9e776e52.jpg)
+# Installation for ESP32S2
+
+```
+git clone https://github.com/nopnop2002/esp-idf-mirf
+cd esp-idf-mirf
+idf.py set-target esp32S2
+idf.py menuconfig
+idf.py flash
+```
+
+You have to set this config value with menuconfig.   
+- CONFIG_MISO_GPIO
+ GPIO number(IOxx) to MISO.
+- CONFIG_MOSI_GPIO
+ GPIO number(IOxx) to MOSI.
+- CONFIG_SCLK_GPIO
+ GPIO number(IOxx) to SCLK.
+- CONFIG_CE_GPIO   
+ GPIO number(IOxx) to CE.
+- CONFIG_CSN_GPIO   
+ GPIO number(IOxx) to CSN.
+- CONFIG_DIRECTION   
+ Communication direction.
+
+![config_main](https://user-images.githubusercontent.com/6020549/108617359-0cc3c500-7459-11eb-9a05-2dd5ce60113b.jpg)
+
+![config-esp32](https://user-images.githubusercontent.com/6020549/108617361-0fbeb580-7459-11eb-97de-4650e5225df0.jpg)
+
+![config-stm32s2](https://user-images.githubusercontent.com/6020549/108617363-13ead300-7459-11eb-994c-c971342a7bb0.jpg)
 
 # Wirering
 
-|nRF24L01||ESP32|
-|:-:|:-:|:-:|
-|MISO|--|GPIO19|
-|SCK|--|GPIO18|
-|MOSI|--|GPIO23|
-|CE|--|GPIO16(*)|
-|CSN|--|GPIO17(*)|
+|nRF24L01||ESP32|ESP32S2|
+|:-:|:-:|:-:|:-:|
+|MISO|--|GPIO19|GPIO33|
+|MOSI|--|GPIO23|GPIO35|
+|SCK|--|GPIO18|GPIO36|
+|CE|--|GPIO16|GPIO37|
+|CSN|--|GPIO17|GPIO38|
 |GND|--|GND|
 |VCC|--|3.3V|
 
@@ -41,7 +60,7 @@ make flash monitor
 
 # Screen shot
 - Initial screen:   
-![config-3](https://user-images.githubusercontent.com/6020549/73982274-47a2aa00-4977-11ea-8bc5-9403050bed70.jpg)
+![initial](https://user-images.githubusercontent.com/6020549/108617481-17cb2500-745a-11eb-88d7-85e6e2426a4e.jpg)
 
 - For the transmitter:   
 ![transmitter](https://user-images.githubusercontent.com/6020549/73982279-496c6d80-4977-11ea-82c6-f7c62764b18c.jpg)

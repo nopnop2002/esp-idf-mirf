@@ -16,12 +16,6 @@
 
 #include "mirf.h"
 
-/*
- You have to set this config value with menuconfig
- CONFIG_CE_GPIO
- CONFIG_CSN_GPIO
-*/
-
 typedef union {
   uint8_t value[4];
   unsigned long now_time;
@@ -39,7 +33,7 @@ void receiver(void *pvParameters)
 	ESP_LOGI(pcTaskGetTaskName(0), "Start");
 	ESP_LOGI(pcTaskGetTaskName(0), "CONFIG_CE_GPIO=%d",CONFIG_CE_GPIO);
 	ESP_LOGI(pcTaskGetTaskName(0), "CONFIG_CSN_GPIO=%d",CONFIG_CSN_GPIO);
-	spi_master_init(&dev, CONFIG_CE_GPIO, CONFIG_CSN_GPIO);
+	spi_master_init(&dev, CONFIG_CE_GPIO, CONFIG_CSN_GPIO, CONFIG_MISO_GPIO, CONFIG_MOSI_GPIO, CONFIG_SCLK_GPIO);
 
 	Nrf24_setRADDR(&dev, (uint8_t *)"FGHIJ");
 	uint8_t payload = sizeof(mydata.value);
@@ -67,7 +61,7 @@ void transmitter(void *pvParameters)
 	ESP_LOGI(pcTaskGetTaskName(0), "Start");
 	ESP_LOGI(pcTaskGetTaskName(0), "CONFIG_CE_GPIO=%d",CONFIG_CE_GPIO);
 	ESP_LOGI(pcTaskGetTaskName(0), "CONFIG_CSN_GPIO=%d",CONFIG_CSN_GPIO);
-	spi_master_init(&dev, CONFIG_CE_GPIO, CONFIG_CSN_GPIO);
+	spi_master_init(&dev, CONFIG_CE_GPIO, CONFIG_CSN_GPIO, CONFIG_MISO_GPIO, CONFIG_MOSI_GPIO, CONFIG_SCLK_GPIO);
 
 	Nrf24_setRADDR(&dev, (uint8_t *)"ABCDE");
 	uint8_t payload = sizeof(mydata.value);

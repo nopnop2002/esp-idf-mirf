@@ -9,11 +9,17 @@
 
 #include "mirf.h"
 
-#define tag "NRF24"
+#define TAG "NRF24"
 
-static const int GPIO_MOSI = 23;
-static const int GPIO_MISO = 19;
-static const int GPIO_SCLK = 18;
+#if CONFIG_IDF_TARGET_ESP32
+#define LCD_HOST    HSPI_HOST
+#define DMA_CHAN    2
+
+#elif CONFIG_IDF_TARGET_ESP32S2
+#define LCD_HOST    SPI2_HOST
+#define DMA_CHAN    LCD_HOST
+#endif
+
 
 static const int SPI_Frequency = 4000000;
 //static const int SPI_Frequency = 8000000; // don't work
@@ -22,9 +28,15 @@ const char rf24_datarates[][8] = {"1MBPS", "2MBPS", "250KBPS"};
 const char rf24_crclength[][10] = {"Disabled", "8 bits", "16 bits"};
 const char rf24_pa_dbm[][8] = {"PA_MIN", "PA_LOW", "PA_HIGH", "PA_MAX"};
 
-void spi_master_init(NRF24_t * dev, uint8_t ce_pin, uint8_t csn_pin)
+void spi_master_init(NRF24_t * dev, int8_t ce_pin, int8_t csn_pin, int miso_pin, int mosi_pin, int sclk_pin)
 {
 	esp_err_t ret;
+
+	ESP_LOGI(TAG, "ce_pin=%d", ce_pin);
+	ESP_LOGI(TAG, "csn_pin=%d", csn_pin);
+	ESP_LOGI(TAG, "miso_pin=%d", miso_pin);
+	ESP_LOGI(TAG, "mosi_pin=%d", mosi_pin);
+	ESP_LOGI(TAG, "sclk_pin=%d", sclk_pin);
 
 	gpio_pad_select_gpio( ce_pin );
 	gpio_set_direction( ce_pin, GPIO_MODE_OUTPUT );
@@ -35,34 +47,38 @@ void spi_master_init(NRF24_t * dev, uint8_t ce_pin, uint8_t csn_pin)
 	gpio_set_level( csn_pin, 1 );
 
 	spi_bus_config_t spi_bus_config = {
-		.sclk_io_num = GPIO_SCLK,
-		.mosi_io_num = GPIO_MOSI,
-		.miso_io_num = GPIO_MISO,
+		.sclk_io_num = sclk_pin,
+		.mosi_io_num = mosi_pin,
+		.miso_io_num = miso_pin,
 		.quadwp_io_num = -1,
 		.quadhd_io_num = -1
 	};
 
-	ret = spi_bus_initialize( HSPI_HOST, &spi_bus_config, 1 );
-	ESP_LOGI(tag, "spi_bus_initialize=%d",ret);
+	ret = spi_bus_initialize( LCD_HOST, &spi_bus_config, DMA_CHAN );
+	ESP_LOGI(TAG, "spi_bus_initialize=%d",ret);
 	assert(ret==ESP_OK);
 
-#if 0
+#if 1
 	spi_device_interface_config_t devcfg;
 	memset( &devcfg, 0, sizeof( spi_device_interface_config_t ) );
 	devcfg.clock_speed_hz = SPI_Frequency;
-	devcfg.spics_io_num = -1; // GPIO_CS;
-	devcfg.queue_size = 1;
+	devcfg.queue_size = 7;
+	devcfg.mode = 0;
+	devcfg.flags = SPI_DEVICE_NO_DUMMY;
 #endif
+
+#if 0
 	spi_device_interface_config_t devcfg={
 		.clock_speed_hz = SPI_Frequency,
 		.queue_size = 7,
 		.mode = 0,
 		.flags = SPI_DEVICE_NO_DUMMY,
 	};
+#endif
 
 	spi_device_handle_t handle;
-	ret = spi_bus_add_device( HSPI_HOST, &devcfg, &handle);
-	ESP_LOGI(tag, "spi_bus_add_device=%d",ret);
+	ret = spi_bus_add_device( LCD_HOST, &devcfg, &handle);
+	ESP_LOGI(TAG, "spi_bus_add_device=%d",ret);
 	assert(ret==ESP_OK);
 	dev->cePin = ce_pin;
 	dev->csnPin = csn_pin;
