@@ -57,7 +57,7 @@ You have to set this config value with menuconfig.
 |VCC|--|3.3V|3.3V|
 
 __You can change any pin using menuconfig.__   
-__ However, changing to some pins does not work properly. __
+__However, changing to some pins does not work properly. __
 
 # Screen shot
 - Initial screen:   
