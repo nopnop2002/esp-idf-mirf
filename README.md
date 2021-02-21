@@ -75,7 +75,7 @@ This project communicates with example/Peer-to-peer Communication/TimeTest.
 
 You need to match the payload size and channel with Arduino and esp-idf.   
 
-- Arduino   
+- Arduino environment   
 ```
 Mirf.payload = sizeof(mydata.value);
 Mirf.channel = 90;
