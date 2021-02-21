@@ -1,5 +1,5 @@
 # esp-idf-mirf
-A port of the Mirf library to ESP-IDF.   
+A port of the Mirf library for ESP-IDF.   
 The library provides basic control of the Nordic NRF24L01 RF Transceiver.
 
 I ported from [here](https://github.com/nopnop2002/Arduino-STM32-nRF24L01).   
