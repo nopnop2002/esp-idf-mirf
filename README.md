@@ -53,8 +53,8 @@ You have to set this config value with menuconfig.
 |SCK|--|GPIO18|GPIO36|
 |CE|--|GPIO16|GPIO37|
 |CSN|--|GPIO17|GPIO38|
-|GND|--|GND|
-|VCC|--|3.3V|
+|GND|--|GND|GND|
+|VCC|--|3.3V|3.3V|
 
 \*You can change any pin using menuconfig.   
 
@@ -70,6 +70,7 @@ You have to set this config value with menuconfig.
 
 # Communicat with Arduino/STM32/ESP8266/ESP8285
 I used [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01) library on Arduino.   
+This project communicates with example/Peer-to-peer Communication/TimeTest.   
 
 
 # Communicat with Raspberry Pi
