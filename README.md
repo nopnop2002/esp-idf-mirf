@@ -19,7 +19,7 @@ idf.py flash
 ```
 git clone https://github.com/nopnop2002/esp-idf-mirf
 cd esp-idf-mirf
-idf.py set-target esp32S2
+idf.py set-target esp32s2
 idf.py menuconfig
 idf.py flash
 ```
