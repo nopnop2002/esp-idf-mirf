@@ -40,8 +40,10 @@ You have to set this config value with menuconfig.
 
 ![config_main](https://user-images.githubusercontent.com/6020549/108617359-0cc3c500-7459-11eb-9a05-2dd5ce60113b.jpg)
 
+Default for ESP32   
 ![config-esp32](https://user-images.githubusercontent.com/6020549/108617361-0fbeb580-7459-11eb-97de-4650e5225df0.jpg)
 
+Default for ESP32-S2   
 ![config-stm32s2](https://user-images.githubusercontent.com/6020549/108617363-13ead300-7459-11eb-994c-c971342a7bb0.jpg)
 
 # Wirering
