@@ -61,14 +61,15 @@ Default for ESP32-S2
 __You can change it to any pin using menuconfig.__   
 __However, changing to some pins does not work properly.__
 
-# Screen shot
-- Initial screen:   
+# Screen shot   
+
+## Initial screen:   
 ![initial](https://user-images.githubusercontent.com/6020549/108617481-17cb2500-745a-11eb-88d7-85e6e2426a4e.jpg)
 
-- For the transmitter:   
+## For the transmitter:   
 ![transmitter](https://user-images.githubusercontent.com/6020549/73982279-496c6d80-4977-11ea-82c6-f7c62764b18c.jpg)
 
-- For the receiver:   
+## For the receiver:   
 ![receiver](https://user-images.githubusercontent.com/6020549/73982284-4b363100-4977-11ea-9ae1-af9da92b13fb.jpg)
 
 # Communicat with AtMega/STM32/ESP8266/ESP8285   
