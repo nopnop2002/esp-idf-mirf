@@ -74,7 +74,7 @@ __However, changing to some pins does not work properly.__
 
 # Communicat with AtMega/STM32/ESP8266/ESP8285   
 I used [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01) library on Arduino environment.   
-This project communicates with example/Peer-to-peer Communication/TimeTest.   
+This project communicates with [example/Peer-to-peer Communication/TimeTest](https://github.com/nopnop2002/Arduino-STM32-nRF24L01/tree/master/example/Peer-to-peer%20Communication/TimeTest).   
 
 You need to match the payload size and channel with Arduino and esp-idf.   
 
