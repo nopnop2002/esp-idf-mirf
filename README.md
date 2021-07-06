@@ -98,3 +98,7 @@ I used [this](https://github.com/nopnop2002/Raspberry-Mirf) library on Raspberry
 When changing the settings of the nRF24L01, it is necessary to power cycle the nRF24L01 before executing.   
 Because nRF24L01 remembers the previous setting.   
 nRF24L01 does not have Software Reset function.   
+
+# Ardunio NANO with nRF24l01   
+If you use [this](https://www.embeddedcomputing.com/technology/processing/for-the-professional-maker-getting-started-with-the-rf-nano-arduino-nrf24l01-combo), No wiring required.   
+
