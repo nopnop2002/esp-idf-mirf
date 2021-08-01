@@ -6,7 +6,7 @@ I ported from [here](https://github.com/nopnop2002/Arduino-STM32-nRF24L01).
 
 # Installation for ESP32
 
-```
+```Shell
 git clone https://github.com/nopnop2002/esp-idf-mirf
 cd esp-idf-mirf
 idf.py set-target esp32
@@ -16,7 +16,7 @@ idf.py flash
 
 # Installation for ESP32-S2
 
-```
+```Shell
 git clone https://github.com/nopnop2002/esp-idf-mirf
 cd esp-idf-mirf
 idf.py set-target esp32s2
@@ -26,7 +26,7 @@ idf.py flash
 
 # Installation for ESP32-C3
 
-```
+```Shell
 git clone https://github.com/nopnop2002/esp-idf-mirf
 cd esp-idf-mirf
 idf.py set-target esp32c3
@@ -87,13 +87,13 @@ This project communicates with [example/Peer-to-peer Communication/TimeTest](htt
 You need to match the payload size and channel with Arduino and esp-idf.   
 
 - Arduino environment   
-```
+```C
 Mirf.payload = sizeof(mydata.value);
 Mirf.channel = 90;
 Mirf.config();
 ```
 - esp-idf   
-```
+```C
 uint8_t payload = sizeof(value);
 uint8_t channel = 90;
 Nrf24_config(&dev, channel, payload);
