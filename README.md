@@ -14,7 +14,7 @@ idf.py menuconfig
 idf.py flash
 ```
 
-# Installation for ESP32S2
+# Installation for ESP32-S2
 
 ```
 git clone https://github.com/nopnop2002/esp-idf-mirf
@@ -24,6 +24,17 @@ idf.py menuconfig
 idf.py flash
 ```
 
+# Installation for ESP32-C3
+
+```
+git clone https://github.com/nopnop2002/esp-idf-mirf
+cd esp-idf-mirf
+idf.py set-target esp32c3
+idf.py menuconfig
+idf.py flash
+```
+
+# Configuration   
 You have to set this config value with menuconfig.   
 - CONFIG_MISO_GPIO   
  GPIO number(IOxx) to MISO.
@@ -40,23 +51,20 @@ You have to set this config value with menuconfig.
 
 ![config_main](https://user-images.githubusercontent.com/6020549/108617359-0cc3c500-7459-11eb-9a05-2dd5ce60113b.jpg)
 
-Default for ESP32   
 ![config-esp32](https://user-images.githubusercontent.com/6020549/108617361-0fbeb580-7459-11eb-97de-4650e5225df0.jpg)
 
-Default for ESP32-S2   
-![config-stm32s2](https://user-images.githubusercontent.com/6020549/108617363-13ead300-7459-11eb-994c-c971342a7bb0.jpg)
 
 # Wirering
 
-|nRF24L01||ESP32|ESP32S2|
-|:-:|:-:|:-:|:-:|
-|MISO|--|GPIO19|GPIO33|
-|MOSI|--|GPIO23|GPIO35|
-|SCK|--|GPIO18|GPIO36|
-|CE|--|GPIO16|GPIO37|
-|CSN|--|GPIO17|GPIO38|
-|GND|--|GND|GND|
-|VCC|--|3.3V|3.3V|
+|nRF24L01||ESP32|ESP32S2|ESP32C3|
+|:-:|:-:|:-:|:-:|:-:|
+|MISO|--|GPIO19|GPIO33|GPIO18|
+|MOSI|--|GPIO23|GPIO35|GPIO19|
+|SCK|--|GPIO18|GPIO36|GPIO10|
+|CE|--|GPIO16|GPIO37|GPIO9|
+|CSN|--|GPIO17|GPIO38|GPIO8|
+|GND|--|GND|GND|GND|
+|VCC|--|3.3V|3.3V|3.3V|
 
 __You can change it to any pin using menuconfig.__   
 __However, changing to some pins does not work properly.__
