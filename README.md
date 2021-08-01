@@ -56,7 +56,7 @@ You have to set this config value with menuconfig.
 
 # Wirering
 
-|nRF24L01||ESP32|ESP32S2|ESP32C3|
+|nRF24L01||ESP32|ESP32-S2|ESP32-C3|
 |:-:|:-:|:-:|:-:|:-:|
 |MISO|--|GPIO19|GPIO33|GPIO18|
 |MOSI|--|GPIO23|GPIO35|GPIO19|
