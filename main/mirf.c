@@ -37,11 +37,13 @@ void spi_master_init(NRF24_t * dev, int8_t ce_pin, int8_t csn_pin, int miso_pin,
 	ESP_LOGI(TAG, "mosi_pin=%d", mosi_pin);
 	ESP_LOGI(TAG, "sclk_pin=%d", sclk_pin);
 
-	gpio_pad_select_gpio( ce_pin );
+	//gpio_pad_select_gpio( ce_pin );
+	gpio_reset_pin( ce_pin );
 	gpio_set_direction( ce_pin, GPIO_MODE_OUTPUT );
 	gpio_set_level( ce_pin, 0 );
 
-	gpio_pad_select_gpio( csn_pin );
+	//gpio_pad_select_gpio( csn_pin );
+	gpio_reset_pin( csn_pin );
 	gpio_set_direction( csn_pin, GPIO_MODE_OUTPUT );
 	gpio_set_level( csn_pin, 1 );
 
@@ -57,14 +59,12 @@ void spi_master_init(NRF24_t * dev, int8_t ce_pin, int8_t csn_pin, int miso_pin,
 	ESP_LOGI(TAG, "spi_bus_initialize=%d",ret);
 	assert(ret==ESP_OK);
 
-#if 1
 	spi_device_interface_config_t devcfg;
 	memset( &devcfg, 0, sizeof( spi_device_interface_config_t ) );
 	devcfg.clock_speed_hz = SPI_Frequency;
 	devcfg.queue_size = 7;
 	devcfg.mode = 0;
 	devcfg.flags = SPI_DEVICE_NO_DUMMY;
-#endif
 
 #if 0
 	spi_device_interface_config_t devcfg={
