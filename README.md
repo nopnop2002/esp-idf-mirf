@@ -77,7 +77,7 @@ You have to set this config value with menuconfig.
 |VCC|--|3.3V|3.3V|3.3V|
 
 __You can change it to any pin using menuconfig.__   
-__However, changing to some pins does not work properly.__
+__But it may not work with other GPIOs.__
 
 # Screen shot   
 
