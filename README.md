@@ -64,22 +64,17 @@ You have to set this config value with menuconfig.
 
 # Wirering
 
-|nRF24L01||ESP32|ESP32-S2|ESP32-C3||
-|:-:|:-:|:-:|:-:|:-:|:-:|
-|MISO|--|GPIO19|GPIO33|GPIO18||
-|MOSI|--|GPIO23|GPIO35|GPIO19||
-|SCK|--|GPIO18|GPIO36|GPIO10||
-|CE|--|GPIO16|GPIO37|GPIO9||
-|CSN|--|GPIO17|GPIO38|GPIO8||
-|GND|--|GND|GND|GND||
-|VCC|--|3.3V|3.3V|3.3V|(*1)|
+|nRF24L01||ESP32|ESP32-S2|ESP32-C3|
+|:-:|:-:|:-:|:-:|:-:|
+|MISO|--|GPIO19|GPIO33|GPIO18|
+|MOSI|--|GPIO23|GPIO35|GPIO19|
+|SCK|--|GPIO18|GPIO36|GPIO10|
+|CE|--|GPIO16|GPIO37|GPIO9|
+|CSN|--|GPIO17|GPIO38|GPIO8|
+|GND|--|GND|GND|GND|
+|VCC|--|3.3V|3.3V|3.3V|
 
 __You can change it to any pin using menuconfig.__   
-
-(*1)   
-ESP32 development board cannot supply too much current.   
-It is more stable when supplied from an external power source.   
-Alternatively, a regulator is used to convert 5V to 3.3V and supply it.   
 
 # Using Receiver   
 I tested it with [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01/tree/master/example/Peer-to-peer%20Communication/TimeTest/Emitter).   
