@@ -178,8 +178,8 @@ void Nrf24_printDetails(NRF24_t * dev);
 void Nrf24_print_status(uint8_t status);
 void Nrf24_print_address_register(NRF24_t * dev, const char* name, uint8_t reg, uint8_t qty);
 void Nrf24_print_byte_register(NRF24_t * dev, const char* name, uint8_t reg, uint8_t qty);
-rf24_datarate_e Nrf24_getDataRate(NRF24_t * dev);
-rf24_crclength_e Nrf24_getCRCLength(NRF24_t * dev);
+uint8_t Nrf24_getDataRate(NRF24_t * dev);
+uint8_t Nrf24_getCRCLength(NRF24_t * dev);
 uint8_t Nrf24_getPALevel(NRF24_t * dev);
 
 #endif /* MAIN_MIRF_H_ */

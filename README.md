@@ -60,9 +60,8 @@ You have to set this config value with menuconfig.
  Communication direction.
 
 ![config_main](https://user-images.githubusercontent.com/6020549/108617359-0cc3c500-7459-11eb-9a05-2dd5ce60113b.jpg)
-
-![config-esp32](https://user-images.githubusercontent.com/6020549/108617361-0fbeb580-7459-11eb-97de-4650e5225df0.jpg)
-
+![config-nrf24l01-1](https://user-images.githubusercontent.com/6020549/149643863-4a84d95b-fec0-48b2-89d7-116371f3863e.jpg)
+![config-nrf24l01-2](https://user-images.githubusercontent.com/6020549/149643855-f098c74a-47b9-4dfd-8486-e48da4082396.jpg)
 
 # Wirering
 
@@ -77,24 +76,36 @@ You have to set this config value with menuconfig.
 |VCC|--|3.3V|3.3V|3.3V|
 
 __You can change it to any pin using menuconfig.__   
-__But it may not work with other GPIOs.__
 
-# Screen shot   
 
-## Initial screen:   
-![initial](https://user-images.githubusercontent.com/6020549/108617481-17cb2500-745a-11eb-88d7-85e6e2426a4e.jpg)
+# Using Receiver   
+I tested it with [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01/tree/master/example/Peer-to-peer%20Communication/TimeTest/Emitter).   
 
-## For the transmitter:   
+![receiver](https://user-images.githubusercontent.com/6020549/73982284-4b363100-4977-11ea-9ae1-af9da92b13fb.jpg)
+
+
+# Using transmitter   
+I tested it with [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01/tree/master/example/Peer-to-peer%20Communication/TimeTest/Receive).   
+
 ![transmitter](https://user-images.githubusercontent.com/6020549/73982279-496c6d80-4977-11ea-82c6-f7c62764b18c.jpg)
 
-## For the receiver:   
-![receiver](https://user-images.githubusercontent.com/6020549/73982284-4b363100-4977-11ea-9ae1-af9da92b13fb.jpg)
+
+# Using Echo Server   
+Repeat sending and receiving.   
+I tested it with [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01/tree/master/example/PingPong/Secondary).   
+
+![Echo-Server](https://user-images.githubusercontent.com/6020549/149643821-305bc985-cde5-46fd-8607-1dce92fd0c6e.jpg)
+
+# Using Echo Client   
+Send back the received data.   
+I tested it with [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01/tree/master/example/PingPong/Primary).   
+
+![Echo-Client](https://user-images.githubusercontent.com/6020549/149643831-f1083687-a1f2-46fc-bf1f-cee39626971e.jpg)
+
 
 # Communicat with AtMega/STM32/ESP8266/ESP8285   
 I used [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01) library on Arduino environment.   
-This project communicates with [example/Peer-to-peer Communication/TimeTest](https://github.com/nopnop2002/Arduino-STM32-nRF24L01/tree/master/example/Peer-to-peer%20Communication/TimeTest).   
-
-You need to match the payload size and channel with Arduino and esp-idf.   
+__You need to match the payload size and channel with Arduino and esp-idf.__   
 
 - Arduino environment   
 ```C++
