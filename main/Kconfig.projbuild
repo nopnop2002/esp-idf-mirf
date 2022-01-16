@@ -90,4 +90,39 @@ menu "nRF24L01 Configuration"
 				Execute Echo Client.
 	endchoice
 
+	config ADVANCED
+		bool "Enable Advanced Setting"
+		default false
+		help
+			Enable Advanced Setting.
+
+	choice RF_RATIO
+		depends on ADVANCED
+		prompt "RF Data Ratio"
+		default RF_RATIO_2M
+		help
+			Select RF Data Ratio.
+		config RF_RATIO_2M
+			bool "2MBps"
+			help
+				RF Data Ratio is 2MBps.
+		config RF_RATIO_1M
+			bool "1MBps"
+			help
+				RF Data Ratio is 1MBps.
+		config RF_RATIO_250K
+			bool "250KBps"
+			help
+				RF Data Ratio is 250KBps.
+	endchoice
+
+  config RETRANSMIT_DELAY
+		depends on ADVANCED
+    int "Auto Retransmit Delay"
+    range 0 15
+    default 0
+    help
+      Set Auto Retransmit Delay.
+      Delay = value * 250us.
+
 endmenu 

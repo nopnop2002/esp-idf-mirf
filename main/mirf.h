@@ -169,6 +169,7 @@ void Nrf24_powerUpTx(NRF24_t * dev);
 void Nrf24_powerDown(NRF24_t * dev);
 void Nrf24_SetOutputRF_PWR(NRF24_t * dev, uint8_t val);
 void Nrf24_SetSpeedDataRates(NRF24_t * dev, uint8_t val);
+void Nrf24_setRetransmitDelay(NRF24_t * dev, uint8_t val);
 void Nrf24_csnHi(NRF24_t * dev);
 void Nrf24_csnLow(NRF24_t * dev);
 void Nrf24_ceHi(NRF24_t * dev);
@@ -181,6 +182,7 @@ void Nrf24_print_byte_register(NRF24_t * dev, const char* name, uint8_t reg, uin
 uint8_t Nrf24_getDataRate(NRF24_t * dev);
 uint8_t Nrf24_getCRCLength(NRF24_t * dev);
 uint8_t Nrf24_getPALevel(NRF24_t * dev);
+uint8_t Nrf24_getRetransmitDelay(NRF24_t * dev);
 
 #endif /* MAIN_MIRF_H_ */
 

@@ -132,21 +132,22 @@ void Nrf24_transmitSync(NRF24_t * dev, uint8_t *dataout, uint8_t len) {
 }
 
 
-void Nrf24_config(NRF24_t * dev, uint8_t channel, uint8_t payload)
 // Sets the important registers in the MiRF module and powers the module
 // in receiving mode
 // NB: channel and payload must be set now.
+void Nrf24_config(NRF24_t * dev, uint8_t channel, uint8_t payload)
 {
 	dev->channel = channel;
 	dev->payload = payload;
-	Nrf24_configRegister(dev, RF_CH, dev->channel);		// Set RF channel
-	Nrf24_configRegister(dev, RX_PW_P0, dev->payload);	// Set length of incoming payload
+	Nrf24_configRegister(dev, RF_CH, dev->channel); // Set RF channel
+	Nrf24_configRegister(dev, RX_PW_P0, dev->payload); // Set length of incoming payload
 	Nrf24_configRegister(dev, RX_PW_P1, dev->payload);
-	Nrf24_powerUpRx(dev);						 // Start receiver
+	Nrf24_powerUpRx(dev); // Start receiver
 	Nrf24_flushRx(dev);
 }
 
-void Nrf24_setRADDR(NRF24_t * dev, uint8_t * adr)  // Sets the receiving device address
+// Sets the receiving device address
+void Nrf24_setRADDR(NRF24_t * dev, uint8_t * adr)
 {
 	Nrf24_ceLow(dev);
 	Nrf24_writeRegister(dev, RX_ADDR_P1, adr, mirf_ADDR_LEN);
@@ -156,7 +157,7 @@ void Nrf24_setRADDR(NRF24_t * dev, uint8_t * adr)  // Sets the receiving device 
 // Sets the transmitting device  address
 void Nrf24_setTADDR(NRF24_t * dev, uint8_t * adr)
 {
-	Nrf24_writeRegister(dev, RX_ADDR_P0, adr, mirf_ADDR_LEN);//RX_ADDR_P0 must be set to the sending addr for auto ack to work.
+	Nrf24_writeRegister(dev, RX_ADDR_P0, adr, mirf_ADDR_LEN); //RX_ADDR_P0 must be set to the sending addr for auto ack to work.
 	Nrf24_writeRegister(dev, TX_ADDR, adr, mirf_ADDR_LEN);
 }
 
@@ -302,7 +303,7 @@ void Nrf24_powerUpRx(NRF24_t * dev) {
 	Nrf24_ceLow(dev);
 	Nrf24_configRegister(dev, CONFIG, mirf_CONFIG | ( (1 << PWR_UP) | (1 << PRIM_RX) ) ); //set device as TX mode
 	Nrf24_ceHi(dev);
-	Nrf24_configRegister(dev, STATUS, (1 << TX_DS) | (1 << MAX_RT));		//Clear seeded interrupt and max tx number interrupt
+	Nrf24_configRegister(dev, STATUS, (1 << TX_DS) | (1 << MAX_RT)); //Clear seeded interrupt and max tx number interrupt
 }
 
 void Nrf24_flushRx(NRF24_t * dev)
@@ -361,8 +362,8 @@ void Nrf24_SetSpeedDataRates(NRF24_t * dev, uint8_t val)
 	Nrf24_readRegister(dev, RF_SETUP, &value, 1);
 	if(val == 2)
 	{
-		value = value & 0xD7;
-		value = value | (val << RF_DR_HIGH);
+		value = value | 0x20;
+		value = value & 0xF7;
 		//Nrf24_configRegister(dev, RF_SETUP,	(1 << RF_DR_LOW) );
 		Nrf24_configRegister(dev, RF_SETUP,	value);
 	}
@@ -374,6 +375,16 @@ void Nrf24_SetSpeedDataRates(NRF24_t * dev, uint8_t val)
 		Nrf24_configRegister(dev, RF_SETUP,	value);
 	}
 } 
+
+//Set Auto Retransmit Delay 0=250us, 1=500us, ... 15=4000us
+void Nrf24_setRetransmitDelay(NRF24_t * dev, uint8_t val)
+{
+  uint8_t value;
+  Nrf24_readRegister(dev, SETUP_RETR, &value, 1);
+  value = value & 0x0F;
+  value = value | (val << ARD);
+  Nrf24_configRegister(dev, SETUP_RETR, value);
+}
 
 
 void Nrf24_printDetails(NRF24_t * dev)
@@ -409,7 +420,9 @@ void Nrf24_printDetails(NRF24_t * dev)
 	printf("CRC Length\t = %s\n", rf24_crclength[Nrf24_getCRCLength(dev)]);
 	//printf("getPALevel()=%d\n",Nrf24_getPALevel(dev));
 	printf("PA Power\t = %s\n", rf24_pa_dbm[Nrf24_getPALevel(dev)]);
-
+	uint8_t retransmit = Nrf24_getRetransmitDelay(dev);
+	int16_t delay = (retransmit+1)*250;
+	printf("Retransmit\t = %d us\n", delay);
 }
 
 #define _BV(x) (1<<(x))
@@ -502,3 +515,9 @@ uint8_t Nrf24_getPALevel(NRF24_t * dev)
 	return (level);
 }
 
+uint8_t Nrf24_getRetransmitDelay(NRF24_t * dev)
+{
+  uint8_t value;
+  Nrf24_readRegister(dev, SETUP_RETR, &value, 1);
+  return (value >> 4);
+}

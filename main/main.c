@@ -32,6 +32,27 @@ typedef union {
 
 MYDATA_t mydata;
 
+void AdvancedSettings(NRF24_t * dev)
+{
+#if CONFIG_RF_RATIO_2M
+	ESP_LOGW(pcTaskGetTaskName(0), "Set RF Data Ratio to 2MBps");
+	Nrf24_SetSpeedDataRates(dev, 1);
+#endif // CONFIG_RF_RATIO_2M
+
+#if CONFIG_RF_RATIO_1M
+	ESP_LOGW(pcTaskGetTaskName(0), "Set RF Data Ratio to 1MBps");
+	Nrf24_SetSpeedDataRates(dev, 0);
+#endif // CONFIG_RF_RATIO_2M
+
+#if CONFIG_RF_RATIO_250K
+	ESP_LOGW(pcTaskGetTaskName(0), "Set RF Data Ratio to 250KBps");
+	Nrf24_SetSpeedDataRates(dev, 2);
+#endif // CONFIG_RF_RATIO_2M
+
+	ESP_LOGW(pcTaskGetTaskName(0), "CONFIG_RETRANSMIT_DELAY=%d", CONFIG_RETRANSMIT_DELAY);
+	Nrf24_setRetransmitDelay(dev, CONFIG_RETRANSMIT_DELAY);
+
+}
 
 #if CONFIG_RECEIVER
 void receiver(void *pvParameters)
@@ -49,6 +70,10 @@ void receiver(void *pvParameters)
 
 	//Set your own address using 5 characters
 	Nrf24_setRADDR(&dev, (uint8_t *)"FGHIJ");
+
+#if CONFIG_ADVANCED
+	AdvancedSettings(&dev);
+#endif // CONFIG_ADVANCED
 
 	//Print settings
 	Nrf24_printDetails(&dev);
@@ -82,6 +107,10 @@ void transmitter(void *pvParameters)
 
 	//Set the receiver address using 5 characters
 	Nrf24_setTADDR(&dev, (uint8_t *)"FGHIJ");
+
+#if CONFIG_ADVANCED
+	AdvancedSettings(&dev);
+#endif // CONFIG_ADVANCED
 
 	//Print settings
 	Nrf24_printDetails(&dev);
@@ -120,6 +149,10 @@ void primary(void *pvParameters)
 
 	//Set the receiver address using 5 characters
 	Nrf24_setTADDR(&dev, (uint8_t *)"FGHIJ");
+
+#if CONFIG_ADVANCED
+	AdvancedSettings(&dev);
+#endif // CONFIG_ADVANCED
 
 	//Print settings
 	Nrf24_printDetails(&dev);
@@ -171,6 +204,10 @@ void secondary(void *pvParameters)
 
 	//Set the receiver address using 5 characters
 	Nrf24_setTADDR(&dev, (uint8_t *)"FGHIJ");
+
+#if CONFIG_ADVANCED
+	AdvancedSettings(&dev);
+#endif // CONFIG_ADVANCED
 
 	//Print settings
 	Nrf24_printDetails(&dev);

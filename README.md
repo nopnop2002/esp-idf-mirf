@@ -100,6 +100,14 @@ I tested it with [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01/tre
 
 ![Echo-Client](https://user-images.githubusercontent.com/6020549/149643831-f1083687-a1f2-46fc-bf1f-cee39626971e.jpg)
 
+# Using Advanced Settings   
+When used at long distances, lowering the RF data rate stabilizes it.   
+When changing the RF data rate, the sender and receiver must have the same value.   
+When using 250KBps, it is necessary to increase the Retransmit Delay.   
+I tested it with [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01/tree/master/example/AdvancedSetting).   
+
+![config-nrf24l01-3](https://user-images.githubusercontent.com/6020549/149680713-ef4b5a1e-9080-4113-85a3-0ef17394c2fc.jpg)
+
 
 # Communicat with AtMega/STM32/ESP8266/ESP8285   
 I used [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01) library on Arduino environment.   
