@@ -68,61 +68,18 @@ menu "nRF24L01 Configuration"
 			On the ESP32-S2, GPIO 46 is input-only so cannot be used as outputs.
 
 	choice DIRECTION
-		prompt "Communication direction"
-		default Receiver
+		prompt "Communication polarity"
+		default Primary
 		help
-			Select Communication direction.
-		config RECEIVER
-			bool "Receiver"
-			help
-				Execute Receiver.
-		config TRANSMITTER
-			bool "Transmitter"
-			help
-				Execute Transmitter.
+			Select Communication polarity.
 		config PRIMARY
-			bool "Echo Server"
+			bool "Primary"
 			help
 				Execute Echo Server.
 		config SECONDARY
-			bool "Echo Client"
+			bool "Secondary"
 			help
 				Execute Echo Client.
 	endchoice
-
-	config ADVANCED
-		bool "Enable Advanced Setting"
-		default false
-		help
-			Enable Advanced Setting.
-
-	choice RF_RATIO
-		depends on ADVANCED
-		prompt "RF Data Ratio"
-		default RF_RATIO_2M
-		help
-			Select RF Data Ratio.
-		config RF_RATIO_2M
-			bool "2MBps"
-			help
-				RF Data Ratio is 2MBps.
-		config RF_RATIO_1M
-			bool "1MBps"
-			help
-				RF Data Ratio is 1MBps.
-		config RF_RATIO_250K
-			bool "250KBps"
-			help
-				RF Data Ratio is 250KBps.
-	endchoice
-
-  config RETRANSMIT_DELAY
-		depends on ADVANCED
-    int "Auto Retransmit Delay"
-    range 0 15
-    default 0
-    help
-      Set Auto Retransmit Delay.
-      Delay = value * 250us.
 
 endmenu 
