@@ -157,30 +157,30 @@ void Nrf24_setRADDR(NRF24_t * dev, uint8_t * adr)
 // Add the receiving device address
 void Nrf24_addRADDR(NRF24_t * dev, uint8_t pipe, uint8_t adr)
 {
-  uint8_t value;
-  Nrf24_readRegister(dev, EN_RXADDR, &value, 1);
+	uint8_t value;
+	Nrf24_readRegister(dev, EN_RXADDR, &value, 1);
 
-  if (pipe == 2) {
-    Nrf24_configRegister(dev, RX_PW_P2, dev->payload);
-    Nrf24_configRegister(dev, RX_ADDR_P2, adr);
-    value = value | 0x04;
-    Nrf24_configRegister(dev, EN_RXADDR, value);
-  } else if (pipe == 3) {
-    Nrf24_configRegister(dev, RX_PW_P3, dev->payload);
-    Nrf24_configRegister(dev, RX_ADDR_P3, adr);
-    value = value | 0x08;
-    Nrf24_configRegister(dev, EN_RXADDR, value);
-  } else if (pipe == 4) {
-    Nrf24_configRegister(dev, RX_PW_P4, dev->payload);
-    Nrf24_configRegister(dev, RX_ADDR_P4, adr);
-    value = value | 0x10;
-    Nrf24_configRegister(dev, EN_RXADDR, value);
-  } else if (pipe == 5) {
-    Nrf24_configRegister(dev, RX_PW_P5, dev->payload);
-    Nrf24_configRegister(dev, RX_ADDR_P5, adr);
-    value = value | 0x20;
-    Nrf24_configRegister(dev, EN_RXADDR, value);
-  }
+	if (pipe == 2) {
+		Nrf24_configRegister(dev, RX_PW_P2, dev->payload);
+		Nrf24_configRegister(dev, RX_ADDR_P2, adr);
+		value = value | 0x04;
+		Nrf24_configRegister(dev, EN_RXADDR, value);
+	} else if (pipe == 3) {
+		Nrf24_configRegister(dev, RX_PW_P3, dev->payload);
+		Nrf24_configRegister(dev, RX_ADDR_P3, adr);
+		value = value | 0x08;
+		Nrf24_configRegister(dev, EN_RXADDR, value);
+	} else if (pipe == 4) {
+		Nrf24_configRegister(dev, RX_PW_P4, dev->payload);
+		Nrf24_configRegister(dev, RX_ADDR_P4, adr);
+		value = value | 0x10;
+		Nrf24_configRegister(dev, EN_RXADDR, value);
+	} else if (pipe == 5) {
+		Nrf24_configRegister(dev, RX_PW_P5, dev->payload);
+		Nrf24_configRegister(dev, RX_ADDR_P5, adr);
+		value = value | 0x20;
+		Nrf24_configRegister(dev, EN_RXADDR, value);
+	}
 }
 
 // Sets the transmitting device  address
