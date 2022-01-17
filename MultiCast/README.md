@@ -1,0 +1,20 @@
+# MultiCast
+Multiple send to one receive communication.   
+The nRF24L01 has 6 receive data pipes.   
+In this library, the first datapipe is used for automatic ACK reception on transmission.   
+The second to sixth data pipes are used for data reception.   
+Therefore, it is possible to receive from a maximum of five transmitting sides.   
+This example receive from 1RECV/2RECV/3RECV/4RECV/5RECV.   
+
+![Slide0001](https://user-images.githubusercontent.com/6020549/132265362-1048a86a-f100-4e89-9fae-d0cc6766a8d8.jpg)
+
+# Configuration   
+
+![config_main](https://user-images.githubusercontent.com/6020549/108617359-0cc3c500-7459-11eb-9a05-2dd5ce60113b.jpg)
+![config-multicast-1](https://user-images.githubusercontent.com/6020549/149722464-2d7180a1-f98d-436a-bd10-5c978bd8ac23.jpg)
+
+# MultiCast Receiver   
+I tested it with [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01/tree/master/example/MultiCast%20Communication).   
+
+# Screen Shot   
+![MultiCast-1](https://user-images.githubusercontent.com/6020549/149722501-df8ef00c-4a5a-44f2-b055-8d9f0dcad027.jpg)
