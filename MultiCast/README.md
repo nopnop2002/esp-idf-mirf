@@ -14,6 +14,7 @@ This example receive from 1RECV/2RECV/3RECV/4RECV/5RECV.
 ![config-multicast-1](https://user-images.githubusercontent.com/6020549/149722464-2d7180a1-f98d-436a-bd10-5c978bd8ac23.jpg)
 
 # MultiCast Receiver   
+The ESP32 acts as a receiver from five pipes.   
 I tested it with [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01/tree/master/example/MultiCast%20Communication).   
 
 # Screen Shot   
