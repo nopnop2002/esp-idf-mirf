@@ -149,9 +149,38 @@ void Nrf24_config(NRF24_t * dev, uint8_t channel, uint8_t payload)
 // Sets the receiving device address
 void Nrf24_setRADDR(NRF24_t * dev, uint8_t * adr)
 {
-	Nrf24_ceLow(dev);
+	//Nrf24_ceLow(dev);
 	Nrf24_writeRegister(dev, RX_ADDR_P1, adr, mirf_ADDR_LEN);
-	Nrf24_ceHi(dev);
+	//Nrf24_ceHi(dev);
+}
+
+// Add the receiving device address
+void Nrf24_addRADDR(NRF24_t * dev, uint8_t pipe, uint8_t adr)
+{
+  uint8_t value;
+  Nrf24_readRegister(dev, EN_RXADDR, &value, 1);
+
+  if (pipe == 2) {
+    Nrf24_configRegister(dev, RX_PW_P2, dev->payload);
+    Nrf24_configRegister(dev, RX_ADDR_P2, adr);
+    value = value | 0x04;
+    Nrf24_configRegister(dev, EN_RXADDR, value);
+  } else if (pipe == 3) {
+    Nrf24_configRegister(dev, RX_PW_P3, dev->payload);
+    Nrf24_configRegister(dev, RX_ADDR_P3, adr);
+    value = value | 0x08;
+    Nrf24_configRegister(dev, EN_RXADDR, value);
+  } else if (pipe == 4) {
+    Nrf24_configRegister(dev, RX_PW_P4, dev->payload);
+    Nrf24_configRegister(dev, RX_ADDR_P4, adr);
+    value = value | 0x10;
+    Nrf24_configRegister(dev, EN_RXADDR, value);
+  } else if (pipe == 5) {
+    Nrf24_configRegister(dev, RX_PW_P5, dev->payload);
+    Nrf24_configRegister(dev, RX_ADDR_P5, adr);
+    value = value | 0x20;
+    Nrf24_configRegister(dev, EN_RXADDR, value);
+  }
 }
 
 // Sets the transmitting device  address
@@ -164,9 +193,19 @@ void Nrf24_setTADDR(NRF24_t * dev, uint8_t * adr)
 // Checks if data is available for reading
 extern bool Nrf24_dataReady(NRF24_t * dev)
 {
-	uint8_t status = Nrf24_getStatus(dev); // See note in getData() function - just checking RX_DR isn't good enough
-	if ( status & (1 << RX_DR) ) return 1; // We can short circuit on RX_DR, but if it's not set, we still need
-	return !Nrf24_rxFifoEmpty(dev); // to check the FIFO for any pending packets
+	// See note in getData() function - just checking RX_DR isn't good enough
+	uint8_t status = Nrf24_getStatus(dev);
+	if ( status & (1 << RX_DR) ) return 1;
+	// We can short circuit on RX_DR, but if it's not set, we still need
+	// to check the FIFO for any pending packets
+	//return !Nrf24_rxFifoEmpty(dev);
+	return 0;
+}
+
+
+uint8_t Nrf24_getDataPipe(NRF24_t * dev) {
+	uint8_t status = Nrf24_getStatus(dev);
+	return ((status & 0x0E) >> 1);
 }
 
 extern bool Nrf24_rxFifoEmpty(NRF24_t * dev)
@@ -379,11 +418,11 @@ void Nrf24_SetSpeedDataRates(NRF24_t * dev, uint8_t val)
 //Set Auto Retransmit Delay 0=250us, 1=500us, ... 15=4000us
 void Nrf24_setRetransmitDelay(NRF24_t * dev, uint8_t val)
 {
-  uint8_t value;
-  Nrf24_readRegister(dev, SETUP_RETR, &value, 1);
-  value = value & 0x0F;
-  value = value | (val << ARD);
-  Nrf24_configRegister(dev, SETUP_RETR, value);
+	uint8_t value;
+	Nrf24_readRegister(dev, SETUP_RETR, &value, 1);
+	value = value & 0x0F;
+	value = value | (val << ARD);
+	Nrf24_configRegister(dev, SETUP_RETR, value);
 }
 
 
@@ -517,7 +556,7 @@ uint8_t Nrf24_getPALevel(NRF24_t * dev)
 
 uint8_t Nrf24_getRetransmitDelay(NRF24_t * dev)
 {
-  uint8_t value;
-  Nrf24_readRegister(dev, SETUP_RETR, &value, 1);
-  return (value >> 4);
+	uint8_t value;
+	Nrf24_readRegister(dev, SETUP_RETR, &value, 1);
+	return (value >> 4);
 }
