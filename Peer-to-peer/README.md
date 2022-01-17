@@ -28,4 +28,7 @@ I tested it with [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01/tre
 
 ![config-nrf24l01-3](https://user-images.githubusercontent.com/6020549/149711050-91b36d1f-457a-434d-a652-d0231c7de45d.jpg)
 
+__If you want to initialize the nRF24L01 settings after using the Advanced Settings, you need to power cycle the nRF24L01 before executing.__   
+Because nRF24L01 remembers the previous setting.   
+nRF24L01 does not have Software Reset function.   
 
