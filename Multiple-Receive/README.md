@@ -1,5 +1,4 @@
-# MultiCast
-Multiple send to one receive communication.   
+# Multiple-Receive
 The nRF24L01 has 6 receive data pipes(PTX1-PTX6).   
 In this library, the first datapipe(PTX1) is used for automatic ACK reception on transmission.   
 The second(PTX2) to sixth(PTX6) data pipes are used for data reception.   
