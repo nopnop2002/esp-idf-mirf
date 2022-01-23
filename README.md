@@ -59,7 +59,7 @@ I used a raw ESP-C3-13 to verify that these pins could be used as SPI clocks.
 __You can change it to any pin using menuconfig.__   
 
 
-# Communicat with AtMega/STM32/ESP8266/ESP8285 using Arduino Envirnment  
+# Communicat with AtMega/STM32/ESP8266/ESP8285 using Arduino environment  
 I used [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01) library on Arduino environment.   
 __You need to match the payload size and channel with Arduino and esp-idf.__   
 
