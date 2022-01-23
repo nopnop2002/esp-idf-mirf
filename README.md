@@ -1,6 +1,6 @@
 # esp-idf-mirf
 A port of the Mirf library for ESP-IDF.   
-The library provides basic control of the Nordic NRF24L01 RF modules.
+The library provides basic control of the Nordic NRF24L01/NRF24L01+ RF modules.
 
 I ported from [here](https://github.com/nopnop2002/Arduino-STM32-nRF24L01).   
 
@@ -59,7 +59,7 @@ I used a raw ESP-C3-13 to verify that these pins could be used as SPI clocks.
 __You can change it to any pin using menuconfig.__   
 
 
-# Communicat with AtMega/STM32/ESP8266/ESP8285   
+# Communicat with AtMega/STM32/ESP8266/ESP8285 using Arduino Envirnment  
 I used [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01) library on Arduino environment.   
 __You need to match the payload size and channel with Arduino and esp-idf.__   
 
