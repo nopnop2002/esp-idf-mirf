@@ -67,19 +67,19 @@ menu "nRF24L01 Configuration"
 			On the ESP32, GPIOs 35-39 are input-only so cannot be used as outputs.
 			On the ESP32-S2, GPIO 46 is input-only so cannot be used as outputs.
 
-	choice DIRECTION
-		prompt "Communication polarity"
+	choice POLARITY
+		prompt "Communication Polarity"
 		default Primary
 		help
-			Select Communication polarity.
+			Select Communication Polarity.
 		config PRIMARY
 			bool "Primary"
 			help
-				Execute Echo Server.
+				As Echo Client.
 		config SECONDARY
 			bool "Secondary"
 			help
-				Execute Echo Client.
+				As Echo Server.
 	endchoice
 
 endmenu 
