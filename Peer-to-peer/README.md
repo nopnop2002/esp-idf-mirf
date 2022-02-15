@@ -11,7 +11,6 @@ One-way communication for transmission or reception.
 
 # Using as receiver   
 I tested it with [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01/tree/master/example/Peer-to-peer%20Communication/TimeTest/Emitter).   
-
 ![receiver](https://user-images.githubusercontent.com/6020549/73982284-4b363100-4977-11ea-9ae1-af9da92b13fb.jpg)
 
 
@@ -23,7 +22,7 @@ I tested it with [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01/tre
 # Using Advanced Settings   
 When used at long distances, lowering the RF data rate stabilizes it.   
 When changing the RF data rate, the sender and receiver must have the same value.   
-When using 250KBps, it is necessary to increase the Auto Retransmit Delay.   
+When using 250KBps, it takes time to PAYLOAD sending and ACK PACKET receiving, so it is necessary to increase the automatic retransmission delay.   
 I tested it with [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01/tree/master/example/AdvancedSetting).   
 
 ![config-nrf24l01-3](https://user-images.githubusercontent.com/6020549/149711050-91b36d1f-457a-434d-a652-d0231c7de45d.jpg)
