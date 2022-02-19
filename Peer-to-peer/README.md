@@ -3,20 +3,20 @@ One-way communication for transmission or reception.
 
 # Configuration   
 
-![config_main](https://user-images.githubusercontent.com/6020549/108617359-0cc3c500-7459-11eb-9a05-2dd5ce60113b.jpg)
-![config-nrf24l01-1](https://user-images.githubusercontent.com/6020549/149711042-6e145028-716c-432d-a763-7734a76fcaab.jpg)
-![config-nrf24l01-2](https://user-images.githubusercontent.com/6020549/149711045-138d90dd-812d-4c11-9430-edf2a3e7661f.jpg)
-
+![config-top](https://user-images.githubusercontent.com/6020549/154790249-b1f28d18-7c60-4a55-b262-5d821adbbfc3.jpg)
 
 
 # Using as receiver   
 I tested it with [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01/tree/master/example/Peer-to-peer%20Communication/TimeTest/Emitter).   
+
+![config-app-1](https://user-images.githubusercontent.com/6020549/154790362-0ac3875d-8130-4aed-9e33-199fa85564ab.jpg)
 ![receiver](https://user-images.githubusercontent.com/6020549/73982284-4b363100-4977-11ea-9ae1-af9da92b13fb.jpg)
 
 
 # Using as transmitter   
 I tested it with [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01/tree/master/example/Peer-to-peer%20Communication/TimeTest/Receive).   
 
+![config-app-2](https://user-images.githubusercontent.com/6020549/154790370-1d6689c9-d77c-4d64-9cd9-b8622c6ba310.jpg)
 ![transmitter](https://user-images.githubusercontent.com/6020549/73982279-496c6d80-4977-11ea-82c6-f7c62764b18c.jpg)
 
 # Using Advanced Settings   
@@ -25,7 +25,7 @@ When changing the RF data rate, the sender and receiver must have the same value
 When using 250KBps, it takes time to PAYLOAD sending and ACK PACKET receiving, so it is necessary to increase the automatic retransmission delay.   
 I tested it with [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01/tree/master/example/AdvancedSetting).   
 
-![config-nrf24l01-3](https://user-images.githubusercontent.com/6020549/149711050-91b36d1f-457a-434d-a652-d0231c7de45d.jpg)
+![config-app-3](https://user-images.githubusercontent.com/6020549/154790329-0ad796c4-ed61-46a1-99a3-f338cc810ea4.jpg)
 
 __If you want to initialize the nRF24L01 settings after using the Advanced Settings, you need to power cycle the nRF24L01 before executing.__   
 Because nRF24L01 remembers the previous setting.   
