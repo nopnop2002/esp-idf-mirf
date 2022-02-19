@@ -8,37 +8,17 @@ I ported from [here](https://github.com/nopnop2002/Arduino-STM32-nRF24L01).
 esp-idf v4.4 or later.   
 This is because this version supports ESP32-C3.   
 
-# Installation for ESP32
+# Installation
 
 ```Shell
 git clone https://github.com/nopnop2002/esp-idf-mirf
 cd esp-idf-mirf/Peer-to-peer
-idf.py set-target esp32
+idf.py set-target {esp32/esp32s2/esp32c3}
 idf.py menuconfig
 idf.py flash
 ```
 
-# Installation for ESP32-S2
-
-```Shell
-git clone https://github.com/nopnop2002/esp-idf-mirf
-cd esp-idf-mirf/Peer-to-peer
-idf.py set-target esp32s2
-idf.py menuconfig
-idf.py flash
-```
-
-# Installation for ESP32-C3
-
-```Shell
-git clone https://github.com/nopnop2002/esp-idf-mirf
-cd esp-idf-mirf/Peer-to-peer
-idf.py set-target esp32c3
-idf.py menuconfig
-idf.py flash
-```
-
-__Note__   
+__Note for ESP32C3__   
 For some reason, there are development boards that cannot use GPIO06, GPIO08, GPIO09, GPIO19 for SPI clock pins.   
 According to the ESP32C3 specifications, these pins can also be used as SPI clocks.   
 I used a raw ESP-C3-13 to verify that these pins could be used as SPI clocks.   
