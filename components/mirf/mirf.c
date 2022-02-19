@@ -27,30 +27,30 @@ const char rf24_datarates[][8] = {"1MBPS", "2MBPS", "250KBPS"};
 const char rf24_crclength[][10] = {"Disabled", "8 bits", "16 bits"};
 const char rf24_pa_dbm[][8] = {"PA_MIN", "PA_LOW", "PA_HIGH", "PA_MAX"};
 
-void spi_master_init(NRF24_t * dev, int8_t ce_pin, int8_t csn_pin, int miso_pin, int mosi_pin, int sclk_pin)
+void Nrf24_init(NRF24_t * dev)
 {
 	esp_err_t ret;
 
-	ESP_LOGI(TAG, "ce_pin=%d", ce_pin);
-	ESP_LOGI(TAG, "csn_pin=%d", csn_pin);
-	ESP_LOGI(TAG, "miso_pin=%d", miso_pin);
-	ESP_LOGI(TAG, "mosi_pin=%d", mosi_pin);
-	ESP_LOGI(TAG, "sclk_pin=%d", sclk_pin);
+	ESP_LOGI(TAG, "CONFIG_MISO_GPIO=%d", CONFIG_MISO_GPIO);
+	ESP_LOGI(TAG, "CONFIG_MOSI_GPIO=%d", CONFIG_MOSI_GPIO);
+	ESP_LOGI(TAG, "CONFIG_SCLK_GPIO=%d", CONFIG_SCLK_GPIO);
+	ESP_LOGI(TAG, "CONFIG_CE_GPIO=%d", CONFIG_CE_GPIO);
+	ESP_LOGI(TAG, "CONFIG_CSN_GPIO=%d", CONFIG_CSN_GPIO);
 
-	//gpio_pad_select_gpio( ce_pin );
-	gpio_reset_pin( ce_pin );
-	gpio_set_direction( ce_pin, GPIO_MODE_OUTPUT );
-	gpio_set_level( ce_pin, 0 );
+	//gpio_pad_select_gpio(CONFIG_CE_GPIO);
+	gpio_reset_pin(CONFIG_CE_GPIO);
+	gpio_set_direction(CONFIG_CE_GPIO, GPIO_MODE_OUTPUT);
+	gpio_set_level(CONFIG_CE_GPIO, 0);
 
-	//gpio_pad_select_gpio( csn_pin );
-	gpio_reset_pin( csn_pin );
-	gpio_set_direction( csn_pin, GPIO_MODE_OUTPUT );
-	gpio_set_level( csn_pin, 1 );
+	//gpio_pad_select_gpio(CONFIG_CSN_GPIO);
+	gpio_reset_pin(CONFIG_CSN_GPIO);
+	gpio_set_direction(CONFIG_CSN_GPIO, GPIO_MODE_OUTPUT);
+	gpio_set_level(CONFIG_CSN_GPIO, 1);
 
 	spi_bus_config_t spi_bus_config = {
-		.sclk_io_num = sclk_pin,
-		.mosi_io_num = mosi_pin,
-		.miso_io_num = miso_pin,
+		.sclk_io_num = CONFIG_SCLK_GPIO,
+		.mosi_io_num = CONFIG_MOSI_GPIO,
+		.miso_io_num = CONFIG_MISO_GPIO,
 		.quadwp_io_num = -1,
 		.quadhd_io_num = -1
 	};
@@ -62,32 +62,26 @@ void spi_master_init(NRF24_t * dev, int8_t ce_pin, int8_t csn_pin, int miso_pin,
 	spi_device_interface_config_t devcfg;
 	memset( &devcfg, 0, sizeof( spi_device_interface_config_t ) );
 	devcfg.clock_speed_hz = SPI_Frequency;
+	// It does not work with hardware CS control.
+	//devcfg.spics_io_num = csn_pin;
 	devcfg.queue_size = 7;
 	devcfg.mode = 0;
 	devcfg.flags = SPI_DEVICE_NO_DUMMY;
-
-#if 0
-	spi_device_interface_config_t devcfg={
-		.clock_speed_hz = SPI_Frequency,
-		.queue_size = 7,
-		.mode = 0,
-		.flags = SPI_DEVICE_NO_DUMMY,
-	};
-#endif
 
 	spi_device_handle_t handle;
 	ret = spi_bus_add_device( LCD_HOST, &devcfg, &handle);
 	ESP_LOGI(TAG, "spi_bus_add_device=%d",ret);
 	assert(ret==ESP_OK);
-	dev->cePin = ce_pin;
-	dev->csnPin = csn_pin;
+
+	dev->cePin = CONFIG_CE_GPIO;
+	dev->csnPin = CONFIG_CSN_GPIO;
 	dev->channel = 1;
 	dev->payload = 16;
 	dev->_SPIHandle = handle;
 }
 
 
-bool spi_master_write_byte(NRF24_t * dev, uint8_t* Dataout, size_t DataLength )
+bool spi_write_byte(NRF24_t * dev, uint8_t* Dataout, size_t DataLength )
 {
 	spi_transaction_t SPITransaction;
 
@@ -102,7 +96,7 @@ bool spi_master_write_byte(NRF24_t * dev, uint8_t* Dataout, size_t DataLength )
 	return true;
 }
 
-bool spi_master_read_byte(NRF24_t * dev, uint8_t* Datain, uint8_t* Dataout, size_t DataLength )
+bool spi_read_byte(NRF24_t * dev, uint8_t* Datain, uint8_t* Dataout, size_t DataLength )
 {
 	spi_transaction_t SPITransaction;
 
@@ -117,20 +111,22 @@ bool spi_master_read_byte(NRF24_t * dev, uint8_t* Datain, uint8_t* Dataout, size
 	return true;
 }
 
-void Nrf24_transfer(NRF24_t * dev, uint8_t address) {
-	uint8_t dataout[2];
+uint8_t spi_transfer(NRF24_t * dev, uint8_t address) {
+	uint8_t datain[1];
+	uint8_t dataout[1];
 	dataout[0] = address;
-	spi_master_write_byte(dev, dataout, 1 );
+	//spi_write_byte(dev, dataout, 1 );
+	spi_read_byte(dev, datain, dataout, 1 );
+	return datain[0];
 }
 
-void Nrf24_transferSync(NRF24_t * dev, uint8_t *dataout, uint8_t *datain, uint8_t len) {
-	spi_master_read_byte(dev, datain, dataout, len );
+void spi_csnHi(NRF24_t * dev) {
+	gpio_set_level( dev->csnPin, 1 );
 }
 
-void Nrf24_transmitSync(NRF24_t * dev, uint8_t *dataout, uint8_t len) {
-	spi_master_write_byte(dev, dataout, len);
+void spi_csnLow(NRF24_t * dev) {
+	gpio_set_level( dev->csnPin, 0 );
 }
-
 
 // Sets the important registers in the MiRF module and powers the module
 // in receiving mode
@@ -149,9 +145,7 @@ void Nrf24_config(NRF24_t * dev, uint8_t channel, uint8_t payload)
 // Sets the receiving device address
 void Nrf24_setRADDR(NRF24_t * dev, uint8_t * adr)
 {
-	//Nrf24_ceLow(dev);
 	Nrf24_writeRegister(dev, RX_ADDR_P1, adr, mirf_ADDR_LEN);
-	//Nrf24_ceHi(dev);
 }
 
 // Add the receiving device address
@@ -202,7 +196,7 @@ extern bool Nrf24_dataReady(NRF24_t * dev)
 	return 0;
 }
 
-
+// Get pipe number for reading
 uint8_t Nrf24_getDataPipe(NRF24_t * dev) {
 	uint8_t status = Nrf24_getStatus(dev);
 	return ((status & 0x0E) >> 1);
@@ -218,10 +212,10 @@ extern bool Nrf24_rxFifoEmpty(NRF24_t * dev)
 // Reads payload bytes into data array
 extern void Nrf24_getData(NRF24_t * dev, uint8_t * data)
 {
-	Nrf24_csnLow(dev); // Pull down chip select
-	Nrf24_transfer(dev, R_RX_PAYLOAD ); // Send cmd to read rx payload
-	Nrf24_transferSync(dev, data, data, dev->payload); // Read payload
-	Nrf24_csnHi(dev); // Pull up chip select
+	spi_csnLow(dev); // Pull down chip select
+	spi_transfer(dev, R_RX_PAYLOAD ); // Send cmd to read rx payload
+	spi_read_byte(dev, data, data, dev->payload); // Read payload
+	spi_csnHi(dev); // Pull up chip select
 	// NVI: per product spec, p 67, note c:
 	// "The RX_DR IRQ is asserted by a new packet arrival event. The procedure
 	// for handling this interrupt should be: 1) read payload through SPI,
@@ -236,28 +230,28 @@ extern void Nrf24_getData(NRF24_t * dev, uint8_t * data)
 // Clocks only one byte into the given MiRF register
 void Nrf24_configRegister(NRF24_t * dev, uint8_t reg, uint8_t value)
 {
-	Nrf24_csnLow(dev);
-	Nrf24_transfer(dev, W_REGISTER | (REGISTER_MASK & reg));
-	Nrf24_transfer(dev, value);
-	Nrf24_csnHi(dev);
+	spi_csnLow(dev);
+	spi_transfer(dev, W_REGISTER | (REGISTER_MASK & reg));
+	spi_transfer(dev, value);
+	spi_csnHi(dev);
 }
 
 // Reads an array of bytes from the given start position in the MiRF registers
 void Nrf24_readRegister(NRF24_t * dev, uint8_t reg, uint8_t * value, uint8_t len)
 {
-	Nrf24_csnLow(dev);
-	Nrf24_transfer(dev, R_REGISTER | (REGISTER_MASK & reg));
-	Nrf24_transferSync(dev, value, value, len);
-	Nrf24_csnHi(dev);
+	spi_csnLow(dev);
+	spi_transfer(dev, R_REGISTER | (REGISTER_MASK & reg));
+	spi_read_byte(dev, value, value, len);
+	spi_csnHi(dev);
 }
 
 // Writes an array of bytes into inte the MiRF registers
 void Nrf24_writeRegister(NRF24_t * dev, uint8_t reg, uint8_t * value, uint8_t len)
 {
-	Nrf24_csnLow(dev);
-	Nrf24_transfer(dev, W_REGISTER | (REGISTER_MASK & reg));
-	Nrf24_transmitSync(dev, value, len);
-	Nrf24_csnHi(dev);
+	spi_csnLow(dev);
+	spi_transfer(dev, W_REGISTER | (REGISTER_MASK & reg));
+	spi_write_byte(dev, value, len);
+	spi_csnHi(dev);
 }
 
 // Sends a data package to the default address. Be sure to send the correct
@@ -277,13 +271,13 @@ void Nrf24_send(NRF24_t * dev, uint8_t * value)
 	}
 	Nrf24_ceLow(dev);
 	Nrf24_powerUpTx(dev); // Set to transmitter mode , Power up
-	Nrf24_csnLow(dev); // Pull down chip select
-	Nrf24_transfer(dev, FLUSH_TX ); // Write cmd to flush tx fifo
-	Nrf24_csnHi(dev); // Pull up chip select
-	Nrf24_csnLow(dev); // Pull down chip select
-	Nrf24_transfer(dev, W_TX_PAYLOAD ); // Write cmd to write payload
-	Nrf24_transmitSync(dev, value, dev->payload); // Write payload
-	Nrf24_csnHi(dev); // Pull up chip select
+	spi_csnLow(dev); // Pull down chip select
+	spi_transfer(dev, FLUSH_TX ); // Write cmd to flush tx fifo
+	spi_csnHi(dev); // Pull up chip select
+	spi_csnLow(dev); // Pull down chip select
+	spi_transfer(dev, W_TX_PAYLOAD ); // Write cmd to write payload
+	spi_write_byte(dev, value, dev->payload); // Write payload
+	spi_csnHi(dev); // Pull up chip select
 	Nrf24_ceHi(dev); // Start transmission
 }
 
@@ -347,9 +341,9 @@ void Nrf24_powerUpRx(NRF24_t * dev) {
 
 void Nrf24_flushRx(NRF24_t * dev)
 {
-	Nrf24_csnLow(dev);
-	Nrf24_transfer(dev, FLUSH_RX );
-	Nrf24_csnHi(dev);
+	spi_csnLow(dev);
+	spi_transfer(dev, FLUSH_RX );
+	spi_csnHi(dev);
 }
 
 void Nrf24_powerUpTx(NRF24_t * dev) {
@@ -363,14 +357,6 @@ void Nrf24_ceHi(NRF24_t * dev) {
 
 void Nrf24_ceLow(NRF24_t * dev) {
 	gpio_set_level( dev->cePin, 0 );
-}
-
-void Nrf24_csnHi(NRF24_t * dev) {
-	gpio_set_level( dev->csnPin, 1 );
-}
-
-void Nrf24_csnLow(NRF24_t * dev) {
-	gpio_set_level( dev->csnPin, 0 );
 }
 
 void Nrf24_powerDown(NRF24_t * dev)

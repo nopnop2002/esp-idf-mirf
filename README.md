@@ -43,6 +43,9 @@ For some reason, there are development boards that cannot use GPIO06, GPIO08, GP
 According to the ESP32C3 specifications, these pins can also be used as SPI clocks.   
 I used a raw ESP-C3-13 to verify that these pins could be used as SPI clocks.   
 
+# Configuration for Transceiver
+![config-mirf-1](https://user-images.githubusercontent.com/6020549/154790117-90def013-f960-42b4-a02c-44dcba2c3be5.jpg)
+![config-mirf-2](https://user-images.githubusercontent.com/6020549/154790120-73f7d79d-f4e2-413a-a61d-f6b77e103ebc.jpg)
 
 # Wirering
 
