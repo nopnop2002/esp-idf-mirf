@@ -25,13 +25,9 @@ MYDATA_t mydata;
 
 void receiver(void *pvParameters)
 {
-	NRF24_t dev;
-
 	ESP_LOGI(pcTaskGetTaskName(0), "Start");
-	ESP_LOGI(pcTaskGetTaskName(0), "CONFIG_CE_GPIO=%d",CONFIG_CE_GPIO);
-	ESP_LOGI(pcTaskGetTaskName(0), "CONFIG_CSN_GPIO=%d",CONFIG_CSN_GPIO);
-	spi_master_init(&dev, CONFIG_CE_GPIO, CONFIG_CSN_GPIO, CONFIG_MISO_GPIO, CONFIG_MOSI_GPIO, CONFIG_SCLK_GPIO);
-
+	NRF24_t dev;
+	Nrf24_init(&dev);
 	uint8_t payload = sizeof(mydata.value);
 	uint8_t channel = 90;
 	Nrf24_config(&dev, channel, payload);
