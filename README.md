@@ -94,7 +94,7 @@ PTX waits for an ACK packet for 250uS and retransmits 3 times.
 See the data sheet for details on Enhanced ShockBurst.   
 
 # Throughput
-The ESP-IDF SPI driver needs 1 tick per transmission.   
+The ESP-IDF SPI driver requires 1 tick per transaction.   
 The maximum payload size of nRF24L01 is 32 bytes.   
 Therefore, 1 Tick is required to transmit 32 bytes.   
 This has nothing to do with SPI bus speed.   
