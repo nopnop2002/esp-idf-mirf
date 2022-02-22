@@ -73,6 +73,7 @@ nRF24L01 does not have Software Reset function.
 # Enhanced ShockBurst features
 nRF24L01 has "Enhanced ShockBurst" features.   
 "Enhanced ShockBurst" automatically sets the PTX(=Transmitter) in receive mode to wait for the ACK packet from PRX(=Receiver).   
+Therefore, the actual transmission rate is 30-40KBytes/Sec.   
 Disabling "Enhanced Shock Burst" will speed things up, but will not detect transmission failures.
 
 |ESP32||nRF24L01[PTX]||nRF24L01[PRX]||ESP32|
