@@ -73,8 +73,6 @@ nRF24L01 does not have Software Reset function.
 # Enhanced ShockBurst features
 nRF24L01 has "Enhanced ShockBurst" features.   
 "Enhanced ShockBurst" automatically sets the PTX(=Transmitter) in receive mode to wait for the ACK packet from PRX(=Receiver).   
-Therefore, the actual transmission rate is 30-40KBytes/Sec.   
-Disabling "Enhanced Shock Burst" will speed things up, but will not detect transmission failures.
 
 ## Transmission Successful   
 |ESP32||nRF24L01[PTX]||nRF24L01[PRX]||ESP32|
@@ -94,6 +92,13 @@ PTX waits for an ACK packet for 250uS and retransmits 3 times.
 |||nRF24L01|--(Payload)-->|nRF24L01|||||
 
 See the data sheet for details on Enhanced ShockBurst.   
+
+# Throughput
+The ESP-IDF SPI driver needs 1 tick per transmission.   
+The maximum payload size of nRF24L01 is 32 bytes.   
+Therefore, 1 Tick is required to transmit 32 bytes.   
+This has nothing to do with SPI bus speed.   
+Throughput is 32,000 Bytes/Sec.   
 
 # Reference
 
