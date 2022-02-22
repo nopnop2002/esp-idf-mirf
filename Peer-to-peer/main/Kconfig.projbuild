@@ -35,17 +35,17 @@ menu "Application Configuration"
 		help
 			Select RF Data Ratio.
 		config RF_RATIO_2M
-			bool "2MBps"
+			bool "2Mbps"
 			help
-				RF Data Ratio is 2MBps.
+				RF Data Ratio is 2Mbps.
 		config RF_RATIO_1M
-			bool "1MBps"
+			bool "1Mbps"
 			help
-				RF Data Ratio is 1MBps.
+				RF Data Ratio is 1Mbps.
 		config RF_RATIO_250K
-			bool "250KBps"
+			bool "250Kbps"
 			help
-				RF Data Ratio is 250KBps.
+				RF Data Ratio is 250Kbps.
 	endchoice
 
 	config RETRANSMIT_DELAY
