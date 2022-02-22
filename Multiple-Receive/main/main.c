@@ -35,11 +35,11 @@ void receiver(void *pvParameters)
 	//Set your own address using 5 characters
 	Nrf24_setRADDR(&dev, (uint8_t *)"1RECV");
 
-  //Add your own address using 1 characters
-  Nrf24_addRADDR(&dev, 2, '2'); // 2RECV
-  Nrf24_addRADDR(&dev, 3, '3'); // 3RECV
-  Nrf24_addRADDR(&dev, 4, '4'); // 4RECV
-  Nrf24_addRADDR(&dev, 5, '5'); // 5RECV
+	//Add your own address using 1 characters
+	Nrf24_addRADDR(&dev, 2, '2'); // 2RECV
+	Nrf24_addRADDR(&dev, 3, '3'); // 3RECV
+	Nrf24_addRADDR(&dev, 4, '4'); // 4RECV
+	Nrf24_addRADDR(&dev, 5, '5'); // 5RECV
 
 	//Print settings
 	Nrf24_printDetails(&dev);

@@ -90,11 +90,11 @@ void secondary(void *pvParameters)
 	Nrf24_printDetails(&dev);
 	ESP_LOGI(pcTaskGetTaskName(0), "Listening...");
 
-  // Clear RX FiFo
-  while(1) {
-    if (Nrf24_dataReady(&dev) == false) break;
-    Nrf24_getData(&dev, mydata.value);
-  }
+	// Clear RX FiFo
+	while(1) {
+		if (Nrf24_dataReady(&dev) == false) break;
+		Nrf24_getData(&dev, mydata.value);
+	}
 
 	while(1) {
 		//When the program is received, the received data is output from the serial port
