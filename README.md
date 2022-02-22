@@ -76,6 +76,7 @@ nRF24L01 has "Enhanced ShockBurst" features.
 Therefore, the actual transmission rate is 30-40KBytes/Sec.   
 Disabling "Enhanced Shock Burst" will speed things up, but will not detect transmission failures.
 
+## Transmission Successful   
 |ESP32||nRF24L01[PTX]||nRF24L01[PRX]||ESP32|
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 |ESP32|-->|nRF24L01|||||
@@ -83,6 +84,14 @@ Disabling "Enhanced Shock Burst" will speed things up, but will not detect trans
 |||nRF24L01|<--(Ack Packet)--|nRF24L01|||||
 |||||nRF24L01|-->|ESP32|
 
+## Transmission Failure   
+PTX waits for an ACK packet for 250uS and retransmits 3 times.   
+|ESP32||nRF24L01[PTX]||nRF24L01[PRX]||ESP32|
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|ESP32|-->|nRF24L01|||||
+|||nRF24L01|--(Payload)-->|nRF24L01|||||
+|||nRF24L01|--(Payload)-->|nRF24L01|||||
+|||nRF24L01|--(Payload)-->|nRF24L01|||||
 
 # Reference
 
