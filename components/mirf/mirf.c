@@ -20,8 +20,10 @@
 #endif
 
 
-static const int SPI_Frequency = 4000000;
-//static const int SPI_Frequency = 8000000; // don't work
+static const int SPI_Frequency = 4000000; // Stable even with a long jumper cable
+//static const int SPI_Frequency = 6000000;
+//static const int SPI_Frequency = 8000000; // Requires a short jumper cable
+//static const int SPI_Frequency = 10000000; // Unstable even with a short jumper cable
 
 const char rf24_datarates[][8] = {"1MBPS", "2MBPS", "250KBPS"};
 const char rf24_crclength[][10] = {"Disabled", "8 bits", "16 bits"};
