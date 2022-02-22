@@ -70,6 +70,19 @@ When changing the settings of the nRF24L01, it is necessary to power cycle the n
 Because nRF24L01 remembers the previous setting.   
 nRF24L01 does not have Software Reset function.   
 
+# Enhanced ShockBurst features
+nRF24L01 has "Enhanced ShockBurst" features.   
+"Enhanced ShockBurst" automatically sets the PTX(=Transmitter) in receive mode to wait for the ACK packet from PRX(=Receiver).   
+Disabling "Enhanced Shock Burst" will speed things up, but will not detect transmission failures.
+
+|ESP32||nRF24L01[PTX]||nRF24L01[PRX]||ESP32|
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|ESP32|-->|nRF24L01|||||
+|||nRF24L01|--(Payload)-->|nRF24L01|||||
+|||nRF24L01|<--(Ack Packet)--|nRF24L01|||||
+|||||nRF24L01|-->|ESP32|
+
+
 # Reference
 
 https://github.com/nopnop2002/esp-idf-mirf2mqtt
