@@ -93,6 +93,8 @@ PTX waits for an ACK packet for 250uS and retransmits 3 times.
 |||nRF24L01|--(Payload)-->|nRF24L01|||||
 |||nRF24L01|--(Payload)-->|nRF24L01|||||
 
+See the data sheet for details on Enhanced ShockBurst.   
+
 # Reference
 
 https://github.com/nopnop2002/esp-idf-mirf2mqtt
