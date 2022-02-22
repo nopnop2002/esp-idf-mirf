@@ -98,7 +98,7 @@ The ESP-IDF SPI driver needs 1 tick per transmission.
 The maximum payload size of nRF24L01 is 32 bytes.   
 Therefore, 1 Tick is required to transmit 32 bytes.   
 This has nothing to do with SPI bus speed.   
-Throughput is 32,000 Bytes/Sec.   
+Throughput is 3,200 Bytes/Sec.   
 
 # Reference
 
