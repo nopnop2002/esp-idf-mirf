@@ -91,6 +91,10 @@ PTX waits for an ACK packet for 250uS and retransmits 3 times.
 |||nRF24L01|--(Payload)-->|nRF24L01|||||
 |||nRF24L01|--(Payload)-->|nRF24L01|||||
 
+Using a data rate of 250KBps extends the range of radio waves.   
+However, it takes time to send PAYLOAD and receive ACK PACKET, so it is necessary to increase the delay of automatic retransmission.   
+If the delay of automatic retransmission is not increased, it is considered as a transmission failure.   
+   
 See the data sheet for details on Enhanced ShockBurst.   
 
 # Throughput
