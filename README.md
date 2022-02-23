@@ -88,8 +88,11 @@ PTX waits for an ACK packet for 250uS and retransmits 3 times.
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 |ESP32|-->|nRF24L01|||||
 |||nRF24L01|--(Payload)-->|nRF24L01|||||
+||||250uS||||||
 |||nRF24L01|--(Payload)-->|nRF24L01|||||
+||||250uS||||||
 |||nRF24L01|--(Payload)-->|nRF24L01|||||
+||||250uS||||||
 
 
 Using a data rate of 250KBps extends the range of radio waves.   
