@@ -94,7 +94,14 @@ PTX waits for an ACK packet for 250uS and retransmits 3 times.
 Using a data rate of 250KBps extends the range of radio waves.   
 However, since it takes time to send PAYLOAD and receive ACK PACKET, the delay time for automatic retransmission should be larger than 250uS.   
 If the delay of automatic retransmission is not increased, it is considered as a transmission failure.   
-   
+|ESP32||nRF24L01[PTX]||nRF24L01[PRX]||ESP32|
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|ESP32|-->|nRF24L01|||||
+|||nRF24L01|--(Payload)-->|nRF24L01|||||
+||||Over 250uS||||||
+|||nRF24L01|<--(Ack Packet)--|nRF24L01|||||
+|||||nRF24L01|-->|ESP32|
+
 See the data sheet for details on Enhanced ShockBurst.   
 
 # Throughput
