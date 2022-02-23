@@ -80,6 +80,7 @@ nRF24L01 has "Enhanced ShockBurst" features.
 |ESP32|-->|nRF24L01|||||
 |||nRF24L01|--(Payload)-->|nRF24L01|||||
 |||nRF24L01|<--(Ack Packet)--|nRF24L01|||||
+|ESP32|<--|nRF24L01|||||||
 |||||nRF24L01|-->|ESP32|
 
 ## Transmission Failure   
@@ -93,6 +94,7 @@ PTX waits for an ACK packet for 250uS and retransmits 3 times.
 ||||250uS||||||
 |||nRF24L01|--(Payload)-->|nRF24L01|||||
 ||||250uS||||||
+|ESP32|<--|nRF24L01|||||||
 
 
 Using a data rate of 250KBps extends the range of radio waves.   
