@@ -107,6 +107,7 @@ If the delay of automatic retransmission is not increased, it is considered as a
 |||nRF24L01|--(Payload)-->|nRF24L01|||||
 ||||Over 250uS||||||
 |||nRF24L01|<--(Ack Packet)--|nRF24L01|||||
+|ESP32|<--|nRF24L01|||||||
 |||||nRF24L01|-->|ESP32|
 
 See the data sheet for details on Enhanced ShockBurst.   
