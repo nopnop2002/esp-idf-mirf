@@ -112,10 +112,9 @@ If the delay of automatic retransmission is not increased, it is considered as a
 
 See the data sheet for details on Enhanced ShockBurst.   
 
-# Throughput
-The ESP-IDF SPI driver requires 1 tick per transaction.   
+# Throughput   
+1 tick (10 MillSec) is required to send payload and receive ack packet.   
 The maximum payload size of nRF24L01 is 32 bytes.   
-Therefore, 1 Tick is required to transmit 32 bytes.   
 This has nothing to do with SPI bus speed.   
 The throughput of nRF24L01 is 3,200 bytes/sec.   
 The data rate of nRF24L01 affects the radio range, but not the speed.   
