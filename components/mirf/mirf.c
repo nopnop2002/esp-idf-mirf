@@ -66,6 +66,8 @@ void Nrf24_init(NRF24_t * dev)
 	devcfg.clock_speed_hz = SPI_Frequency;
 	// It does not work with hardware CS control.
 	//devcfg.spics_io_num = csn_pin;
+	// It does work with software CS control.
+	devcfg.spics_io_num = -1;
 	devcfg.queue_size = 7;
 	devcfg.mode = 0;
 	devcfg.flags = SPI_DEVICE_NO_DUMMY;
