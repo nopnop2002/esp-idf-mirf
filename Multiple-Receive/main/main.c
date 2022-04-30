@@ -25,17 +25,21 @@ MYDATA_t mydata;
 
 void receiver(void *pvParameters)
 {
-	ESP_LOGI(pcTaskGetTaskName(0), "Start");
+	ESP_LOGI(pcTaskGetName(0), "Start");
 	NRF24_t dev;
 	Nrf24_init(&dev);
 	uint8_t payload = sizeof(mydata.value);
 	uint8_t channel = 90;
 	Nrf24_config(&dev, channel, payload);
 
-	//Set your own address using 5 characters
-	Nrf24_setRADDR(&dev, (uint8_t *)"1RECV");
+	//Set own address using 5 characters
+	esp_err_t ret = Nrf24_setRADDR(&dev, (uint8_t *)"1RECV");
+	if (ret != ESP_OK) {
+		ESP_LOGE(pcTaskGetName(0), "nrf24l01 not installed");
+		while(1) { vTaskDelay(1); }
+	}
 
-	//Add your own address using 1 characters
+	//Add own address using 1 characters
 	Nrf24_addRADDR(&dev, 2, '2'); // 2RECV
 	Nrf24_addRADDR(&dev, 3, '3'); // 3RECV
 	Nrf24_addRADDR(&dev, 4, '4'); // 4RECV
@@ -43,14 +47,14 @@ void receiver(void *pvParameters)
 
 	//Print settings
 	Nrf24_printDetails(&dev);
-	ESP_LOGI(pcTaskGetTaskName(0), "Listening...");
+	ESP_LOGI(pcTaskGetName(0), "Listening...");
 
 	while(1) {
 		//When the program is received, the received data is output from the serial port
 		if (Nrf24_dataReady(&dev)) {
 			uint8_t pipe = Nrf24_getDataPipe(&dev);
 			Nrf24_getData(&dev, mydata.value);
-			ESP_LOGI(pcTaskGetTaskName(0), "Got data pipe(%d):%d", pipe, mydata.ivalue);
+			ESP_LOGI(pcTaskGetName(0), "Got data pipe(%d):%d", pipe, mydata.ivalue);
 		}
 		vTaskDelay(1);
 	}
@@ -58,5 +62,5 @@ void receiver(void *pvParameters)
 
 void app_main(void)
 {
-	xTaskCreate(receiver, "RECEIVER", 1024*2, NULL, 2, NULL);
+	xTaskCreate(receiver, "RECEIVER", 1024*3, NULL, 2, NULL);
 }

@@ -26,18 +26,26 @@ MYDATA_t mydata;
 #if CONFIG_PRIMARY
 void primary(void *pvParameters)
 {
-	ESP_LOGI(pcTaskGetTaskName(0), "Start");
+	ESP_LOGI(pcTaskGetName(0), "Start");
 	NRF24_t dev;
 	Nrf24_init(&dev);
 	uint8_t payload = sizeof(mydata.value);
 	uint8_t channel = 90;
 	Nrf24_config(&dev, channel, payload);
 
-	//Set your own address using 5 characters
-	Nrf24_setRADDR(&dev, (uint8_t *)"ABCDE");
+	//Set own address using 5 characters
+	esp_err_t ret = Nrf24_setRADDR(&dev, (uint8_t *)"ABCDE");
+	if (ret != ESP_OK) {
+		ESP_LOGE(pcTaskGetName(0), "nrf24l01 not installed");
+		while(1) { vTaskDelay(1); }
+	}
 
 	//Set the receiver address using 5 characters
-	Nrf24_setTADDR(&dev, (uint8_t *)"FGHIJ");
+	ret = Nrf24_setTADDR(&dev, (uint8_t *)"FGHIJ");
+	if (ret != ESP_OK) {
+		ESP_LOGE(pcTaskGetName(0), "nrf24l01 not installed");
+		while(1) { vTaskDelay(1); }
+	}
 
 	//Print settings
 	Nrf24_printDetails(&dev);
@@ -47,12 +55,12 @@ void primary(void *pvParameters)
 		TickType_t startTick = xTaskGetTickCount();
 		Nrf24_send(&dev, mydata.value);
 		vTaskDelay(1);
-		ESP_LOGI(pcTaskGetTaskName(0), "Wait for sending.....");
+		ESP_LOGI(pcTaskGetName(0), "Wait for sending.....");
 		if (Nrf24_isSend(&dev)) {
-			ESP_LOGI(pcTaskGetTaskName(0),"Send success:%s", mydata.now_time);
+			ESP_LOGI(pcTaskGetName(0),"Send success:%s", mydata.now_time);
 
 			//Wait for response
-			//ESP_LOGI(pcTaskGetTaskName(0), "Wait for response.....");
+			//ESP_LOGI(pcTaskGetName(0), "Wait for response.....");
 			memset(mydata.now_time, 0, sizeof(mydata.now_time));
 			while(1) {
 				if (Nrf24_dataReady(&dev)) break;
@@ -60,10 +68,10 @@ void primary(void *pvParameters)
 			}
 			Nrf24_getData(&dev, mydata.value);
 			TickType_t diffTick = xTaskGetTickCount() - startTick;
-			ESP_LOGI(pcTaskGetTaskName(0), "Got response:%s Elapsed:%d ticks", mydata.now_time, diffTick);
+			ESP_LOGI(pcTaskGetName(0), "Got response:%s Elapsed:%d ticks", mydata.now_time, diffTick);
 
 		} else {
-			ESP_LOGW(pcTaskGetTaskName(0),"Send fail:");
+			ESP_LOGW(pcTaskGetName(0),"Send fail:");
 		}
 		vTaskDelay(1000/portTICK_PERIOD_MS);
 	}
@@ -73,22 +81,30 @@ void primary(void *pvParameters)
 #if CONFIG_SECONDARY
 void secondary(void *pvParameters)
 {
-	ESP_LOGI(pcTaskGetTaskName(0), "Start");
+	ESP_LOGI(pcTaskGetName(0), "Start");
 	NRF24_t dev;
 	Nrf24_init(&dev);
 	uint8_t payload = sizeof(mydata.value);
 	uint8_t channel = 90;
 	Nrf24_config(&dev, channel, payload);
 
-	//Set your own address using 5 characters
-	Nrf24_setRADDR(&dev, (uint8_t *)"ABCDE");
+	//Set own address using 5 characters
+	esp_err_t ret = Nrf24_setRADDR(&dev, (uint8_t *)"ABCDE");
+	if (ret != ESP_OK) {
+		ESP_LOGE(pcTaskGetName(0), "nrf24l01 not installed");
+		while(1) { vTaskDelay(1); }
+	}
 
 	//Set the receiver address using 5 characters
-	Nrf24_setTADDR(&dev, (uint8_t *)"FGHIJ");
+	ret = Nrf24_setTADDR(&dev, (uint8_t *)"FGHIJ");
+	if (ret != ESP_OK) {
+		ESP_LOGE(pcTaskGetName(0), "nrf24l01 not installed");
+		while(1) { vTaskDelay(1); }
+	}
 
 	//Print settings
 	Nrf24_printDetails(&dev);
-	ESP_LOGI(pcTaskGetTaskName(0), "Listening...");
+	ESP_LOGI(pcTaskGetName(0), "Listening...");
 
 	// Clear RX FiFo
 	while(1) {
@@ -100,15 +116,15 @@ void secondary(void *pvParameters)
 		//When the program is received, the received data is output from the serial port
 		if (Nrf24_dataReady(&dev)) {
 			Nrf24_getData(&dev, mydata.value);
-			ESP_LOGI(pcTaskGetTaskName(0), "Got data:%s", mydata.now_time);
+			ESP_LOGI(pcTaskGetName(0), "Got data:%s", mydata.now_time);
 			vTaskDelay(1);
 			Nrf24_send(&dev, mydata.value);
 			vTaskDelay(1);
-			ESP_LOGI(pcTaskGetTaskName(0), "Wait for sending.....");
+			ESP_LOGI(pcTaskGetName(0), "Wait for sending.....");
 			if (Nrf24_isSend(&dev)) {
-				ESP_LOGI(pcTaskGetTaskName(0),"Send success:%s", mydata.now_time);
+				ESP_LOGI(pcTaskGetName(0),"Send success:%s", mydata.now_time);
 			} else {
-				ESP_LOGW(pcTaskGetTaskName(0),"Send fail:");
+				ESP_LOGW(pcTaskGetName(0),"Send fail:");
 			}
 		}
 		vTaskDelay(1);
@@ -120,10 +136,10 @@ void secondary(void *pvParameters)
 void app_main(void)
 {
 #if CONFIG_PRIMARY
-	xTaskCreate(primary, "PRIMARY", 1024*2, NULL, 2, NULL);
+	xTaskCreate(primary, "PRIMARY", 1024*3, NULL, 2, NULL);
 #endif
 
 #if CONFIG_SECONDARY
-	xTaskCreate(secondary, "SECONDARY", 1024*2, NULL, 2, NULL);
+	xTaskCreate(secondary, "SECONDARY", 1024*3, NULL, 2, NULL);
 #endif
 }

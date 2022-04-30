@@ -12,11 +12,13 @@
 #define TAG "NRF24"
 
 #if CONFIG_IDF_TARGET_ESP32
-#define LCD_HOST HSPI_HOST
+#define HOST_ID HSPI_HOST
 #elif CONFIG_IDF_TARGET_ESP32S2
-#define LCD_HOST SPI2_HOST
+#define HOST_ID SPI2_HOST
+#elif CONFIG_IDF_TARGET_ESP32S3
+#define HOST_ID SPI2_HOST
 #elif defined CONFIG_IDF_TARGET_ESP32C3
-#define LCD_HOST SPI2_HOST
+#define HOST_ID SPI2_HOST
 #endif
 
 
@@ -57,7 +59,7 @@ void Nrf24_init(NRF24_t * dev)
 		.quadhd_io_num = -1
 	};
 
-	ret = spi_bus_initialize( LCD_HOST, &spi_bus_config, SPI_DMA_CH_AUTO );
+	ret = spi_bus_initialize( HOST_ID, &spi_bus_config, SPI_DMA_CH_AUTO );
 	ESP_LOGI(TAG, "spi_bus_initialize=%d",ret);
 	assert(ret==ESP_OK);
 
@@ -73,7 +75,7 @@ void Nrf24_init(NRF24_t * dev)
 	devcfg.flags = SPI_DEVICE_NO_DUMMY;
 
 	spi_device_handle_t handle;
-	ret = spi_bus_add_device( LCD_HOST, &devcfg, &handle);
+	ret = spi_bus_add_device( HOST_ID, &devcfg, &handle);
 	ESP_LOGI(TAG, "spi_bus_add_device=%d",ret);
 	assert(ret==ESP_OK);
 
@@ -147,9 +149,34 @@ void Nrf24_config(NRF24_t * dev, uint8_t channel, uint8_t payload)
 }
 
 // Sets the receiving device address
-void Nrf24_setRADDR(NRF24_t * dev, uint8_t * adr)
+//void Nrf24_setRADDR(NRF24_t * dev, uint8_t * adr)
+esp_err_t Nrf24_setRADDR(NRF24_t * dev, uint8_t * adr)
 {
+	esp_err_t ret = ESP_OK;
 	Nrf24_writeRegister(dev, RX_ADDR_P1, adr, mirf_ADDR_LEN);
+	uint8_t buffer[5];
+	Nrf24_readRegister(dev, RX_ADDR_P1, buffer, sizeof(buffer));
+	for (int i=0;i<5;i++) {
+		ESP_LOGD(TAG, "adr[%d]=0x%x buffer[%d]=0x%x", i, adr[i], i, buffer[i]);
+		if (adr[i] != buffer[i]) ret = ESP_FAIL;
+	}
+	return ret;
+}
+
+// Sets the transmitting device  address
+//void Nrf24_setTADDR(NRF24_t * dev, uint8_t * adr)
+esp_err_t Nrf24_setTADDR(NRF24_t * dev, uint8_t * adr)
+{
+	esp_err_t ret = ESP_OK;
+	Nrf24_writeRegister(dev, RX_ADDR_P0, adr, mirf_ADDR_LEN); //RX_ADDR_P0 must be set to the sending addr for auto ack to work.
+	Nrf24_writeRegister(dev, TX_ADDR, adr, mirf_ADDR_LEN);
+	uint8_t buffer[5];
+	Nrf24_readRegister(dev, RX_ADDR_P0, buffer, sizeof(buffer));
+	for (int i=0;i<5;i++) {
+		ESP_LOGD(TAG, "adr[%d]=0x%x buffer[%d]=0x%x", i, adr[i], i, buffer[i]);
+		if (adr[i] != buffer[i]) ret = ESP_FAIL;
+	}
+	return ret;
 }
 
 // Add the receiving device address
@@ -179,13 +206,6 @@ void Nrf24_addRADDR(NRF24_t * dev, uint8_t pipe, uint8_t adr)
 		value = value | 0x20;
 		Nrf24_configRegister(dev, EN_RXADDR, value);
 	}
-}
-
-// Sets the transmitting device  address
-void Nrf24_setTADDR(NRF24_t * dev, uint8_t * adr)
-{
-	Nrf24_writeRegister(dev, RX_ADDR_P0, adr, mirf_ADDR_LEN); //RX_ADDR_P0 must be set to the sending addr for auto ack to work.
-	Nrf24_writeRegister(dev, TX_ADDR, adr, mirf_ADDR_LEN);
 }
 
 // Checks if data is available for reading
@@ -471,9 +491,14 @@ void Nrf24_print_address_register(NRF24_t * dev, const char* name, uint8_t reg, 
 		Nrf24_readRegister(dev, reg++, buffer, sizeof(buffer));
 
 		printf(" 0x");
+#if 0
 		uint8_t* bufptr = buffer + sizeof buffer;
 		while (--bufptr >= buffer) {
 			printf("%02x", *bufptr);
+		}
+#endif
+		for(int i=0;i<5;i++) {
+			printf("%02x", buffer[i]);
 		}
 	}
 	printf("\r\n");

@@ -1,4 +1,4 @@
-menu "nF24L01 Configuration"
+menu "nRF24L01 Configuration"
 
 	config GPIO_RANGE_MAX
 		int
@@ -11,7 +11,8 @@ menu "nF24L01 Configuration"
 		int "MISO GPIO number"
 		range 0 GPIO_RANGE_MAX
 		default 19 if IDF_TARGET_ESP32
-		default 33 if IDF_TARGET_ESP32S2
+		default 37 if IDF_TARGET_ESP32S2
+		default 37 if IDF_TARGET_ESP32S3
 		default 18 if IDF_TARGET_ESP32C3
 		help
 			GPIO number (IOxx) to SPI MISO.
@@ -24,6 +25,7 @@ menu "nF24L01 Configuration"
 		range 0 GPIO_RANGE_MAX
 		default 23 if IDF_TARGET_ESP32
 		default 35 if IDF_TARGET_ESP32S2
+		default 35 if IDF_TARGET_ESP32S3
 		default 19 if IDF_TARGET_ESP32C3
 		help
 			GPIO number (IOxx) to SPI MOSI.
@@ -36,6 +38,7 @@ menu "nF24L01 Configuration"
 		range 0 GPIO_RANGE_MAX
 		default 18 if IDF_TARGET_ESP32
 		default 36 if IDF_TARGET_ESP32S2
+		default 36 if IDF_TARGET_ESP32S3
 		default 10 if IDF_TARGET_ESP32C3
 		help
 			GPIO number (IOxx) to SPI SCLK.
@@ -47,7 +50,8 @@ menu "nF24L01 Configuration"
 		int "CE GPIO number"
 		range 0 GPIO_RANGE_MAX
 		default 16 if IDF_TARGET_ESP32
-		default 37 if IDF_TARGET_ESP32S2
+		default 34 if IDF_TARGET_ESP32S2
+		default 34 if IDF_TARGET_ESP32S3
 		default 9  if IDF_TARGET_ESP32C3
 		help
 			GPIO number (IOxx) to CE.
@@ -59,7 +63,8 @@ menu "nF24L01 Configuration"
 		int "CSN GPIO number"
 		range 0 GPIO_RANGE_MAX
 		default 17 if IDF_TARGET_ESP32
-		default 38 if IDF_TARGET_ESP32S2
+		default 33 if IDF_TARGET_ESP32S2
+		default 33 if IDF_TARGET_ESP32S3
 		default 8  if IDF_TARGET_ESP32C3
 		help
 			GPIO number (IOxx) to CSN.

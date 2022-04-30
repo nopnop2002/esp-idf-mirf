@@ -16,7 +16,7 @@ This is because this version supports ESP32-C3.
 ```Shell
 git clone https://github.com/nopnop2002/esp-idf-mirf
 cd esp-idf-mirf/Peer-to-peer
-idf.py set-target {esp32/esp32s2/esp32c3}
+idf.py set-target {esp32/esp32s2/esp32s3/esp32c3}
 idf.py menuconfig
 idf.py flash
 ```
@@ -32,13 +32,13 @@ I used a raw ESP-C3-13 to verify that these pins could be used as SPI clocks.
 
 # Wirering
 
-|nRF24L01||ESP32|ESP32-S2|ESP32-C3|
+|nRF24L01||ESP32|ESP32-S2/S3|ESP32-C3|
 |:-:|:-:|:-:|:-:|:-:|
-|MISO|--|GPIO19|GPIO33|GPIO18|
+|MISO|--|GPIO19|GPIO37|GPIO18|
 |MOSI|--|GPIO23|GPIO35|GPIO19|
 |SCK|--|GPIO18|GPIO36|GPIO10|
-|CE|--|GPIO16|GPIO37|GPIO9|
-|CSN|--|GPIO17|GPIO38|GPIO8|
+|CE|--|GPIO16|GPIO34|GPIO9|
+|CSN|--|GPIO17|GPIO33|GPIO8|
 |GND|--|GND|GND|GND|
 |VCC|--|3.3V|3.3V|3.3V|
 
