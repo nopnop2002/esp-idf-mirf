@@ -11,16 +11,12 @@
 
 #define TAG "NRF24"
 
-#if CONFIG_IDF_TARGET_ESP32
-#define HOST_ID HSPI_HOST
-#elif CONFIG_IDF_TARGET_ESP32S2
+// SPI Stuff
+#if CONFIG_SPI2_HOST
 #define HOST_ID SPI2_HOST
-#elif CONFIG_IDF_TARGET_ESP32S3
-#define HOST_ID SPI2_HOST
-#elif defined CONFIG_IDF_TARGET_ESP32C3
-#define HOST_ID SPI2_HOST
+#elif CONFIG_SPI3_HOST
+#define HOST_ID SPI3_HOST
 #endif
-
 
 static const int SPI_Frequency = 4000000; // Stable even with a long jumper cable
 //static const int SPI_Frequency = 6000000;

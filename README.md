@@ -27,8 +27,20 @@ According to the ESP32C3 specifications, these pins can also be used as SPI cloc
 I used a raw ESP-C3-13 to verify that these pins could be used as SPI clocks.   
 
 # Configuration for Transceiver
-![config-mirf-1](https://user-images.githubusercontent.com/6020549/166088471-0653c792-4012-46e5-98b4-d775638bc965.jpg)
-![config-mirf-2](https://user-images.githubusercontent.com/6020549/154790120-73f7d79d-f4e2-413a-a61d-f6b77e103ebc.jpg)
+![config-nrf24l01-1](https://user-images.githubusercontent.com/6020549/168019514-93c377c9-2823-4840-bce4-168f0c2b7338.jpg)
+![config-nrf24l01-2](https://user-images.githubusercontent.com/6020549/168019524-931bc96b-5954-4ddd-8bd0-afb7b018aa3e.jpg)
+
+# SPI BUS selection   
+![config-nrf24l01-3](https://user-images.githubusercontent.com/6020549/168019751-e3892b4f-a0dd-489b-8209-3d09d4a4aba4.jpg)
+
+The ESP32 series has three SPI BUSs.   
+SPI1_HOST is used for communication with Flash memory.   
+You can use SPI2_HOST and SPI3_HOST freely.   
+When you use SDSPI(SD Card via SPI), SDSPI uses SPI2_HOST BUS.   
+When using this module at the same time as SDSPI or other SPI device using SPI2_HOST, it needs to be changed to SPI3_HOST.   
+When you don't use SDSPI, both SPI2_HOST and SPI3_HOST will work.   
+It was called HSPI_HOST / VSPI_HOST, but it is not defined in SoCs other than ESP32.   
+
 
 # Wirering
 
