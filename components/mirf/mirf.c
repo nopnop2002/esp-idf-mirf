@@ -320,8 +320,9 @@ bool Nrf24_isSending(NRF24_t * dev) {
 // Test if Sending has finished or retry is over.
 // When sending has finished return trur.
 // When reach maximum number of TX retries return false.
-bool Nrf24_isSend(NRF24_t * dev) {
+bool Nrf24_isSend(NRF24_t * dev, int timeout) {
 	uint8_t status;
+	TickType_t startTick = xTaskGetTickCount();
 	if (dev->PTX) {
 		while(1) {
 			status = Nrf24_getStatus(dev);
@@ -339,6 +340,8 @@ bool Nrf24_isSend(NRF24_t * dev) {
 				return false;
 			}
 			vTaskDelay(1);
+			TickType_t diffTick = xTaskGetTickCount() - startTick;
+			if ( (diffTick * portTICK_PERIOD_MS) > timeout) return false;
 		}
 	}
 	return false;

@@ -158,7 +158,7 @@ void      Nrf24_addRADDR(NRF24_t * dev, uint8_t pipe, uint8_t adr);
 bool      Nrf24_dataReady(NRF24_t * dev);
 uint8_t   Nrf24_getDataPipe(NRF24_t * dev);
 bool      Nrf24_isSending(NRF24_t * dev);
-bool      Nrf24_isSend(NRF24_t * dev);
+bool      Nrf24_isSend(NRF24_t * dev, int timeout);
 bool      Nrf24_rxFifoEmpty(NRF24_t * dev);
 bool      Nrf24_txFifoEmpty(NRF24_t * dev);
 void      Nrf24_getData(NRF24_t * dev, uint8_t * data);

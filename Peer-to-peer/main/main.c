@@ -112,7 +112,7 @@ void transmitter(void *pvParameters)
 		Nrf24_send(&dev, mydata.value);
 		vTaskDelay(1);
 		ESP_LOGI(pcTaskGetName(0), "Wait for sending.....");
-		if (Nrf24_isSend(&dev)) {
+		if (Nrf24_isSend(&dev, 1000)) {
 			ESP_LOGI(pcTaskGetName(0),"Send success:%lu", mydata.now_time);
 		} else {
 			ESP_LOGW(pcTaskGetName(0),"Send fail:");
