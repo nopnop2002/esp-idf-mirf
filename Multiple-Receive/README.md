@@ -4,7 +4,7 @@ In this library, the first datapipe(PTX1) is used for automatic ACK reception on
 The second(PTX2) to sixth(PTX6) data pipes are used for data reception.   
 Therefore, it is possible to receive from a maximum of five transmitting sides.   
 
-In this example, it will receive from the following addresses:
+In this example, it will receive from the following addresses:   
 ```1RECV/2RECV/3RECV/4RECV/5RECV```
 
 I tested it with [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01/tree/master/example/Multiple-Receive%20Communication).   
