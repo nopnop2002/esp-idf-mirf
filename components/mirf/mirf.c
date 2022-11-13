@@ -336,12 +336,17 @@ bool Nrf24_isSend(NRF24_t * dev, int timeout) {
 			}
 
 			if (status & (1 << MAX_RT)) { // Maximum number of TX retries interrupt
+				ESP_LOGW(TAG, "Maximum number of TX retries interrupt");
 				Nrf24_powerUpRx(dev);
 				return false;
 			}
 			vTaskDelay(1);
 			TickType_t diffTick = xTaskGetTickCount() - startTick;
-			if ( (diffTick * portTICK_PERIOD_MS) > timeout) return false;
+			if ( (diffTick * portTICK_PERIOD_MS) > timeout) {
+				ESP_LOGW(TAG, "Status register timeout");
+				return false;
+			}
+			vTaskDelay(1);
 		}
 	}
 	return false;
