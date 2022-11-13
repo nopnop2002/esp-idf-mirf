@@ -93,8 +93,8 @@ void transmitter(void *pvParameters)
 	//Print settings
 	Nrf24_printDetails(&dev);
 
+	mydata.ivalue = 0;
 	while(1) {
-		mydata.ivalue = (unsigned int)xTaskGetTickCount();
 		Nrf24_send(&dev, mydata.value);
 		vTaskDelay(1);
 		ESP_LOGI(pcTaskGetName(0), "Wait for sending.....");
@@ -103,6 +103,7 @@ void transmitter(void *pvParameters)
 		} else {
 			ESP_LOGW(pcTaskGetName(0),"Send fail:");
 		}
+		mydata.ivalue++;
 		vTaskDelay(1000/portTICK_PERIOD_MS);
 	}
 }
