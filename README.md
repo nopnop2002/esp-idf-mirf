@@ -58,7 +58,7 @@ You can change it to any pin using menuconfig.
 
 (*2)   
 nRF24L01/nRF24L01+ needs a lot of current.   
-ESP32 development board cannot supply too much current.   
+The 3.3V pin on the ESP32 development board cannot supply too much current.   
 The power supply from the ESP32 development board does not work properly.   
 __Must be powered from an external power source.__   
 I am using the AMS1117 as a regulator to supply 3.3V.
