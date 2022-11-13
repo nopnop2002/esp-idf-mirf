@@ -5,7 +5,8 @@ The second(PTX2) to sixth(PTX6) data pipes are used for data reception.
 Therefore, it is possible to receive from a maximum of five transmitting sides.   
 This example receive from 1RECV/2RECV/3RECV/4RECV/5RECV.   
 
-The ESP32 acts as a receiver from five pipes.   
+The ESP32 acts as a receiver from five pipes.(DataPipe #1 to #6)   
+In this library, DataPipe#0 is used to receive Ack Payload when sending.   
 I tested it with [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01/tree/master/example/Multiple-Receive%20Communication).   
 
 ![MultiCast-2](https://user-images.githubusercontent.com/6020549/149723671-e5a4fd63-199c-4716-8cc7-d3806b562243.jpg)
