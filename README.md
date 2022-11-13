@@ -1,6 +1,6 @@
 # esp-idf-mirf
 A port of the Mirf library for ESP-IDF.   
-The library provides basic control of the Nordic NRF24L01/NRF24L01+ RF modules.
+The library provides basic control of the Nordic nRF24L01/nRF24L01+ RF modules.
 
 I ported from [here](https://github.com/nopnop2002/Arduino-STM32-nRF24L01).   
 
@@ -57,7 +57,7 @@ Previously it was called HSPI_HOST / VSPI_HOST, but now it is called SPI2_HOST /
 You can change it to any pin using menuconfig.   
 
 (*2)   
-nRF24L01 needs a lot of current.   
+nRF24L01/nRF24L01+ needs a lot of current.   
 ESP32 development board cannot supply too much current.   
 The power supply from the ESP32 development board does not work properly.   
 __Must be powered from an external power source.__   
