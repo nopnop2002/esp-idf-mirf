@@ -43,18 +43,24 @@ Previously it was called HSPI_HOST / VSPI_HOST, but now it is called SPI2_HOST /
 
 # Wirering
 
-|nRF24L01||ESP32|ESP32-S2/S3|ESP32-C3|
-|:-:|:-:|:-:|:-:|:-:|
-|MISO|--|GPIO19|GPIO37|GPIO18|
-|MOSI|--|GPIO23|GPIO35|GPIO19|
-|SCK|--|GPIO18|GPIO36|GPIO10|
-|CE|--|GPIO16|GPIO34|GPIO9|
-|CSN|--|GPIO17|GPIO33|GPIO8|
-|GND|--|GND|GND|GND|
-|VCC|--|3.3V|3.3V|3.3V|
+|nRF24L01||ESP32|ESP32-S2/S3|ESP32-C3||
+|:-:|:-:|:-:|:-:|:-:|:-:|
+|MISO|--|GPIO19|GPIO37|GPIO18|(*1)|
+|MOSI|--|GPIO23|GPIO35|GPIO19|(*1)|
+|SCK|--|GPIO18|GPIO36|GPIO10|(*1)|
+|CE|--|GPIO16|GPIO34|GPIO9|(*1)|
+|CSN|--|GPIO17|GPIO33|GPIO8|(*1)|
+|GND|--|GND|GND|GND||
+|VCC|--|3.3V|3.3V|3.3V|(*2)|
 
-__You can change it to any pin using menuconfig.__   
+(*1)   
+You can change it to any pin using menuconfig.   
 
+(*2)   
+nRF24L01 needs a lot of current.   
+ESP32 development board cannot supply too much current.   
+The power supply from the ESP32 development board does not work properly.   
+__Must be powered from an external power source.__   
 
 # Communicat with Arduino Environment  
 I used [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01) library on Arduino environment.   
