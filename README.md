@@ -61,6 +61,8 @@ nRF24L01/nRF24L01+ needs a lot of current.
 ESP32 development board cannot supply too much current.   
 The power supply from the ESP32 development board does not work properly.   
 __Must be powered from an external power source.__   
+I am using the AMS1117 as a regulator to supply 3.3V.
+![ExternalPowerSoure](https://user-images.githubusercontent.com/6020549/201508087-a42fd1c3-9b76-4e44-a1fc-69e6f4ec15cd.JPG)
 
 # Communicat with Arduino Environment  
 I used [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01) library on Arduino environment.   
