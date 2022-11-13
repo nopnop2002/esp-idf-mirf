@@ -51,18 +51,10 @@ Previously it was called HSPI_HOST / VSPI_HOST, but now it is called SPI2_HOST /
 |CE|--|GPIO16|GPIO34|GPIO9|(*1)|
 |CSN|--|GPIO17|GPIO33|GPIO8|(*1)|
 |GND|--|GND|GND|GND||
-|VCC|--|3.3V|3.3V|3.3V|(*2)|
+|VCC|--|3.3V|3.3V|3.3V||
 
 (*1)   
 You can change it to any pin using menuconfig.   
-
-(*2)   
-nRF24L01/nRF24L01+ needs a lot of current.   
-The 3.3V pin on the ESP32 development board cannot supply too much current.   
-Powering from the ESP32 development board will not work properly.   
-__Must be powered from an external power source.__   
-I use the AMS1117 to convert the board's 5V output to 3.3V and feed it to the nRF24L01.   
-![ExternalPowerSoure](https://user-images.githubusercontent.com/6020549/201508087-a42fd1c3-9b76-4e44-a1fc-69e6f4ec15cd.JPG)
 
 # Communicat with Arduino Environment  
 I used [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01) library on Arduino environment.   
