@@ -53,8 +53,7 @@ Previously it was called HSPI_HOST / VSPI_HOST, but now it is called SPI2_HOST /
 |GND|--|GND|GND|GND||
 |VCC|--|3.3V|3.3V|3.3V||
 
-(*1)   
-You can change it to any pin using menuconfig.   
+(*1)You can change it to any pin using menuconfig.   
 
 # Communicat with Arduino Environment  
 I used [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01) library on Arduino environment.   
