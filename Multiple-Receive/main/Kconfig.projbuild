@@ -1,70 +1,47 @@
-menu "nRF24L01 Configuration"
+menu "Application Configuration"
 
-	config GPIO_RANGE_MAX
-		int
-		default 33 if IDF_TARGET_ESP32
-		default 46 if IDF_TARGET_ESP32S2
-		default 19 if IDF_TARGET_ESP32C3
-		default 48 if IDF_TARGET_ESP32S3
-
-	config MISO_GPIO
-		int "MISO GPIO number"
-		range 0 GPIO_RANGE_MAX
-		default 19 if IDF_TARGET_ESP32
-		default 33 if IDF_TARGET_ESP32S2
-		default 18 if IDF_TARGET_ESP32C3
+	choice DIRECTION
+		prompt "Communication direction"
+		default RECEIVER
 		help
-			GPIO number (IOxx) to SPI MISO.
-			Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used to MISO.
-			On the ESP32, GPIOs 35-39 are input-only so cannot be used as outputs.
-			On the ESP32-S2, GPIO 46 is input-only so cannot be used as outputs.
+			Select Communication direction.
+		config RECEIVER
+			bool "Receiver"
+			help
+				Execute Receiver.
+		config TRANSMITTER
+			bool "Transmitter"
+			help
+				Execute Transmitter.
+	endchoice
 
-	config MOSI_GPIO
-		int "MOSI GPIO number"
-		range 0 GPIO_RANGE_MAX
-		default 23 if IDF_TARGET_ESP32
-		default 35 if IDF_TARGET_ESP32S2
-		default 19 if IDF_TARGET_ESP32C3
+	choice TADDR
+		prompt "Sender's address"
+		depends on TRANSMITTER
+		default TADDR1
 		help
-			GPIO number (IOxx) to SPI MOSI.
-			Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used to MOSI.
-			On the ESP32, GPIOs 35-39 are input-only so cannot be used as outputs.
-			On the ESP32-S2, GPIO 46 is input-only so cannot be used as outputs.
+			Select sender's address.
+		config TADDR1
+			bool "Use 1 as sender's address"
+			help
+				Use 1 as sender's address
+		config TADDR2
+			bool "Use 2 as sender's address"
+			help
+				Use 2 as sender's address
+		config TADDR3
+			bool "Use 3 as sender's address"
+			help
+				Use 3 as sender's address
+		config TADDR4
+			bool "Use 4 as sender's address"
+			help
+				Use 4 as sender's address
+		config TADDR5
+			bool "Use 5 as sender's address"
+			help
+				Use 5 as sender's address
 
-	config SCLK_GPIO
-		int "SCLK GPIO number"
-		range 0 GPIO_RANGE_MAX
-		default 18 if IDF_TARGET_ESP32
-		default 36 if IDF_TARGET_ESP32S2
-		default 10 if IDF_TARGET_ESP32C3
-		help
-			GPIO number (IOxx) to SPI SCLK.
-			Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used to SCLK.
-			On the ESP32, GPIOs 35-39 are input-only so cannot be used as outputs.
-			On the ESP32-S2, GPIO 46 is input-only so cannot be used as outputs.
-
-	config CE_GPIO
-		int "CE GPIO number"
-		range 0 GPIO_RANGE_MAX
-		default 16 if IDF_TARGET_ESP32
-		default 37 if IDF_TARGET_ESP32S2
-		default 9  if IDF_TARGET_ESP32C3
-		help
-			GPIO number (IOxx) to CE.
-			Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used to CE.
-			On the ESP32, GPIOs 35-39 are input-only so cannot be used as outputs.
-			On the ESP32-S2, GPIO 46 is input-only so cannot be used as outputs.
-
-	config CSN_GPIO
-		int "CSN GPIO number"
-		range 0 GPIO_RANGE_MAX
-		default 17 if IDF_TARGET_ESP32
-		default 38 if IDF_TARGET_ESP32S2
-		default 8  if IDF_TARGET_ESP32C3
-		help
-			GPIO number (IOxx) to CSN.
-			Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used to CSN.
-			On the ESP32, GPIOs 35-39 are input-only so cannot be used as outputs.
-			On the ESP32-S2, GPIO 46 is input-only so cannot be used as outputs.
+	endchoice
 
 endmenu 
