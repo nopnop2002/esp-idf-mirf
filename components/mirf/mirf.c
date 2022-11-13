@@ -341,10 +341,12 @@ bool Nrf24_isSend(NRF24_t * dev, int timeout) {
 				return false;
 			}
 
+			// I believe either TX_DS or MAX_RT will always be notified.
+			// Therefore, it is unusual for neither to be notified for a period of time.
+			// I don't know exactly how to respond.
 			TickType_t diffTick = xTaskGetTickCount() - startTick;
 			if ( (diffTick * portTICK_PERIOD_MS) > timeout) {
-				ESP_LOGW(TAG, "Status register timeout. status=0x%x", status);
-				Nrf24_powerUpRx(dev);
+				ESP_LOGE(TAG, "Status register timeout. status=0x%x", status);
 				return false;
 			}
 			vTaskDelay(1);
