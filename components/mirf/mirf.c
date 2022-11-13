@@ -340,10 +340,11 @@ bool Nrf24_isSend(NRF24_t * dev, int timeout) {
 				Nrf24_powerUpRx(dev);
 				return false;
 			}
-			vTaskDelay(1);
+
 			TickType_t diffTick = xTaskGetTickCount() - startTick;
 			if ( (diffTick * portTICK_PERIOD_MS) > timeout) {
-				ESP_LOGW(TAG, "Status register timeout");
+				ESP_LOGW(TAG, "Status register timeout. status=0x%x", status);
+				Nrf24_powerUpRx(dev);
 				return false;
 			}
 			vTaskDelay(1);
