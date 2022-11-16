@@ -8,7 +8,7 @@ I ported from [here](https://github.com/nopnop2002/Arduino-STM32-nRF24L01).
 ![SMD-3](https://user-images.githubusercontent.com/6020549/154830127-366ee996-751d-48c0-879f-b201b1bb31f7.JPG)
 
 # Software requirements
-esp-idf v4.4 or later.   
+esp-idf v4.4/v5.0.   
 This is because this version supports ESP32-C3.   
 
 # Installation
