@@ -43,7 +43,7 @@ Previously it was called HSPI_HOST / VSPI_HOST, but now it is called SPI2_HOST /
 
 # Wirering
 
-|nRF24L01||ESP32|ESP32-S2/S3|ESP32-C3||
+|nRF24L01||ESP32|ESP32-S2/S3|ESP32-C2/C3||
 |:-:|:-:|:-:|:-:|:-:|:-:|
 |MISO|--|GPIO19|GPIO37|GPIO4|(*1)|
 |MOSI|--|GPIO23|GPIO35|GPIO3|(*1)|
