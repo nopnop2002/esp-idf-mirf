@@ -4,16 +4,16 @@ menu "nRF24L01 Configuration"
 		int
 		default 33 if IDF_TARGET_ESP32
 		default 46 if IDF_TARGET_ESP32S2
-		default 19 if IDF_TARGET_ESP32C3
 		default 48 if IDF_TARGET_ESP32S3
+		default 18 if IDF_TARGET_ESP32C2
+		default 19 if IDF_TARGET_ESP32C3
 
 	config MISO_GPIO
 		int "MISO GPIO number"
 		range 0 GPIO_RANGE_MAX
 		default 19 if IDF_TARGET_ESP32
-		default 37 if IDF_TARGET_ESP32S2
-		default 37 if IDF_TARGET_ESP32S3
-		default 18 if IDF_TARGET_ESP32C3
+		default 37 if IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+		default  4 if IDF_TARGET_ESP32C3 || IDF_TARGET_ESP32C2
 		help
 			GPIO number (IOxx) to SPI MISO.
 			Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used to MISO.
@@ -24,9 +24,8 @@ menu "nRF24L01 Configuration"
 		int "MOSI GPIO number"
 		range 0 GPIO_RANGE_MAX
 		default 23 if IDF_TARGET_ESP32
-		default 35 if IDF_TARGET_ESP32S2
-		default 35 if IDF_TARGET_ESP32S3
-		default 19 if IDF_TARGET_ESP32C3
+		default 35 if IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+		default  3 if IDF_TARGET_ESP32C3 || IDF_TARGET_ESP32C2
 		help
 			GPIO number (IOxx) to SPI MOSI.
 			Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used to MOSI.
@@ -37,9 +36,8 @@ menu "nRF24L01 Configuration"
 		int "SCLK GPIO number"
 		range 0 GPIO_RANGE_MAX
 		default 18 if IDF_TARGET_ESP32
-		default 36 if IDF_TARGET_ESP32S2
-		default 36 if IDF_TARGET_ESP32S3
-		default 10 if IDF_TARGET_ESP32C3
+		default 36 if IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+		default  2 if IDF_TARGET_ESP32C3 || IDF_TARGET_ESP32C2
 		help
 			GPIO number (IOxx) to SPI SCLK.
 			Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used to SCLK.
@@ -50,9 +48,8 @@ menu "nRF24L01 Configuration"
 		int "CE GPIO number"
 		range 0 GPIO_RANGE_MAX
 		default 16 if IDF_TARGET_ESP32
-		default 34 if IDF_TARGET_ESP32S2
-		default 34 if IDF_TARGET_ESP32S3
-		default 9  if IDF_TARGET_ESP32C3
+		default 34 if IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+		default  1 if IDF_TARGET_ESP32C3 || IDF_TARGET_ESP32C2
 		help
 			GPIO number (IOxx) to CE.
 			Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used to CE.
@@ -63,9 +60,8 @@ menu "nRF24L01 Configuration"
 		int "CSN GPIO number"
 		range 0 GPIO_RANGE_MAX
 		default 17 if IDF_TARGET_ESP32
-		default 33 if IDF_TARGET_ESP32S2
-		default 33 if IDF_TARGET_ESP32S3
-		default 8  if IDF_TARGET_ESP32C3
+		default 33 if IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+		default  0 if IDF_TARGET_ESP32C3 || IDF_TARGET_ESP32C2
 		help
 			GPIO number (IOxx) to CSN.
 			Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used to CSN.
@@ -82,6 +78,7 @@ menu "nRF24L01 Configuration"
 			help
 				Use SPI2_HOST. This is also called HSPI_HOST.
 		config SPI3_HOST
+			depends on IDF_TARGET_ESP32 || IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
 			bool "SPI3_HOST"
 			help
 				USE SPI3_HOST. This is also called VSPI_HOST

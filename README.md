@@ -8,15 +8,15 @@ I ported from [here](https://github.com/nopnop2002/Arduino-STM32-nRF24L01).
 ![SMD-3](https://user-images.githubusercontent.com/6020549/154830127-366ee996-751d-48c0-879f-b201b1bb31f7.JPG)
 
 # Software requirements
-esp-idf v4.4/v5.0.   
-This is because this version supports ESP32-C3.   
+ESP-IDF V4.4/V5.0.   
+ESP-IDF V5 is required when using ESP32-C2.   
 
 # Installation
 
 ```Shell
 git clone https://github.com/nopnop2002/esp-idf-mirf
 cd esp-idf-mirf/Peer-to-peer
-idf.py set-target {esp32/esp32s2/esp32s3/esp32c3}
+idf.py set-target {esp32/esp32s2/esp32s3/esp32c2/esp32c3}
 idf.py menuconfig
 idf.py flash
 ```
@@ -45,11 +45,11 @@ Previously it was called HSPI_HOST / VSPI_HOST, but now it is called SPI2_HOST /
 
 |nRF24L01||ESP32|ESP32-S2/S3|ESP32-C3||
 |:-:|:-:|:-:|:-:|:-:|:-:|
-|MISO|--|GPIO19|GPIO37|GPIO18|(*1)|
-|MOSI|--|GPIO23|GPIO35|GPIO19|(*1)|
-|SCK|--|GPIO18|GPIO36|GPIO10|(*1)|
-|CE|--|GPIO16|GPIO34|GPIO9|(*1)|
-|CSN|--|GPIO17|GPIO33|GPIO8|(*1)|
+|MISO|--|GPIO19|GPIO37|GPIO4|(*1)|
+|MOSI|--|GPIO23|GPIO35|GPIO3|(*1)|
+|SCK|--|GPIO18|GPIO36|GPIO2|(*1)|
+|CE|--|GPIO16|GPIO34|GPIO1|(*1)|
+|CSN|--|GPIO17|GPIO33|GPIO0|(*1)|
 |GND|--|GND|GND|GND||
 |VCC|--|3.3V|3.3V|3.3V||
 
