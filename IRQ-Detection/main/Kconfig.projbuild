@@ -1,0 +1,73 @@
+menu "Application Configuration"
+
+	config GPIO_RANGE_MAX
+		int
+		default 33 if IDF_TARGET_ESP32
+		default 46 if IDF_TARGET_ESP32S2
+		default 48 if IDF_TARGET_ESP32S3
+		default 18 if IDF_TARGET_ESP32C2
+		default 19 if IDF_TARGET_ESP32C3
+
+	choice DIRECTION
+		prompt "Communication direction"
+		default RECEIVER
+		help
+			Select Communication direction.
+		config RECEIVER
+			bool "Receiver"
+			help
+				Execute Receiver.
+		config TRANSMITTER
+			bool "Transmitter"
+			help
+				Execute Transmitter.
+	endchoice
+
+	config IRQ_GPIO
+		int "IRQ GPIO number"
+		range 0 GPIO_RANGE_MAX
+		default 15 if IDF_TARGET_ESP32
+		default 38 if IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+		default  5 if IDF_TARGET_ESP32C3 || IDF_TARGET_ESP32C2
+		help
+			GPIO number (IOxx) to IRQ.
+			Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used to MISO.
+			On the ESP32, GPIOs 35-39 are input-only so cannot be used as outputs.
+			On the ESP32-S2, GPIO 46 is input-only so cannot be used as outputs.
+
+	config ADVANCED
+		bool "Enable Advanced Setting"
+		default false
+		help
+			Enable Advanced Setting.
+
+	choice RF_RATIO
+		depends on ADVANCED
+		prompt "RF Data Ratio"
+		default RF_RATIO_2M
+		help
+			Select RF Data Ratio.
+		config RF_RATIO_2M
+			bool "2Mbps"
+			help
+				RF Data Ratio is 2Mbps.
+		config RF_RATIO_1M
+			bool "1Mbps"
+			help
+				RF Data Ratio is 1Mbps.
+		config RF_RATIO_250K
+			bool "250Kbps"
+			help
+				RF Data Ratio is 250Kbps.
+	endchoice
+
+	config RETRANSMIT_DELAY
+		depends on ADVANCED
+		int "Auto Retransmit Delay"
+		range 0 15
+		default 0
+		help
+			Set Auto Retransmit Delay.
+			Delay = value * 250us.
+
+endmenu 
