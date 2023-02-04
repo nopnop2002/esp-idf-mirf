@@ -8,12 +8,15 @@ nrf24l01 has three assertions.
 - RX_DR   
 - TX_DS   
 
-![Enhanced-Shokburst](https://user-images.githubusercontent.com/6020549/216746999-586c5038-3150-4802-8e01-bf50e4cfb33a.jpg)
+![Enhanced-Shokburst-1](https://user-images.githubusercontent.com/6020549/216748353-9028e1c9-0ec3-45fa-a13e-bfeabb42db86.jpg)
 
 After the packet is transmitted by the PTX and received by the PRX the ACK packet with payload is transmitted from the PRX to the PTX.   
 The RX_DR IRQ is asserted after the packet is received by the PRX, whereas on the PTX side the TX_DS IRQ is asserted when the ACK packet is received by the PTX.   
 On the PRX side, the TX_DS IRQ for the ACK packet payload is asserted after a new packet from PTX is received.   
 the ACK packet is lost and a retransmission is needed before the TX_DS IRQ is asserted, but the RX_DR IRQ is asserted immediately.   
+
+![Enhanced-Shokburst-2](https://user-images.githubusercontent.com/6020549/216748358-5264affc-6f7c-4f44-b8b8-23e0e30ddef1.jpg)
+
 MAX_RT IRQ is asserted if the auto retransmit counter(ARC_CNT) exceeds the programmed maximum limit(ARC).   
 See the nrf24l01 datasheet for more details.   
 
