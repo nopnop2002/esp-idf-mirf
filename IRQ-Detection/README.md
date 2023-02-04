@@ -40,3 +40,5 @@ For this project we need one more connection for IRQ detection.
 |GND|--|GND|GND|GND||
 |VCC|--|3.3V|3.3V|3.3V||
 
+(*1)You can change it to any pin using menuconfig.   
+
