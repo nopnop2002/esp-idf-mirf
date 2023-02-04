@@ -365,7 +365,7 @@ uint8_t Nrf24_getStatus(NRF24_t * dev) {
 void Nrf24_powerUpRx(NRF24_t * dev) {
 	dev->PTX = 0;
 	Nrf24_ceLow(dev);
-	Nrf24_configRegister(dev, CONFIG, mirf_CONFIG | ( (1 << PWR_UP) | (1 << PRIM_RX) ) ); //set device as TX mode
+	Nrf24_configRegister(dev, CONFIG, mirf_CONFIG | ( (1 << PWR_UP) | (1 << PRIM_RX) ) ); //set device as RX mode
 	Nrf24_ceHi(dev);
 	Nrf24_configRegister(dev, STATUS, (1 << TX_DS) | (1 << MAX_RT)); //Clear seeded interrupt and max tx number interrupt
 }
@@ -379,7 +379,8 @@ void Nrf24_flushRx(NRF24_t * dev)
 
 void Nrf24_powerUpTx(NRF24_t * dev) {
 	dev->PTX = 1;
-	Nrf24_configRegister(dev, CONFIG, mirf_CONFIG | ( (1 << PWR_UP) | (0 << PRIM_RX) ) );
+	Nrf24_configRegister(dev, CONFIG, mirf_CONFIG | ( (1 << PWR_UP) | (0 << PRIM_RX) ) ); //set device as TX mode
+	Nrf24_configRegister(dev, STATUS, (1 << TX_DS) | (1 << MAX_RT)); //Clear seeded interrupt and max tx number interrupt
 }
 
 void Nrf24_ceHi(NRF24_t * dev) {
