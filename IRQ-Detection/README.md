@@ -24,7 +24,7 @@ This project does not deal with TX_DS.
 
 # Configuration   
 
-![config-app](https://user-images.githubusercontent.com/6020549/216746996-acef099e-3803-4a36-8eae-9a9d1b97bdb5.jpg)
+![config-app](https://user-images.githubusercontent.com/6020549/216748078-68cddb0e-3f2b-44d6-8b00-3042d1d2e954.jpg)
 
 
 # Wirering
