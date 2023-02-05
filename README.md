@@ -129,7 +129,9 @@ This has nothing to do with SPI bus speed.
 The throughput of nRF24L01 is 3,200 bytes/sec.   
 The data rate of nRF24L01 affects the radio range, but not the speed.   
 
-# Reference
+# About Si24R1 clone
+__Si24R1 clone cannot send and receive correctly.___   
 
+# Reference
 https://github.com/nopnop2002/esp-idf-mirf2mqtt
 
