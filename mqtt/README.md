@@ -31,12 +31,20 @@ This is nRF24L01 and MQTT gateway application.
 ### Recive from radio and send by MQTT
 ![config-radio-1](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/16dd7700-c2ca-434c-b02b-3d095cc653cc)
 
-You can receive MQTT data using mosquitto_sub.   
+```
+            +----------+           +----------+           +----------+           +----------+
+            |          |           |          |           |          |           |          |
+==(Radio)==>| nRF24L01 |--(SPI)--->|  ESP32   |--(MQTT)-->|  Broker  |--(MQTT)-->|Subscriber|
+            |          |           |          |           |          |           |          |
+            +----------+           +----------+           +----------+           +----------+
+```
+
+You can subscribe MQTT data using mosquitto_sub.   
 ```
 mosquitto_sub -h broker.emqx.io -p 1883 -t '/mirf/#' -F %X -d
 ```
 
-You can receive MQTT data using python.
+You can subscribe MQTT data using python.
 ```
 python3 -m pip install -U paho-mqtt
 python3 mqtt_sub.py
@@ -46,13 +54,21 @@ python3 mqtt_sub.py
 ### Recive from MQTT and send by Radio
 ![config-radio-2](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/4f49c213-3dd4-44e3-8736-96b171cec616)
 
-You can transmit MQTT data using mosquitto_pub.   
+```
+            +----------+           +----------+           +----------+           +----------+
+            |          |           |          |           |          |           |          |
+            |Publisher |--(MQTT)-->|  Broker  |--(MQTT)-->|  ESP32   |--(SPI)--->| nRF24L01 |==(Radio)==>
+            |          |           |          |           |          |           |          |
+            +----------+           +----------+           +----------+           +----------+
+```
+
+You can publish MQTT data using mosquitto_pub.   
 ```
 echo -ne "\x01\x02\x03" | mosquitto_pub -h broker.emqx.io -p 1883 -t '/mirf' -s
 echo -ne "Hello World" | mosquitto_pub -h broker.emqx.io -p 1883 -t '/mirf' -s
 ```
 
-You can transmit MQTT data using python.   
+You can publish MQTT data using python.   
 ```
 python3 -m pip install -U paho-mqtt
 python3 mqtt_pub.py
