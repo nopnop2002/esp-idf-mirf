@@ -45,7 +45,8 @@ __For this project we need one more connection for IRQ detection.__
 |VCC|--|3.3V|3.3V|3.3V||
 
 (*1)You can change it to any pin using menuconfig.   
-
+__IRQ needs to be able to use interrupts.__   
+__Some GPIOs cannot use interrupts.__   
 
 # Communicat with Arduino Environment   
 Run this sketch.   
