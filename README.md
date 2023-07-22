@@ -8,15 +8,16 @@ I ported from [here](https://github.com/nopnop2002/Arduino-STM32-nRF24L01).
 ![SMD-3](https://user-images.githubusercontent.com/6020549/154830127-366ee996-751d-48c0-879f-b201b1bb31f7.JPG)
 
 # Software requirements
-ESP-IDF V4.4/V5.0.   
+ESP-IDF V4.4/V5.x.   
 ESP-IDF V5.0 is required when using ESP32-C2.   
+ESP-IDF V5.1 is required when using ESP32-C6.   
 
 # Installation
 
 ```Shell
 git clone https://github.com/nopnop2002/esp-idf-mirf
 cd esp-idf-mirf/Peer-to-peer
-idf.py set-target {esp32/esp32s2/esp32s3/esp32c2/esp32c3}
+idf.py set-target {esp32/esp32s2/esp32s3/esp32c2/esp32c3/esp32c6}
 idf.py menuconfig
 idf.py flash
 ```
@@ -28,10 +29,10 @@ I used a raw ESP-C3-13 to verify that these pins could be used as SPI clocks.
 
 # Configuration for Transceiver
 ![config-nrf24l01-1](https://user-images.githubusercontent.com/6020549/168019514-93c377c9-2823-4840-bce4-168f0c2b7338.jpg)
-![config-nrf24l01-2](https://user-images.githubusercontent.com/6020549/168019524-931bc96b-5954-4ddd-8bd0-afb7b018aa3e.jpg)
+![config-nrf24l01-2](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/4898836a-b614-4d30-8ef4-c653706ba7f3)
 
 # SPI BUS selection   
-![config-nrf24l01-3](https://user-images.githubusercontent.com/6020549/168019751-e3892b4f-a0dd-489b-8209-3d09d4a4aba4.jpg)
+![config-nrf24l01-3](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/377bbcc5-2ca9-4e74-a54d-3ca87c5ac241)
 
 The ESP32 series has three SPI BUSs.   
 SPI1_HOST is used for communication with Flash memory.   
@@ -41,9 +42,23 @@ When using this module at the same time as SDSPI or other SPI device using SPI2_
 When you don't use SDSPI, both SPI2_HOST and SPI3_HOST will work.   
 Previously it was called HSPI_HOST / VSPI_HOST, but now it is called SPI2_HOST / SPI3_HOST.   
 
+# Using Advanced Settings   
+When used at long distances, lowering the RF data rate stabilizes it.   
+When changing the RF data rate, the sender and receiver must have the same value.   
+When using 250KBps, it takes time to PAYLOAD sending and ACK PACKET receiving, so it is necessary to increase the automatic retransmission delay.   
+I tested it with [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01/tree/master/example/AdvancedSetting).   
+
+![config-nrf24l01-4](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/a18be916-7716-4e22-bdc0-6813883c64a5)
+
+
+__If you want to initialize the nRF24L01 settings after using the Advanced Settings, you need to power cycle the nRF24L01 before executing.__   
+Because nRF24L01 remembers the previous setting.   
+nRF24L01 does not have Software Reset function.   
+
+
 # Wirering
 
-|nRF24L01||ESP32|ESP32-S2/S3|ESP32-C2/C3||
+|nRF24L01||ESP32|ESP32-S2/S3|ESP32-C2/C3/C6||
 |:-:|:-:|:-:|:-:|:-:|:-:|
 |MISO|--|GPIO19|GPIO37|GPIO4|(*1)|
 |SCK|--|GPIO18|GPIO36|GPIO3|(*1)|

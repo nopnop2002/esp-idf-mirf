@@ -1,10 +1,10 @@
-/* Mirf Example
+/*	Mirf Example
 
-	 This example code is in the Public Domain (or CC0 licensed, at your option.)
+	This example code is in the Public Domain (or CC0 licensed, at your option.)
 
-	 Unless required by applicable law or agreed to in writing, this
-	 software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-	 CONDITIONS OF ANY KIND, either express or implied.
+	Unless required by applicable law or agreed to in writing, this
+	software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+	CONDITIONS OF ANY KIND, either express or implied.
 */
 
 #include <stdio.h>
@@ -15,13 +15,6 @@
 #include "esp_log.h"
 
 #include "mirf.h"
-
-typedef union {
-	uint8_t value[4];
-	unsigned long now_time;
-} MYDATA_t;
-
-MYDATA_t mydata;
 
 #if CONFIG_ADVANCED
 void AdvancedSettings(NRF24_t * dev)
@@ -52,8 +45,8 @@ void receiver(void *pvParameters)
 	ESP_LOGI(pcTaskGetName(0), "Start");
 	NRF24_t dev;
 	Nrf24_init(&dev);
-	uint8_t payload = sizeof(mydata.value);
-	uint8_t channel = 90;
+	uint8_t payload = 32;
+	uint8_t channel = CONFIG_RADIO_CHANNEL;
 	Nrf24_config(&dev, channel, payload);
 
 	//Set own address using 5 characters
@@ -71,11 +64,13 @@ void receiver(void *pvParameters)
 	Nrf24_printDetails(&dev);
 	ESP_LOGI(pcTaskGetName(0), "Listening...");
 
+	uint8_t buf[32];
 	while(1) {
 		//When the program is received, the received data is output from the serial port
 		if (Nrf24_dataReady(&dev)) {
-			Nrf24_getData(&dev, mydata.value);
-			ESP_LOGI(pcTaskGetName(0), "Got data:%lu", mydata.now_time);
+			Nrf24_getData(&dev, buf);
+			ESP_LOGI(pcTaskGetName(0), "Got data:[%s]", buf);
+			//ESP_LOG_BUFFER_HEXDUMP(pcTaskGetName(0), buf, payload, ESP_LOG_INFO);
 		}
 		vTaskDelay(1);
 	}
@@ -83,14 +78,14 @@ void receiver(void *pvParameters)
 #endif // CONFIG_RECEIVER
 
 
-#if CONFIG_TRANSMITTER
-void transmitter(void *pvParameters)
+#if CONFIG_SENDER
+void sender(void *pvParameters)
 {
 	ESP_LOGI(pcTaskGetName(0), "Start");
 	NRF24_t dev;
 	Nrf24_init(&dev);
-	uint8_t payload = sizeof(mydata.value);
-	uint8_t channel = 90;
+	uint8_t payload = 32;
+	uint8_t channel = CONFIG_RADIO_CHANNEL;
 	Nrf24_config(&dev, channel, payload);
 
 	//Set the receiver address using 5 characters
@@ -107,20 +102,22 @@ void transmitter(void *pvParameters)
 	//Print settings
 	Nrf24_printDetails(&dev);
 
+	uint8_t buf[32];
 	while(1) {
-		mydata.now_time = xTaskGetTickCount();
-		Nrf24_send(&dev, mydata.value);
+		TickType_t nowTick = xTaskGetTickCount();
+		sprintf((char *)buf, "Hello World %"PRIu32, nowTick);
+		Nrf24_send(&dev, buf);
 		vTaskDelay(1);
 		ESP_LOGI(pcTaskGetName(0), "Wait for sending.....");
 		if (Nrf24_isSend(&dev, 1000)) {
-			ESP_LOGI(pcTaskGetName(0),"Send success:%lu", mydata.now_time);
+			ESP_LOGI(pcTaskGetName(0),"Send success:%s", buf);
 		} else {
 			ESP_LOGW(pcTaskGetName(0),"Send fail:");
 		}
 		vTaskDelay(1000/portTICK_PERIOD_MS);
 	}
 }
-#endif // CONFIG_TRANSMITTER
+#endif // CONFIG_SENDER
 
 
 void app_main(void)
@@ -129,8 +126,8 @@ void app_main(void)
 	xTaskCreate(receiver, "RECEIVER", 1024*3, NULL, 2, NULL);
 #endif
 
-#if CONFIG_TRANSMITTER
-	xTaskCreate(transmitter, "TRANSMITTER", 1024*3, NULL, 2, NULL);
+#if CONFIG_SENDER
+	xTaskCreate(sender, "SENDER", 1024*3, NULL, 2, NULL);
 #endif
 
 }
