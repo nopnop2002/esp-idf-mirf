@@ -1,4 +1,4 @@
-# IRQ-Detection
+# IRQ Detection Example   
 Use IRQ to detect transmission completion and reception completion.   
 
 # About the nrf24l01 assertion

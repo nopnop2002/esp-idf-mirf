@@ -1,4 +1,4 @@
-# Ping-Pong
+# Ping-Pong Example   
 Send data from primary to secondary.   
 In the secondary, sent back received data.   
 

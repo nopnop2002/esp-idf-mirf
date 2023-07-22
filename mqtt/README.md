@@ -1,4 +1,4 @@
-# mqtt
+# MQTT Example   
 This is nRF24L01 and MQTT gateway application.   
 ```
             +----------+           +----------+           +----------+           +----------+

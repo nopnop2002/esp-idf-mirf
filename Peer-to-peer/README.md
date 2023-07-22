@@ -1,4 +1,4 @@
-# Peer-to-peer
+# Peer-to-peer Example   
 One-way communication for transmission or reception.   
 
 # Configuration   
