@@ -65,6 +65,13 @@ void receiver(void *pvParameters)
 	ESP_LOGI(pcTaskGetName(0), "Listening...");
 
 	uint8_t buf[32];
+
+	// Clear RX FiFo
+	while(1) {
+		if (Nrf24_dataReady(&dev) == false) break;
+		Nrf24_getData(&dev, buf);
+	}
+
 	while(1) {
 		//When the program is received, the received data is output from the serial port
 		if (Nrf24_dataReady(&dev)) {

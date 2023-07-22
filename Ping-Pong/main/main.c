@@ -106,7 +106,7 @@ void secondary(void *pvParameters)
 	NRF24_t dev;
 	Nrf24_init(&dev);
 	uint8_t payload = 32;
-	uint8_t channel = 90;
+	uint8_t channel = CONFIG_RADIO_CHANNEL;
 	Nrf24_config(&dev, channel, payload);
 
 	//Set own address using 5 characters

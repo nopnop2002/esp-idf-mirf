@@ -27,12 +27,13 @@ This project does not deal with TX_DS.
 
 # Configuration   
 
-![config-app](https://user-images.githubusercontent.com/6020549/216748078-68cddb0e-3f2b-44d6-8b00-3042d1d2e954.jpg)
+![config-top](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/3aabd6f8-7477-4b71-b6c4-950d18402a87)
 
+![config-app](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/01c6e755-05b1-43e7-90d5-c0eb063f5b82)
 
 # Wirering
 For this project we need one more connection for IRQ detection.   
-|nRF24L01||ESP32|ESP32-S2/S3|ESP32-C2/C3||
+|nRF24L01||ESP32|ESP32-S2/S3|ESP32-C2/C3/C6||
 |:-:|:-:|:-:|:-:|:-:|:-:|
 |MISO|--|GPIO19|GPIO37|GPIO4|(*1)|
 |MOSI|--|GPIO23|GPIO35|GPIO3|(*1)|
@@ -45,3 +46,7 @@ For this project we need one more connection for IRQ detection.
 
 (*1)You can change it to any pin using menuconfig.   
 
+
+# Communicat with Arduino Environment   
+Run this sketch.   
+ArduinoCode\Peer-to-peer\StringTest   

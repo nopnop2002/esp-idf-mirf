@@ -1,10 +1,10 @@
-/* Mirf Example
+/*	Mirf Example
 
-	 This example code is in the Public Domain (or CC0 licensed, at your option.)
+	This example code is in the Public Domain (or CC0 licensed, at your option.)
 
-	 Unless required by applicable law or agreed to in writing, this
-	 software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-	 CONDITIONS OF ANY KIND, either express or implied.
+	Unless required by applicable law or agreed to in writing, this
+	software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+	CONDITIONS OF ANY KIND, either express or implied.
 */
 
 #include <stdio.h>
@@ -20,16 +20,8 @@
 
 static QueueHandle_t gpio_evt_queue = NULL;
 
-typedef union {
-	uint8_t value[4];
-	unsigned long now_time;
-} MYDATA_t;
-
-MYDATA_t mydata;
-
 #define GPIO_INPUT_PIN_SEL (1ULL<<CONFIG_IRQ_GPIO)
 #define ESP_INTR_FLAG_DEFAULT 0
-
 
 #if CONFIG_ADVANCED
 void AdvancedSettings(NRF24_t * dev)
@@ -68,8 +60,8 @@ void receiver(void *pvParameters)
 	ESP_LOGI(pcTaskGetName(0), "Start");
 	NRF24_t dev;
 	Nrf24_init(&dev);
-	uint8_t payload = sizeof(mydata.value);
-	uint8_t channel = 90;
+	uint8_t payload = 32;
+	uint8_t channel = CONFIG_RADIO_CHANNEL;
 	Nrf24_config(&dev, channel, payload);
 
 	//Set own address using 5 characters
@@ -87,27 +79,36 @@ void receiver(void *pvParameters)
 	Nrf24_printDetails(&dev);
 	ESP_LOGI(pcTaskGetName(0), "Listening...");
 
+    uint8_t buf[32];
+
+    // Clear RX FiFo
+    while(1) {
+        if (Nrf24_dataReady(&dev) == false) break;
+        Nrf24_getData(&dev, buf);
+    }
+
 	uint32_t io_num;
+
 	while(1) {
 		// Wait for assertion of RX receive complete(RX_DR)
 		if(xQueueReceive(gpio_evt_queue, &io_num, portMAX_DELAY)) {
 			ESP_LOGD(pcTaskGetName(0), "GPIO[%"PRIu32"] intr, val: %d", io_num, gpio_get_level(io_num));
-			Nrf24_getData(&dev, mydata.value);
-			ESP_LOGI(pcTaskGetName(0), "Got data:%lu", mydata.now_time);
+			Nrf24_getData(&dev, buf);
+			ESP_LOGI(pcTaskGetName(0), "Got data:%s", buf);
 		}
 	}
 }
 #endif // CONFIG_RECEIVER
 
 
-#if CONFIG_TRANSMITTER
-void transmitter(void *pvParameters)
+#if CONFIG_SENDER
+void sender(void *pvParameters)
 {
 	ESP_LOGI(pcTaskGetName(0), "Start");
 	NRF24_t dev;
 	Nrf24_init(&dev);
-	uint8_t payload = sizeof(mydata.value);
-	uint8_t channel = 90;
+	uint8_t payload = 32;
+	uint8_t channel = CONFIG_RADIO_CHANNEL;
 	Nrf24_config(&dev, channel, payload);
 
 	//Set the receiver address using 5 characters
@@ -124,10 +125,12 @@ void transmitter(void *pvParameters)
 	//Print settings
 	Nrf24_printDetails(&dev);
 
+	uint8_t buf[32];
 	uint32_t io_num;
 	while(1) {
-		mydata.now_time = xTaskGetTickCount();
-		Nrf24_send(&dev, mydata.value);
+		TickType_t nowTick = xTaskGetTickCount();
+		sprintf((char *)buf, "Hello World %"PRIu32, nowTick);
+		Nrf24_send(&dev, buf);
 		ESP_LOGI(pcTaskGetName(0), "Wait for sending.....");
 		// Wait for assertion of TX transmit retry over(MAX_RT)
 		if(xQueueReceive(gpio_evt_queue, &io_num, 1000/portTICK_PERIOD_MS)) {
@@ -135,12 +138,12 @@ void transmitter(void *pvParameters)
 		// Assert does not occur after successful transmission
 		} else {
 			ESP_LOGD(pcTaskGetName(0), "GPIO[%"PRIu32"] intr, val: %d", io_num, gpio_get_level(io_num));
-			ESP_LOGI(pcTaskGetName(0),"Send success:%lu", mydata.now_time);
+			ESP_LOGI(pcTaskGetName(0),"Send success:%s", buf);
 		}
 		vTaskDelay(1000/portTICK_PERIOD_MS);
 	}
 }
-#endif // CONFIG_TRANSMITTER
+#endif // CONFIG_SENDER
 
 
 void app_main(void)
@@ -169,8 +172,8 @@ void app_main(void)
 	xTaskCreate(receiver, "RECEIVER", 1024*3, NULL, 2, NULL);
 #endif
 
-#if CONFIG_TRANSMITTER
-	xTaskCreate(transmitter, "TRANSMITTER", 1024*3, NULL, 2, NULL);
+#if CONFIG_SENDER
+	xTaskCreate(sender, "SENDER", 1024*3, NULL, 2, NULL);
 #endif
 
 }
