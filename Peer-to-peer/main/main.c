@@ -69,7 +69,7 @@ void receiver(void *pvParameters)
 		//When the program is received, the received data is output from the serial port
 		if (Nrf24_dataReady(&dev)) {
 			Nrf24_getData(&dev, buf);
-			ESP_LOGI(pcTaskGetName(0), "Got data:[%s]", buf);
+			ESP_LOGI(pcTaskGetName(0), "Got data:%s", buf);
 			//ESP_LOG_BUFFER_HEXDUMP(pcTaskGetName(0), buf, payload, ESP_LOG_INFO);
 		}
 		vTaskDelay(1);
