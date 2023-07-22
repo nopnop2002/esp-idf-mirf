@@ -17,7 +17,7 @@ In this example, it will receive from the following addresses:
 
 # Communicat with Arduino Environment   
 Run this sketch.   
-ArduinoCode\Multiple-Receive   
+ArduinoCode\Multiple-Receive/EmitterX   
 
 
 # ScreenShot    
