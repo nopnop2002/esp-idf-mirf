@@ -29,6 +29,9 @@ This is nRF24L01 and MQTT gateway application.
 ## Radioi Setting
 
 ### Radio to MQTT
+Receive from Radio and publish as MQTT.
+You can use mosquitto_sub as Subscriber.
+```sh mqtt_sub.sh```
 
 ```
             +----------+           +----------+           +----------+           +----------+
@@ -49,15 +52,12 @@ MQTT broker is specified by one of the following.
  ```broker.emqx.io```
 
 
-You can subscribe MQTT data using mosquitto_sub.   
-```
-chmod 777 mqtt_sub.sh
-mqtt_sub.sh
-```
-
 
 
 ### MQTT to Radio
+Subscribe with MQTT and send to Radio.
+You can use mosquitto_pub as Publisher.
+```sh ./mqtt_pub.sh```
 
 ```
             +----------+           +----------+           +----------+           +----------+
@@ -69,11 +69,6 @@ mqtt_sub.sh
 
 ![config-radio-2](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/ad66e20f-ae63-4b33-b50a-1cc9faa9f7f2)
 
-You can publish MQTT data using mosquitto_pub.   
-```
-chmod 777 mqtt_pub.sh
-sh ./mqtt_pub.sh
-```
 
 # Communicate with Arduino Environment   
 Run this sketch.   
