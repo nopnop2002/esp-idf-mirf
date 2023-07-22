@@ -32,7 +32,7 @@ This project does not deal with TX_DS.
 ![config-app](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/01c6e755-05b1-43e7-90d5-c0eb063f5b82)
 
 # Wirering
-For this project we need one more connection for IRQ detection.   
+__For this project we need one more connection for IRQ detection.__   
 |nRF24L01||ESP32|ESP32-S2/S3|ESP32-C2/C3/C6||
 |:-:|:-:|:-:|:-:|:-:|:-:|
 |MISO|--|GPIO19|GPIO37|GPIO4|(*1)|
