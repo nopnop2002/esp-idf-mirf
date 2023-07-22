@@ -1,23 +1,23 @@
 menu "Application Configuration"
 
-	choice DIRECTION
-		prompt "Communication direction"
-		default RECEIVER
-		help
-			Select Communication direction.
-		config RECEIVER
-			bool "Receiver"
-			help
-				Execute Receiver.
-		config TRANSMITTER
-			bool "Transmitter"
-			help
-				Execute Transmitter.
-	endchoice
+    choice DIRECTION
+        prompt "Communication polarity"
+        default SENDER
+        help
+            Select Communication polarity.
+        config SENDER
+            bool "As the sender"
+            help
+                As the sender.
+        config RECEIVER
+            bool "As the receiver"
+            help
+                As the receiver.
+    endchoice
 
 	choice TADDR
 		prompt "Sender's address"
-		depends on TRANSMITTER
+		depends on SENDER
 		default TADDR1
 		help
 			Select sender's address.
