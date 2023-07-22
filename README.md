@@ -31,6 +31,8 @@ I used a raw ESP-C3-13 to verify that these pins could be used as SPI clocks.
 ![config-nrf24l01-1](https://user-images.githubusercontent.com/6020549/168019514-93c377c9-2823-4840-bce4-168f0c2b7338.jpg)
 ![config-nrf24l01-2](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/4898836a-b614-4d30-8ef4-c653706ba7f3)
 
+__The channel number of the sender and receiver must be the same.__   
+
 # SPI BUS selection   
 ![config-nrf24l01-3](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/377bbcc5-2ca9-4e74-a54d-3ca87c5ac241)
 
