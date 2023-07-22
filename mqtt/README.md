@@ -31,7 +31,7 @@ This is nRF24L01 and MQTT gateway application.
 ### Radio to MQTT
 Receive from Radio and publish as MQTT.   
 You can use mosquitto_sub as Subscriber.   
-```sh mqtt_sub.sh```
+```sh ./mqtt_sub.sh```
 
 ```
             +----------+           +----------+           +----------+           +----------+
