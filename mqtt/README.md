@@ -29,8 +29,8 @@ This is nRF24L01 and MQTT gateway application.
 ## Radioi Setting
 
 ### Radio to MQTT
-Receive from Radio and publish as MQTT.
-You can use mosquitto_sub as Subscriber.
+Receive from Radio and publish as MQTT.   
+You can use mosquitto_sub as Subscriber.   
 ```sh mqtt_sub.sh```
 
 ```
@@ -55,8 +55,8 @@ MQTT broker is specified by one of the following.
 
 
 ### MQTT to Radio
-Subscribe with MQTT and send to Radio.
-You can use mosquitto_pub as Publisher.
+Subscribe with MQTT and send to Radio.   
+You can use mosquitto_pub as Publisher.   
 ```sh ./mqtt_pub.sh```
 
 ```
