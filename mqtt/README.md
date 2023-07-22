@@ -29,7 +29,6 @@ This is nRF24L01 and MQTT gateway application.
 ## Radioi Setting
 
 ### Radio to MQTT
-![config-radio-1](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/d8d0bb38-e9ad-4b86-b15f-7abd94bfb932)
 
 ```
             +----------+           +----------+           +----------+           +----------+
@@ -38,6 +37,17 @@ This is nRF24L01 and MQTT gateway application.
             |          |           |          |           |          |           |          |
             +----------+           +----------+           +----------+           +----------+
 ```
+
+![config-radio-1](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/d8d0bb38-e9ad-4b86-b15f-7abd94bfb932)
+
+MQTT broker is specified by one of the following.
+- IP address   
+ ```192.168.10.20```   
+- mDNS host name   
+ ```mqtt-broker.local```   
+- Fully Qualified Domain Name   
+ ```broker.emqx.io```
+
 
 You can subscribe MQTT data using mosquitto_sub.   
 ```
@@ -48,7 +58,6 @@ mqtt_sub.sh
 
 
 ### MQTT to Radio
-![config-radio-2](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/ad66e20f-ae63-4b33-b50a-1cc9faa9f7f2)
 
 ```
             +----------+           +----------+           +----------+           +----------+
@@ -58,14 +67,7 @@ mqtt_sub.sh
             +----------+           +----------+           +----------+           +----------+
 ```
 
-MQTT broker is specified by one of the following.
-- IP address   
- ```192.168.10.20```   
-- mDNS host name   
- ```mqtt-broker.local```   
-- Fully Qualified Domain Name   
- ```broker.emqx.io```
-
+![config-radio-2](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/ad66e20f-ae63-4b33-b50a-1cc9faa9f7f2)
 
 You can publish MQTT data using mosquitto_pub.   
 ```
