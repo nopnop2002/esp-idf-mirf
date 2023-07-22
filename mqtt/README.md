@@ -58,6 +58,15 @@ mqtt_sub.sh
             +----------+           +----------+           +----------+           +----------+
 ```
 
+MQTT broker is specified by one of the following.
+- IP address   
+ ```192.168.10.20```   
+- mDNS host name   
+ ```mqtt-broker.local```   
+- Fully Qualified Domain Name   
+ ```broker.emqx.io```
+
+
 You can publish MQTT data using mosquitto_pub.   
 ```
 chmod 777 mqtt_pub.sh
