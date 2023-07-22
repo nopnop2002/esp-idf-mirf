@@ -1,10 +1,10 @@
-/* Mirf Example
+/*	Mirf Example
 
-	 This example code is in the Public Domain (or CC0 licensed, at your option.)
+	This example code is in the Public Domain (or CC0 licensed, at your option.)
 
-	 Unless required by applicable law or agreed to in writing, this
-	 software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-	 CONDITIONS OF ANY KIND, either express or implied.
+	Unless required by applicable law or agreed to in writing, this
+	software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+	CONDITIONS OF ANY KIND, either express or implied.
 */
 
 #include <stdio.h>
@@ -14,21 +14,26 @@
 #include "freertos/task.h"
 #include "freertos/queue.h"
 #include "freertos/event_groups.h"
+#include "freertos/message_buffer.h"
 #include "esp_system.h"
 #include "esp_wifi.h"
 #include "esp_event.h"
 #include "esp_vfs.h"
 #include "nvs_flash.h"
 #include "esp_err.h"
-#include "esp_log.h"
 #include "mdns.h"
-#include "netdb.h" // gethostbyname
+#include "esp_log.h"
+//#include "netdb.h" // gethostbyname
 //#include "lwip/dns.h"
 
 #include "mirf.h"
 #include "mqtt.h"
 
-static const char *TAG = "MAIN";
+#if (ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0))
+#define sntp_setoperatingmode esp_sntp_setoperatingmode
+#define sntp_setservername esp_sntp_setservername
+#define sntp_init esp_sntp_init
+#endif
 
 /* FreeRTOS event group to signal when we are connected*/
 static EventGroupHandle_t s_wifi_event_group;
@@ -39,14 +44,19 @@ static EventGroupHandle_t s_wifi_event_group;
 #define WIFI_CONNECTED_BIT BIT0
 #define WIFI_FAIL_BIT BIT1
 
+static const char *TAG = "MAIN";
+
 static int s_retry_num = 0;
 
-QueueHandle_t xQueue_mqtt_tx;
-QueueHandle_t xQueue_mqtt_rx;
+MessageBufferHandle_t xMessageBufferTrans;
+MessageBufferHandle_t xMessageBufferRecv;
 
+// The total number of bytes (not single messages) the message buffer will be able to hold at any one time.
+size_t xBufferSizeBytes = 1024;
+// The size, in bytes, required to hold each item in the message,
+size_t xItemSize = 256;
 
-static void event_handler(void* arg, esp_event_base_t event_base,
-								int32_t event_id, void* event_data)
+static void event_handler(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data)
 {
 	if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START) {
 		esp_wifi_connect();
@@ -141,162 +151,165 @@ bool wifi_init_sta(void)
 	return ret;
 }
 
+esp_err_t query_mdns_host(const char * host_name, char *ip)
+{
+    ESP_LOGD(__FUNCTION__, "Query A: %s", host_name);
 
-#if CONFIG_RADIO_TO_MQTT
-void mirf_receiver(void *pvParameters)
+    struct esp_ip4_addr addr;
+    addr.addr = 0;
+
+    esp_err_t err = mdns_query_a(host_name, 10000,  &addr);
+    if(err){
+        if(err == ESP_ERR_NOT_FOUND){
+            ESP_LOGW(__FUNCTION__, "%s: Host was not found!", esp_err_to_name(err));
+            return ESP_FAIL;
+        }
+        ESP_LOGE(__FUNCTION__, "Query Failed: %s", esp_err_to_name(err));
+        return ESP_FAIL;
+    }
+
+    ESP_LOGD(__FUNCTION__, "Query A: %s.local resolved to: " IPSTR, host_name, IP2STR(&addr));
+    sprintf(ip, IPSTR, IP2STR(&addr));
+    return ESP_OK;
+}
+
+void convert_mdns_host(char * from, char * to)
+{
+    ESP_LOGI(__FUNCTION__, "from=[%s]",from);
+    strcpy(to, from);
+    char *sp;
+    sp = strstr(from, ".local");
+    if (sp == NULL) return;
+
+    int _len = sp - from;
+    ESP_LOGD(__FUNCTION__, "_len=%d", _len);
+    char _from[128];
+    strcpy(_from, from);
+    _from[_len] = 0;
+    ESP_LOGI(__FUNCTION__, "_from=[%s]", _from);
+
+    char _ip[128];
+    esp_err_t ret = query_mdns_host(_from, _ip);
+    ESP_LOGI(__FUNCTION__, "query_mdns_host=%d _ip=[%s]", ret, _ip);
+    if (ret != ESP_OK) return;
+
+    strcpy(to, _ip);
+    ESP_LOGI(__FUNCTION__, "to=[%s]", to);
+}
+
+#if CONFIG_ADVANCED
+void AdvancedSettings(NRF24_t * dev)
+{
+#if CONFIG_RF_RATIO_2M
+    ESP_LOGW(pcTaskGetName(0), "Set RF Data Ratio to 2MBps");
+    Nrf24_SetSpeedDataRates(dev, 1);
+#endif // CONFIG_RF_RATIO_2M
+
+#if CONFIG_RF_RATIO_1M
+    ESP_LOGW(pcTaskGetName(0), "Set RF Data Ratio to 1MBps");
+    Nrf24_SetSpeedDataRates(dev, 0);
+#endif // CONFIG_RF_RATIO_2M
+
+#if CONFIG_RF_RATIO_250K
+    ESP_LOGW(pcTaskGetName(0), "Set RF Data Ratio to 250KBps");
+    Nrf24_SetSpeedDataRates(dev, 2);
+#endif // CONFIG_RF_RATIO_2M
+
+    ESP_LOGW(pcTaskGetName(0), "CONFIG_RETRANSMIT_DELAY=%d", CONFIG_RETRANSMIT_DELAY);
+    Nrf24_setRetransmitDelay(dev, CONFIG_RETRANSMIT_DELAY);
+}
+#endif // CONFIG_ADVANCED
+
+#if CONFIG_RECEIVER
+void receiver(void *pvParameters)
 {
 	ESP_LOGI(pcTaskGetName(0), "Start");
 	NRF24_t dev;
 	Nrf24_init(&dev);
-
-	ESP_LOGI(pcTaskGetName(0), "CONFIG_PAYLOAD_SIZE=%d", CONFIG_PAYLOAD_SIZE);
-	ESP_LOGI(pcTaskGetName(0), "CONFIG_RECEIVER_ADDRESS=[%s]", CONFIG_RECEIVER_ADDRESS);
-	ESP_LOGI(pcTaskGetName(0), "CONFIG_RADIO_CHANNEL=%d", CONFIG_RADIO_CHANNEL);
-	uint8_t mydata[CONFIG_PAYLOAD_SIZE];
-	uint8_t payload = sizeof(mydata);
+	uint8_t payload = 32;
 	uint8_t channel = CONFIG_RADIO_CHANNEL;
 	Nrf24_config(&dev, channel, payload);
 
 	//Set own address
-	esp_err_t ret = Nrf24_setRADDR(&dev, (uint8_t *)CONFIG_RECEIVER_ADDRESS);
+	esp_err_t ret = Nrf24_setRADDR(&dev, (uint8_t *)"FGHIJ");
 	if (ret != ESP_OK) {
 		ESP_LOGE(pcTaskGetName(0), "nrf24l01 not installed");
 		while(1) { vTaskDelay(1); }
 	}
+
+#if CONFIG_ADVANCED
+    AdvancedSettings(&dev);
+#endif // CONFIG_ADVANCED
 
 	//Print settings
 	Nrf24_printDetails(&dev);
 
-	ESP_LOGI(pcTaskGetName(0), "Wait for radio...");
-	MQTT_t mqttBuf;
+    uint8_t buf[32];
+
+    // Clear RX FiFo
+    while(1) {
+        if (Nrf24_dataReady(&dev) == false) break;
+        Nrf24_getData(&dev, buf);
+    }
+
 	while(1) {
+		//When the program is received, the received data is output from the serial port
 		if (Nrf24_dataReady(&dev)) {
-			Nrf24_getData(&dev, mydata);
-			// When the program is received, the received data is output from the serial port
-			ESP_LOGI(pcTaskGetName(0), "Got data from nRF24L01");
-			ESP_LOG_BUFFER_HEXDUMP(pcTaskGetName(0), mydata, sizeof(mydata), ESP_LOG_INFO);
-			mqttBuf.topic_type = PUBLISH;
-			strcpy(mqttBuf.topic, CONFIG_MQTT_PUB_TOPIC);
-			mqttBuf.topic_len = strlen(mqttBuf.topic);
-			mqttBuf.payload_len = sizeof(mydata);
-			for(int i=0;i<sizeof(mydata);i++) {
-				mqttBuf.payload[i] = mydata[i];
-			}
-			if (xQueueSend(xQueue_mqtt_tx, &mqttBuf, portMAX_DELAY) != pdPASS) {
-				ESP_LOGE(pcTaskGetName(0), "xQueueSend Fail");
-			}
-
-		} // end if
-		vTaskDelay(1);
-	} // end while
+			Nrf24_getData(&dev, buf);
+			size_t sended = xMessageBufferSend(xMessageBufferTrans, buf, payload, portMAX_DELAY);
+			if (sended == 0) {
+                ESP_LOGE(pcTaskGetName(NULL), "xMessageBufferSend fail");
+            }
+		}
+		vTaskDelay(1); // Avoid WatchDog alerts
+	}
 }
-#endif // CONFIG_RADIO_TO_MQTT
+#endif // CONFIG_RECEIVER
 
 
-#if CONFIG_MQTT_TO_RADIO
-void mirf_transmitter(void *pvParameters)
+#if CONFIG_SENDER
+void sender(void *pvParameters)
 {
 	ESP_LOGI(pcTaskGetName(0), "Start");
 	NRF24_t dev;
 	Nrf24_init(&dev);
-
-	ESP_LOGI(pcTaskGetName(0), "CONFIG_PAYLOAD_SIZE=%d", CONFIG_PAYLOAD_SIZE);
-	ESP_LOGI(pcTaskGetName(0), "CONFIG_DESTINATION_ADDRESS=[%s]", CONFIG_DESTINATION_ADDRESS);
-	ESP_LOGI(pcTaskGetName(0), "CONFIG_RADIO_CHANNEL=%d", CONFIG_RADIO_CHANNEL);
-	uint8_t mydata[CONFIG_PAYLOAD_SIZE];
-	uint8_t payload = sizeof(mydata);
+	uint8_t payload = 32;
 	uint8_t channel = CONFIG_RADIO_CHANNEL;
 	Nrf24_config(&dev, channel, payload);
 
-	// Set the receiver address
-	//Nrf24_setTADDR(&dev, (uint8_t *)"FGHIJ");
-	esp_err_t ret = Nrf24_setTADDR(&dev, (uint8_t *)CONFIG_DESTINATION_ADDRESS);
+	//Set the receiver address using 5 characters
+	esp_err_t ret = Nrf24_setTADDR(&dev, (uint8_t *)"FGHIJ");
 	if (ret != ESP_OK) {
 		ESP_LOGE(pcTaskGetName(0), "nrf24l01 not installed");
 		while(1) { vTaskDelay(1); }
 	}
+
+#if CONFIG_ADVANCED
+    AdvancedSettings(&dev);
+#endif // CONFIG_ADVANCED
 
 	//Print settings
 	Nrf24_printDetails(&dev);
 
 	ESP_LOGI(pcTaskGetName(0), "Wait for mqtt...");
-	MQTT_t mqttBuf;
+	uint8_t buf[65]; // Maximum Payload size of nRF24L01 is 64
 	while(1) {
-		xQueueReceive(xQueue_mqtt_rx, &mqttBuf, portMAX_DELAY);
-		if (mqttBuf.topic_type == SUBSCRIBE) {
-			ESP_LOGI(pcTaskGetName(0), "topic=[%s] topic_len=%d", mqttBuf.topic, mqttBuf.topic_len);
-			ESP_LOG_BUFFER_HEXDUMP(pcTaskGetName(0), mqttBuf.payload, mqttBuf.payload_len, ESP_LOG_INFO);
-			//mydata.payload.now_millis = xTaskGetTickCount() * portTICK_RATE_MS;
-			//ESP_LOGI(pcTaskGetName(0), "now_millis=%ld", mydata.payload.now_millis);
-			int payload_len = mqttBuf.payload_len;
-			//if (mqttBuf.payload_len > 32) payload_len = 32;
-			if (mqttBuf.payload_len > CONFIG_PAYLOAD_SIZE) payload_len = CONFIG_PAYLOAD_SIZE;
-			memset(mydata, 0, sizeof(mydata));
-			for(int i=0;i<payload_len;i++) {
-				mydata[i] = mqttBuf.payload[i];
-			}
-			Nrf24_send(&dev, mydata);
-
-			ESP_LOGI(pcTaskGetName(0), "Wait for sending.....");
-			if (Nrf24_isSend(&dev, 1000)) {
-				ESP_LOGI(pcTaskGetName(0),"Send success");
-			} else {
-				ESP_LOGW(pcTaskGetName(0),"Send fail");
-			}
-
-		} // end if
-	} // end while
-}
-#endif // CONFIG_MQTT_TO_RADIO
-
-esp_err_t query_mdns_host(const char * host_name, char *ip)
-{
-	ESP_LOGD(__FUNCTION__, "Query A: [%s]", host_name);
-
-	struct esp_ip4_addr addr;
-	addr.addr = 0;
-
-	esp_err_t err = mdns_query_a(host_name, 10000,	&addr);
-	if(err){
-		if(err == ESP_ERR_NOT_FOUND){
-			ESP_LOGW(__FUNCTION__, "%s: Host was not found!", esp_err_to_name(err));
-			return ESP_FAIL;
+		size_t received = xMessageBufferReceive(xMessageBufferRecv, buf, sizeof(buf), portMAX_DELAY);
+		ESP_LOGI(pcTaskGetName(NULL), "xMessageBufferReceive received=%d", received);
+		Nrf24_send(&dev, buf);
+		vTaskDelay(1);
+		ESP_LOGI(pcTaskGetName(0), "Wait for sending.....");
+		if (Nrf24_isSend(&dev, 1000)) {
+			ESP_LOGI(pcTaskGetName(0),"Send success");
+		} else {
+			ESP_LOGW(pcTaskGetName(0),"Send fail");
 		}
-		ESP_LOGE(__FUNCTION__, "Query Failed: %s", esp_err_to_name(err));
-		return ESP_FAIL;
 	}
-
-	ESP_LOGD(__FUNCTION__, "Query A: %s.local resolved to: " IPSTR, host_name, IP2STR(&addr));
-	sprintf(ip, IPSTR, IP2STR(&addr));
-	return ESP_OK;
 }
+#endif // CONFIG_SENDER
 
-void convert_mdns_host(char * from, char * to)
-{
-	ESP_LOGI(__FUNCTION__, "from=[%s]",from);
-	strcpy(to, from);
-	char *sp;
-	sp = strstr(from, ".local");
-	if (sp == NULL) return;
-
-	int _len = sp - from;
-	ESP_LOGD(__FUNCTION__, "_len=%d", _len);
-	char _from[128];
-	strcpy(_from, from);
-	_from[_len] = 0;
-	ESP_LOGI(__FUNCTION__, "_from=[%s]", _from);
-
-	char _ip[128];
-	esp_err_t ret = query_mdns_host(_from, _ip);
-	ESP_LOGI(__FUNCTION__, "query_mdns_host=%d _ip=[%s]", ret, _ip);
-	if (ret != ESP_OK) return;
-
-	strcpy(to, _ip);
-	ESP_LOGI(__FUNCTION__, "to=[%s]", to);
-}
-
-void mqtt_pub_task(void *pvParameters);
-void mqtt_sub_task(void *pvParameters);
+void mqtt_pub(void *pvParameters);
+void mqtt_sub(void *pvParameters);
 	
 void app_main(void)
 {
@@ -313,25 +326,24 @@ void app_main(void)
 		while(1) vTaskDelay(10);
 	}
 
+    // Create MessageBuffer
+    xMessageBufferTrans = xMessageBufferCreate(xBufferSizeBytes);
+    configASSERT( xMessageBufferTrans );
+    xMessageBufferRecv = xMessageBufferCreate(xBufferSizeBytes);
+    configASSERT( xMessageBufferRecv );
+
 	// Initialize mDNS
 	ESP_ERROR_CHECK( mdns_init() );
 
-	// Create Queue
-	xQueue_mqtt_tx = xQueueCreate( 10, sizeof(MQTT_t) );
-	configASSERT( xQueue_mqtt_tx );
-	xQueue_mqtt_rx = xQueueCreate( 10, sizeof(MQTT_t) );
-	configASSERT( xQueue_mqtt_rx );
-
-#if CONFIG_RADIO_TO_MQTT
-	// Create Task
-	xTaskCreate(mirf_receiver, "RECV", 1024*3, NULL, 2, NULL);
-	xTaskCreate(mqtt_pub_task, "PUB", 1024*4, NULL, 2, NULL);
+#if CONFIG_RECEIVER
+	xTaskCreate(&receiver, "RECEIVER", 1024*3, NULL, 2, NULL);
+	xTaskCreate(&mqtt_pub, "PUB", 1024*4, NULL, 2, NULL);
 #endif
 
-#if CONFIG_MQTT_TO_RADIO
-	// Create Task
-	xTaskCreate(mirf_transmitter, "TRANS", 1024*4, NULL, 2, NULL);
-	xTaskCreate(mqtt_sub_task, "SUB", 1024*4, NULL, 2, NULL);
+#if CONFIG_SENDER
+	xTaskCreate(&sender, "SENDER", 1024*3, NULL, 2, NULL);
+	xTaskCreate(&mqtt_sub, "SUB", 1024*4, NULL, 2, NULL);
 #endif
+
 
 }

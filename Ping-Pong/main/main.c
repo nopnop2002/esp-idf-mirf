@@ -161,10 +161,10 @@ void secondary(void *pvParameters)
 void app_main(void)
 {
 #if CONFIG_PRIMARY
-	xTaskCreate(primary, "PRIMARY", 1024*3, NULL, 2, NULL);
+	xTaskCreate(&primary, "PRIMARY", 1024*3, NULL, 2, NULL);
 #endif
 
 #if CONFIG_SECONDARY
-	xTaskCreate(secondary, "SECONDARY", 1024*3, NULL, 2, NULL);
+	xTaskCreate(&secondary, "SECONDARY", 1024*3, NULL, 2, NULL);
 #endif
 }

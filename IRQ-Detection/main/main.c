@@ -169,11 +169,11 @@ void app_main(void)
 
 
 #if CONFIG_RECEIVER
-	xTaskCreate(receiver, "RECEIVER", 1024*3, NULL, 2, NULL);
+	xTaskCreate(&receiver, "RECEIVER", 1024*3, NULL, 2, NULL);
 #endif
 
 #if CONFIG_SENDER
-	xTaskCreate(sender, "SENDER", 1024*3, NULL, 2, NULL);
+	xTaskCreate(&sender, "SENDER", 1024*3, NULL, 2, NULL);
 #endif
 
 }

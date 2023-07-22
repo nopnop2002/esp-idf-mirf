@@ -25,47 +25,19 @@ menu "Application Configuration"
 	menu "Radio Setting"
 
 		choice DIRECTION
-			prompt "Communication direction"
-			default RADIO_TO_MQTT
+			prompt "Communication polarity"
+			default SENDER
 			help
-				Select Communication direction.
-			config RADIO_TO_MQTT
-				bool "Receive from radio and send by MQTT"
+				Select Communication polarity.
+			config SENDER
+				bool "MQTT to Radio"
 				help
-					Receive from radio and send by MQTT.
-			config MQTT_TO_RADIO
-				bool "Receive from MQTT and send by radio"
+					MQTT to Radio.
+			config RECEIVER
+				bool "Radio to MQTT"
 				help
-					Receive from MQTT and send by radio
+					Radio to MQTT.
 		endchoice
-
-		config PAYLOAD_SIZE
-			int "Payload size (byte)"
-			range 1 32
-			default 32
-			help
-				Payload size.
-
-		config RECEIVER_ADDRESS
-			depends on RADIO_TO_MQTT
-			string "My address"
-			default "FGHIJ"
-			help
-				My address.
-
-		config DESTINATION_ADDRESS
-			depends on MQTT_TO_RADIO
-			string "Destination address"
-			default "FGHIJ"
-			help
-				Destination address.
-
-		config RADIO_CHANNEL
-			int "Radio channel to use"
-			range 1 127
-			default 90
-			help
-				Radio channel to use.
 
 		config MQTT_BROKER
 			string "MQTT Broker"
@@ -73,15 +45,35 @@ menu "Application Configuration"
 			help
 				Host name or IP address of the broker to connect to
 
+		config BROKER_AUTHENTICATION
+			bool "Server requests for password when connecting"
+			default false
+			help
+				Server requests for password when connecting.
+
+		config AUTHENTICATION_USERNAME
+			depends on BROKER_AUTHENTICATION
+			string "Username used for connecting to the broker"
+			default "user"
+			help
+				Username used for connecting to the broker.
+
+		config AUTHENTICATION_PASSWORD
+			depends on BROKER_AUTHENTICATION
+			string "Password used for connecting to the broker"
+			default "password"
+			help
+				Username used for connecting to the broker.
+
 		config MQTT_PUB_TOPIC
-			depends on RADIO_TO_MQTT
+			depends on RECEIVER
 			string "Publish Topic"
 			default "/topic/mirf/test"
 			help
 				Topic of publish
 
 		config MQTT_SUB_TOPIC
-			depends on MQTT_TO_RADIO
+			depends on SENDER
 			string "Subscribe Topic"
 			default "/topic/mirf/test"
 			help

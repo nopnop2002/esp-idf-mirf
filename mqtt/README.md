@@ -28,8 +28,8 @@ This is nRF24L01 and MQTT gateway application.
 
 ## Radioi Setting
 
-### Recive from radio and send by MQTT
-![config-radio-1](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/16dd7700-c2ca-434c-b02b-3d095cc653cc)
+### Radio to MQTT
+![config-radio-1](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/d8d0bb38-e9ad-4b86-b15f-7abd94bfb932)
 
 ```
             +----------+           +----------+           +----------+           +----------+
@@ -41,18 +41,14 @@ This is nRF24L01 and MQTT gateway application.
 
 You can subscribe MQTT data using mosquitto_sub.   
 ```
-mosquitto_sub -h broker.emqx.io -p 1883 -t '/mirf/#' -F %X -d
-```
-
-You can subscribe MQTT data using python.
-```
-python3 -m pip install -U paho-mqtt
-python3 mqtt_sub.py
+chmod 777 mqtt_sub.sh
+mqtt_sub.sh
 ```
 
 
-### Recive from MQTT and send by Radio
-![config-radio-2](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/4f49c213-3dd4-44e3-8736-96b171cec616)
+
+### MQTT to Radio
+![config-radio-2](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/ad66e20f-ae63-4b33-b50a-1cc9faa9f7f2)
 
 ```
             +----------+           +----------+           +----------+           +----------+
@@ -64,61 +60,11 @@ python3 mqtt_sub.py
 
 You can publish MQTT data using mosquitto_pub.   
 ```
-echo -ne "\x01\x02\x03" | mosquitto_pub -h broker.emqx.io -p 1883 -t '/mirf' -s
-echo -ne "Hello World" | mosquitto_pub -h broker.emqx.io -p 1883 -t '/mirf' -s
+chmod 777 mqtt_pub.sh
+sh ./mqtt_pub.sh
 ```
-
-You can publish MQTT data using python.   
-```
-python3 -m pip install -U paho-mqtt
-python3 mqtt_pub.py
-```
-
 
 # Communicate with Arduino Environment   
-I used [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01) library on Arduino environment.   
-__You need to match the payload size and channel with Arduino and esp-idf.__   
-
-- Arduino environment   
-```C++
-Mirf.payload = sizeof(mydata.value);
-Mirf.channel = 90;
-Mirf.config();
-```
-- esp-idf   
-```C
-uint8_t payload = sizeof(value);
-uint8_t channel = 90;
-Nrf24_config(&dev, channel, payload);
-```
-
-# Limitation   
-The maximum payload size of nRF24L01 is 32 bytes.   
-When publishing data exceeding 32 bytes, only 32 bytes are used.   
-
-
-# MQTT client Example
-Example code in various languages.   
-https://github.com/emqx/MQTT-Client-Examples
-
-
-# Visualize data from nRF24L01   
-
-## Using python
-There is a lot of information on the internet about the Python + visualization library.   
-- [matplotlib](https://matplotlib.org/)
-- [seaborn](https://seaborn.pydata.org/index.html)
-- [bokeh](https://bokeh.org/)
-- [plotly](https://plotly.com/python/)
-
-## Using node.js
-There is a lot of information on the internet about the node.js + __real time__ visualization library.   
-- [epoch](https://epochjs.github.io/epoch/real-time/)
-- [plotly](https://plotly.com/javascript/streaming/)
-- [chartjs-plugin-streaming](https://nagix.github.io/chartjs-plugin-streaming/1.9.0/)
-
-# Important
-When changing the settings of the nRF24L01, it is necessary to power cycle the nRF24L01 before executing.   
-Because nRF24L01 remembers the previous setting.   
-nRF24L01 does not have Software Reset function.   
+Run this sketch.   
+ArduinoCode\Peer-to-peer\StringTest   
 
