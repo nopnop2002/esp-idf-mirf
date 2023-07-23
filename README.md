@@ -35,7 +35,7 @@ __Note for Channel__
 Channels range from 0 to 127.   
 The channel number of the sender and receiver must be the same.   
 Channel = 0 uses the frequency of 2.4000GHz, channel = 127 uses the frequency of 2.4127GHz.   
-Even if you change the channel and use multiple modules at the same time, in most cases there will be interference.   
+Using multiple radio node at the same time will almost always cause interference, even if you change channels.   
 
 # SPI BUS selection   
 ![config-nrf24l01-3](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/377bbcc5-2ca9-4e74-a54d-3ca87c5ac241)
