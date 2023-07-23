@@ -31,7 +31,11 @@ I used a raw ESP-C3-13 to verify that these pins could be used as SPI clocks.
 ![config-nrf24l01-1](https://user-images.githubusercontent.com/6020549/168019514-93c377c9-2823-4840-bce4-168f0c2b7338.jpg)
 ![config-nrf24l01-2](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/4898836a-b614-4d30-8ef4-c653706ba7f3)
 
-__The channel number of the sender and receiver must be the same.__   
+__Note for Channel__   
+Channels range from 0 to 127.   
+The channel number of the sender and receiver must be the same.   
+Channel = 0 uses the frequency of 2.4000GHz, channel = 127 uses the frequency of 2.4127GHz.   
+Even if you change the channel and use multiple modules at the same time, in most cases there will be interference.   
 
 # SPI BUS selection   
 ![config-nrf24l01-3](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/377bbcc5-2ca9-4e74-a54d-3ca87c5ac241)
