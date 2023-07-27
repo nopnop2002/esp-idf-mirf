@@ -1,7 +1,6 @@
 #!/bin/bash
 #set -x
 count=1
-fail=0
 while :
 do
         payload=`date "+%Y/%m/%d %H:%M:%S"`
