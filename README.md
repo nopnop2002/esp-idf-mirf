@@ -56,6 +56,7 @@ I tested it with [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01/tre
 
 ![config-nrf24l01-4](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/a18be916-7716-4e22-bdc0-6813883c64a5)
 
+![config-nrf24l01-5](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/ba577705-c2b7-494c-bcd7-969d96cf859a)
 
 __If you want to initialize the nRF24L01 settings after using the Advanced Settings, you need to power cycle the nRF24L01 before executing.__   
 Because nRF24L01 remembers the previous setting.   
