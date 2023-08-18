@@ -142,61 +142,61 @@ bool wifi_init_sta(void)
 
 esp_err_t query_mdns_host(const char * host_name, char *ip)
 {
-    ESP_LOGD(__FUNCTION__, "Query A: %s", host_name);
+	ESP_LOGD(__FUNCTION__, "Query A: %s", host_name);
 
-    struct esp_ip4_addr addr;
-    addr.addr = 0;
+	struct esp_ip4_addr addr;
+	addr.addr = 0;
 
-    esp_err_t err = mdns_query_a(host_name, 10000,  &addr);
-    if(err){
-        if(err == ESP_ERR_NOT_FOUND){
-            ESP_LOGW(__FUNCTION__, "%s: Host was not found!", esp_err_to_name(err));
-            return ESP_FAIL;
-        }
-        ESP_LOGE(__FUNCTION__, "Query Failed: %s", esp_err_to_name(err));
-        return ESP_FAIL;
-    }
+	esp_err_t err = mdns_query_a(host_name, 10000,	&addr);
+	if(err){
+		if(err == ESP_ERR_NOT_FOUND){
+			ESP_LOGW(__FUNCTION__, "%s: Host was not found!", esp_err_to_name(err));
+			return ESP_FAIL;
+		}
+		ESP_LOGE(__FUNCTION__, "Query Failed: %s", esp_err_to_name(err));
+		return ESP_FAIL;
+	}
 
-    ESP_LOGD(__FUNCTION__, "Query A: %s.local resolved to: " IPSTR, host_name, IP2STR(&addr));
-    sprintf(ip, IPSTR, IP2STR(&addr));
-    return ESP_OK;
+	ESP_LOGD(__FUNCTION__, "Query A: %s.local resolved to: " IPSTR, host_name, IP2STR(&addr));
+	sprintf(ip, IPSTR, IP2STR(&addr));
+	return ESP_OK;
 }
 
 void convert_mdns_host(char * from, char * to)
 {
-    ESP_LOGI(__FUNCTION__, "from=[%s]",from);
-    strcpy(to, from);
-    char *sp;
-    sp = strstr(from, ".local");
-    if (sp == NULL) return;
+	ESP_LOGI(__FUNCTION__, "from=[%s]",from);
+	strcpy(to, from);
+	char *sp;
+	sp = strstr(from, ".local");
+	if (sp == NULL) return;
 
-    int _len = sp - from;
-    ESP_LOGD(__FUNCTION__, "_len=%d", _len);
-    char _from[128];
-    strcpy(_from, from);
-    _from[_len] = 0;
-    ESP_LOGI(__FUNCTION__, "_from=[%s]", _from);
+	int _len = sp - from;
+	ESP_LOGD(__FUNCTION__, "_len=%d", _len);
+	char _from[128];
+	strcpy(_from, from);
+	_from[_len] = 0;
+	ESP_LOGI(__FUNCTION__, "_from=[%s]", _from);
 
-    char _ip[128];
-    esp_err_t ret = query_mdns_host(_from, _ip);
-    ESP_LOGI(__FUNCTION__, "query_mdns_host=%d _ip=[%s]", ret, _ip);
-    if (ret != ESP_OK) return;
+	char _ip[128];
+	esp_err_t ret = query_mdns_host(_from, _ip);
+	ESP_LOGI(__FUNCTION__, "query_mdns_host=%d _ip=[%s]", ret, _ip);
+	if (ret != ESP_OK) return;
 
-    strcpy(to, _ip);
-    ESP_LOGI(__FUNCTION__, "to=[%s]", to);
+	strcpy(to, _ip);
+	ESP_LOGI(__FUNCTION__, "to=[%s]", to);
 }
 
 void initialize_mdns(void)
 {
-    //initialize mDNS
-    ESP_ERROR_CHECK( mdns_init() );
-    //set mDNS hostname (required if you want to advertise services)
-    ESP_ERROR_CHECK( mdns_hostname_set(CONFIG_MDNS_HOSTNAME) );
-    ESP_LOGI(TAG, "mdns hostname set to: [%s]", CONFIG_MDNS_HOSTNAME);
+	//initialize mDNS
+	ESP_ERROR_CHECK( mdns_init() );
+	//set mDNS hostname (required if you want to advertise services)
+	ESP_ERROR_CHECK( mdns_hostname_set(CONFIG_MDNS_HOSTNAME) );
+	ESP_LOGI(TAG, "mdns hostname set to: [%s]", CONFIG_MDNS_HOSTNAME);
 
 #if 0
-    //set default mDNS instance name
-    ESP_ERROR_CHECK( mdns_instance_name_set("ESP32 with mDNS") );
+	//set default mDNS instance name
+	ESP_ERROR_CHECK( mdns_instance_name_set("ESP32 with mDNS") );
 #endif
 }
 
@@ -204,22 +204,22 @@ void initialize_mdns(void)
 void AdvancedSettings(NRF24_t * dev)
 {
 #if CONFIG_RF_RATIO_2M
-    ESP_LOGW(pcTaskGetName(0), "Set RF Data Ratio to 2MBps");
-    Nrf24_SetSpeedDataRates(dev, 1);
+	ESP_LOGW(pcTaskGetName(0), "Set RF Data Ratio to 2MBps");
+	Nrf24_SetSpeedDataRates(dev, 1);
 #endif // CONFIG_RF_RATIO_2M
 
 #if CONFIG_RF_RATIO_1M
-    ESP_LOGW(pcTaskGetName(0), "Set RF Data Ratio to 1MBps");
-    Nrf24_SetSpeedDataRates(dev, 0);
+	ESP_LOGW(pcTaskGetName(0), "Set RF Data Ratio to 1MBps");
+	Nrf24_SetSpeedDataRates(dev, 0);
 #endif // CONFIG_RF_RATIO_2M
 
 #if CONFIG_RF_RATIO_250K
-    ESP_LOGW(pcTaskGetName(0), "Set RF Data Ratio to 250KBps");
-    Nrf24_SetSpeedDataRates(dev, 2);
+	ESP_LOGW(pcTaskGetName(0), "Set RF Data Ratio to 250KBps");
+	Nrf24_SetSpeedDataRates(dev, 2);
 #endif // CONFIG_RF_RATIO_2M
 
-    ESP_LOGW(pcTaskGetName(0), "CONFIG_RETRANSMIT_DELAY=%d", CONFIG_RETRANSMIT_DELAY);
-    Nrf24_setRetransmitDelay(dev, CONFIG_RETRANSMIT_DELAY);
+	ESP_LOGW(pcTaskGetName(0), "CONFIG_RETRANSMIT_DELAY=%d", CONFIG_RETRANSMIT_DELAY);
+	Nrf24_setRetransmitDelay(dev, CONFIG_RETRANSMIT_DELAY);
 }
 #endif // CONFIG_ADVANCED
 
@@ -241,29 +241,35 @@ void receiver(void *pvParameters)
 	}
 
 #if CONFIG_ADVANCED
-    AdvancedSettings(&dev);
+	AdvancedSettings(&dev);
 #endif // CONFIG_ADVANCED
 
 	//Print settings
 	Nrf24_printDetails(&dev);
 
-    uint8_t buf[xItemSize];
+	uint8_t buf[xItemSize];
 
-    // Clear RX FiFo
-    while(1) {
-        if (Nrf24_dataReady(&dev) == false) break;
-        Nrf24_getData(&dev, buf);
-    }
+	// Clear RX FiFo
+	while(1) {
+		if (Nrf24_dataReady(&dev) == false) break;
+		Nrf24_getData(&dev, buf);
+	}
 
 	while(1) {
 		//When the program is received, the received data is output from the serial port
 		if (Nrf24_dataReady(&dev)) {
 			Nrf24_getData(&dev, buf);
 			ESP_LOGI(pcTaskGetName(NULL), "Nrf24_getData buf=[%.*s]",payload, buf);
-			size_t sended = xMessageBufferSend(xMessageBufferTrans, buf, payload, portMAX_DELAY);
-			if (sended != payload) {
-                ESP_LOGE(pcTaskGetName(NULL), "xMessageBufferSend fail");
-            }
+			size_t space = xMessageBufferSpacesAvailable( xMessageBufferTrans );
+			ESP_LOGI(pcTaskGetName(NULL), "space=%d", space);
+			if (space < xItemSize*2) {
+				ESP_LOGW(pcTaskGetName(NULL), "xMessageBuffer available less than %d", xItemSize*2);
+			} else {
+				size_t sended = xMessageBufferSend(xMessageBufferTrans, buf, payload, portMAX_DELAY);
+				if (sended != payload) {
+					ESP_LOGE(pcTaskGetName(NULL), "xMessageBufferSend fail");
+				}
+			}
 		}
 		vTaskDelay(1); // Avoid WatchDog alerts
 	}
@@ -289,7 +295,7 @@ void sender(void *pvParameters)
 	}
 
 #if CONFIG_ADVANCED
-    AdvancedSettings(&dev);
+	AdvancedSettings(&dev);
 #endif // CONFIG_ADVANCED
 
 	//Print settings
@@ -330,21 +336,21 @@ void app_main(void)
 		while(1) vTaskDelay(10);
 	}
 
-    // Create MessageBuffer
-    xMessageBufferTrans = xMessageBufferCreate(xBufferSizeBytes);
-    configASSERT( xMessageBufferTrans );
-    xMessageBufferRecv = xMessageBufferCreate(xBufferSizeBytes);
-    configASSERT( xMessageBufferRecv );
+	// Create MessageBuffer
+	xMessageBufferTrans = xMessageBufferCreate(xBufferSizeBytes);
+	configASSERT( xMessageBufferTrans );
+	xMessageBufferRecv = xMessageBufferCreate(xBufferSizeBytes);
+	configASSERT( xMessageBufferRecv );
 
 	// Initialize mDNS
 	initialize_mdns();
 
-    // Get the local IP address
-    esp_netif_ip_info_t ip_info;
-    ESP_ERROR_CHECK(esp_netif_get_ip_info(esp_netif_get_handle_from_ifkey("WIFI_STA_DEF"), &ip_info));
-    char cparam0[64];
-    sprintf(cparam0, IPSTR, IP2STR(&ip_info.ip));
-    ESP_LOGI(TAG, "cparam0=[%s]", cparam0);
+	// Get the local IP address
+	esp_netif_ip_info_t ip_info;
+	ESP_ERROR_CHECK(esp_netif_get_ip_info(esp_netif_get_handle_from_ifkey("WIFI_STA_DEF"), &ip_info));
+	char cparam0[64];
+	sprintf(cparam0, IPSTR, IP2STR(&ip_info.ip));
+	ESP_LOGI(TAG, "cparam0=[%s]", cparam0);
 
 #if CONFIG_SENDER
 	xTaskCreate(&sender, "TX", 1024*3, NULL, 2, NULL);
@@ -355,8 +361,8 @@ void app_main(void)
 	xTaskCreate(&http_client, "HTTP_CLIENT", 1024*4, NULL, 5, NULL);
 #endif
 
-    while(1) {
-        vTaskDelay(10);
-    }
+	while(1) {
+		vTaskDelay(10);
+	}
 
 }
