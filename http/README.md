@@ -29,8 +29,9 @@ This is nRF24L01 and HTTP gateway application.
 
 ### HTTP to Radio
 Subscribe with HTTP and send to Radio.   
-You can use mosquitto_pub as Publisher.   
-```sh ./mqtt_pub.sh```
+ESP32 acts as HTTP Server.   
+You can use curl as HTTP Client.   
+```sh ./http-client.sh```
 
 ```
             +-----------+           +-----------+           +-----------+
@@ -45,8 +46,9 @@ You can use mosquitto_pub as Publisher.
 
 ### Radio to HTTP
 Receive from Radio and publish as HTTP.   
-You can use mosquitto_sub as Subscriber.   
-```sh ./mqtt_sub.sh```
+ESP32 acts as HTTP Client.   
+You can use nc(netcat) as HTTP Server.   
+```sh ./http-server.sh```
 
 ```
             +-----------+           +-----------+           +-----------+
