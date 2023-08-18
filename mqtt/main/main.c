@@ -10,30 +10,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "freertos/queue.h"
 #include "freertos/event_groups.h"
 #include "freertos/message_buffer.h"
 #include "esp_system.h"
 #include "esp_wifi.h"
 #include "esp_event.h"
-#include "esp_vfs.h"
-#include "nvs_flash.h"
-#include "esp_err.h"
-#include "mdns.h"
 #include "esp_log.h"
-//#include "netdb.h" // gethostbyname
-//#include "lwip/dns.h"
+#include "nvs_flash.h"
+#include "mdns.h"
 
 #include "mirf.h"
 #include "mqtt.h"
-
-#if (ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0))
-#define sntp_setoperatingmode esp_sntp_setoperatingmode
-#define sntp_setservername esp_sntp_setservername
-#define sntp_init esp_sntp_init
-#endif
 
 /* FreeRTOS event group to signal when we are connected*/
 static EventGroupHandle_t s_wifi_event_group;
@@ -54,7 +44,7 @@ MessageBufferHandle_t xMessageBufferRecv;
 // The total number of bytes (not single messages) the message buffer will be able to hold at any one time.
 size_t xBufferSizeBytes = 1024;
 // The size, in bytes, required to hold each item in the message,
-size_t xItemSize = 256;
+size_t xItemSize = 32;
 
 static void event_handler(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data)
 {
@@ -244,7 +234,7 @@ void receiver(void *pvParameters)
 	//Print settings
 	Nrf24_printDetails(&dev);
 
-    uint8_t buf[32];
+    uint8_t buf[xItemSize];
 
     // Clear RX FiFo
     while(1) {
@@ -256,8 +246,9 @@ void receiver(void *pvParameters)
 		//When the program is received, the received data is output from the serial port
 		if (Nrf24_dataReady(&dev)) {
 			Nrf24_getData(&dev, buf);
+			ESP_LOGI(pcTaskGetName(NULL), "Nrf24_getData buf=[%.*s]",payload, buf);
 			size_t sended = xMessageBufferSend(xMessageBufferTrans, buf, payload, portMAX_DELAY);
-			if (sended == 0) {
+			if (sended != payload) {
                 ESP_LOGE(pcTaskGetName(NULL), "xMessageBufferSend fail");
             }
 		}
@@ -292,7 +283,7 @@ void sender(void *pvParameters)
 	Nrf24_printDetails(&dev);
 
 	ESP_LOGI(pcTaskGetName(0), "Wait for mqtt...");
-	uint8_t buf[65]; // Maximum Payload size of nRF24L01 is 64
+	uint8_t buf[xItemSize];
 	while(1) {
 		size_t received = xMessageBufferReceive(xMessageBufferRecv, buf, sizeof(buf), portMAX_DELAY);
 		ESP_LOGI(pcTaskGetName(NULL), "xMessageBufferReceive received=%d", received);
@@ -336,12 +327,12 @@ void app_main(void)
 	ESP_ERROR_CHECK( mdns_init() );
 
 #if CONFIG_RECEIVER
-	xTaskCreate(&receiver, "RECEIVER", 1024*3, NULL, 2, NULL);
+	xTaskCreate(&receiver, "RX", 1024*3, NULL, 2, NULL);
 	xTaskCreate(&mqtt_pub, "PUB", 1024*4, NULL, 2, NULL);
 #endif
 
 #if CONFIG_SENDER
-	xTaskCreate(&sender, "SENDER", 1024*3, NULL, 2, NULL);
+	xTaskCreate(&sender, "TX", 1024*3, NULL, 2, NULL);
 	xTaskCreate(&mqtt_sub, "SUB", 1024*4, NULL, 2, NULL);
 #endif
 

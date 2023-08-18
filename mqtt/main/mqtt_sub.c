@@ -64,17 +64,23 @@ static esp_err_t mqtt_event_handler(esp_mqtt_event_handle_t event)
 			break;
 		case MQTT_EVENT_DATA:
 			ESP_LOGI(TAG, "MQTT_EVENT_DATA");
-			ESP_LOGI(TAG, "TOPIC=[%.*s] DATA=[%.*s]\r", event->topic_len, event->topic, event->data_len, event->data);
+			ESP_LOGI(TAG, "TOPIC=[%.*s] DATA=[%.*s]", event->topic_len, event->topic, event->data_len, event->data);
 
 			mqttBuf->topic_len = event->topic_len;
-			for(int i=0;i<event->topic_len;i++) {
+			if (mqttBuf->topic_len > sizeof(mqttBuf->topic)) {
+				ESP_LOGW(TAG, "topic length too big");
+				mqttBuf->topic_len = sizeof(mqttBuf->topic);
+			}
+			for(int i=0;i<mqttBuf->topic_len;i++) {
 				mqttBuf->topic[i] = event->topic[i];
-				mqttBuf->topic[i+1] = 0;
 			}
 			mqttBuf->data_len = event->data_len;
-			for(int i=0;i<event->data_len;i++) {
+			if (mqttBuf->data_len > sizeof(mqttBuf->data)) {
+				ESP_LOGW(TAG, "payload length too big");
+				mqttBuf->data_len = sizeof(mqttBuf->data);
+			}
+			for(int i=0;i<mqttBuf->data_len;i++) {
 				mqttBuf->data[i] = event->data[i];
-				mqttBuf->data[i+1] = 0;
 			}
 			xTaskNotifyGive( mqttBuf->taskHandle );
 			break;
@@ -165,8 +171,7 @@ void mqtt_sub(void *pvParameters)
 		} else if (mqttBuf.event_id == MQTT_EVENT_DISCONNECTED) {
 			break;
 		} else if (mqttBuf.event_id == MQTT_EVENT_DATA) {
-			ESP_LOGI(TAG, "TOPIC=[%.*s]\r", mqttBuf.topic_len, mqttBuf.topic);
-			ESP_LOGI(TAG, "DATA=[%.*s]\r", mqttBuf.data_len, mqttBuf.data);
+			ESP_LOGI(TAG, "TOPIC=[%.*s] DATA=[%.*s]", mqttBuf.topic_len, mqttBuf.topic, mqttBuf.data_len, mqttBuf.data);
 			size_t sended = xMessageBufferSend(xMessageBufferRecv, mqttBuf.data, mqttBuf.data_len, portMAX_DELAY);
 			if (sended != mqttBuf.data_len) {
 				ESP_LOGE(TAG, "xMessageBufferSend fail");

@@ -4,6 +4,6 @@ typedef struct {
 	int topic_len;
 	char topic[64];
 	int data_len;
-	char data[512];
+	char data[32];
 } MQTT_t;
 
