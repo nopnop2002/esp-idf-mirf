@@ -3,13 +3,13 @@ This is nRF24L01 and MQTT gateway application.
 ```
             +----------+           +----------+           +----------+           +----------+
             |          |           |          |           |          |           |          |
-==(Radio)==>| nRF24L01 |--(SPI)--->|  ESP32   |--(MQTT)-->|  Broker  |--(MQTT)-->|Subscriber|
+            |Publisher |--(MQTT)-->|  Broker  |--(MQTT)-->|  ESP32   |--(SPI)--->| nRF24L01 |==(Radio)==>
             |          |           |          |           |          |           |          |
             +----------+           +----------+           +----------+           +----------+
 
             +----------+           +----------+           +----------+           +----------+
             |          |           |          |           |          |           |          |
-            |Publisher |--(MQTT)-->|  Broker  |--(MQTT)-->|  ESP32   |--(SPI)--->| nRF24L01 |==(Radio)==>
+==(Radio)==>| nRF24L01 |--(SPI)--->|  ESP32   |--(MQTT)-->|  Broker  |--(MQTT)-->|Subscriber|
             |          |           |          |           |          |           |          |
             +----------+           +----------+           +----------+           +----------+
 ```
@@ -28,24 +28,6 @@ This is nRF24L01 and MQTT gateway application.
 
 ## Radioi Setting
 
-### Radio to MQTT
-Receive from Radio and publish as MQTT.   
-You can use mosquitto_sub as Subscriber.   
-```sh ./mqtt_sub.sh```
-
-```
-            +----------+           +----------+           +----------+           +----------+
-            |          |           |          |           |          |           |          |
-==(Radio)==>| nRF24L01 |--(SPI)--->|  ESP32   |--(MQTT)-->|  Broker  |--(MQTT)-->|Subscriber|
-            |          |           |          |           |          |           |          |
-            +----------+           +----------+           +----------+           +----------+
-```
-
-![config-radio-1](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/d8d0bb38-e9ad-4b86-b15f-7abd94bfb932)
-
-
-
-
 ### MQTT to Radio
 Subscribe with MQTT and send to Radio.   
 You can use mosquitto_pub as Publisher.   
@@ -60,6 +42,23 @@ You can use mosquitto_pub as Publisher.
 ```
 
 ![config-radio-2](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/ad66e20f-ae63-4b33-b50a-1cc9faa9f7f2)
+
+
+
+### Radio to MQTT
+Receive from Radio and publish as MQTT.   
+You can use mosquitto_sub as Subscriber.   
+```sh ./mqtt_sub.sh```
+
+```
+            +----------+           +----------+           +----------+           +----------+
+            |          |           |          |           |          |           |          |
+==(Radio)==>| nRF24L01 |--(SPI)--->|  ESP32   |--(MQTT)-->|  Broker  |--(MQTT)-->|Subscriber|
+            |          |           |          |           |          |           |          |
+            +----------+           +----------+           +----------+           +----------+
+```
+
+![config-radio-1](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/d8d0bb38-e9ad-4b86-b15f-7abd94bfb932)
 
 
 ### Specifying an MQTT Broker   

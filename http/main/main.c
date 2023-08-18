@@ -23,7 +23,6 @@
 #include "mdns.h"
 
 #include "mirf.h"
-#include "mqtt.h"
 
 /* FreeRTOS event group to signal when we are connected*/
 static EventGroupHandle_t s_wifi_event_group;
@@ -187,6 +186,20 @@ void convert_mdns_host(char * from, char * to)
     ESP_LOGI(__FUNCTION__, "to=[%s]", to);
 }
 
+void initialize_mdns(void)
+{
+    //initialize mDNS
+    ESP_ERROR_CHECK( mdns_init() );
+    //set mDNS hostname (required if you want to advertise services)
+    ESP_ERROR_CHECK( mdns_hostname_set(CONFIG_MDNS_HOSTNAME) );
+    ESP_LOGI(TAG, "mdns hostname set to: [%s]", CONFIG_MDNS_HOSTNAME);
+
+#if 0
+    //set default mDNS instance name
+    ESP_ERROR_CHECK( mdns_instance_name_set("ESP32 with mDNS") );
+#endif
+}
+
 #if CONFIG_ADVANCED
 void AdvancedSettings(NRF24_t * dev)
 {
@@ -282,7 +295,7 @@ void sender(void *pvParameters)
 	//Print settings
 	Nrf24_printDetails(&dev);
 
-	ESP_LOGI(pcTaskGetName(0), "Wait for mqtt...");
+	ESP_LOGI(pcTaskGetName(0), "Wait for http...");
 	uint8_t buf[xItemSize];
 	while(1) {
 		size_t received = xMessageBufferReceive(xMessageBufferRecv, buf, sizeof(buf), portMAX_DELAY);
@@ -299,8 +312,8 @@ void sender(void *pvParameters)
 }
 #endif // CONFIG_SENDER
 
-void mqtt_pub(void *pvParameters);
-void mqtt_sub(void *pvParameters);
+void http_client(void *pvParameters);
+void http_server(void *pvParameters);
 	
 void app_main(void)
 {
@@ -324,16 +337,26 @@ void app_main(void)
     configASSERT( xMessageBufferRecv );
 
 	// Initialize mDNS
-	ESP_ERROR_CHECK( mdns_init() );
+	initialize_mdns();
+
+    // Get the local IP address
+    esp_netif_ip_info_t ip_info;
+    ESP_ERROR_CHECK(esp_netif_get_ip_info(esp_netif_get_handle_from_ifkey("WIFI_STA_DEF"), &ip_info));
+    char cparam0[64];
+    sprintf(cparam0, IPSTR, IP2STR(&ip_info.ip));
+    ESP_LOGI(TAG, "cparam0=[%s]", cparam0);
 
 #if CONFIG_SENDER
 	xTaskCreate(&sender, "TX", 1024*3, NULL, 2, NULL);
-	xTaskCreate(&mqtt_sub, "SUB", 1024*4, NULL, 2, NULL);
+	xTaskCreate(&http_server, "HTTP_SERVER", 1024*4, (void *)cparam0, 5, NULL);
 #endif
 #if CONFIG_RECEIVER
 	xTaskCreate(&receiver, "RX", 1024*3, NULL, 2, NULL);
-	xTaskCreate(&mqtt_pub, "PUB", 1024*4, NULL, 2, NULL);
+	xTaskCreate(&http_client, "HTTP_CLIENT", 1024*4, NULL, 5, NULL);
 #endif
 
+    while(1) {
+        vTaskDelay(10);
+    }
 
 }
