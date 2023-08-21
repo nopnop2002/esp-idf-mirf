@@ -145,9 +145,9 @@ esp_err_t http_post_with_url(char *url, char * post_data, size_t post_len)
 	esp_http_client_set_post_field(client, post_data, post_len);
 	esp_err_t err = esp_http_client_perform(client);
 	if (err == ESP_OK) {
-		ESP_LOGI(TAG, "HTTP POST Status = %d, content_length = %"PRIu64,
+		ESP_LOGI(TAG, "HTTP POST Status = %d, content_length = %d",
 			esp_http_client_get_status_code(client),
-			esp_http_client_get_content_length(client));
+			(int)esp_http_client_get_content_length(client));
 		ESP_LOGI(TAG, "local_response_buffer=[%s]", local_response_buffer);
 	} else {
 		ESP_LOGE(TAG, "HTTP POST request failed: %s", esp_err_to_name(err));
