@@ -145,6 +145,13 @@ If the delay of automatic retransmission is not increased, it is considered as a
 See the data sheet for details on Enhanced ShockBurst.   
 
 # Throughput   
+spi_device_transmit is executed by the SPI driver and consumes 1tick of CPU time.   
+When DMA is enabled, SPI max_transfer_sz defaults to 4092(4K).   
+This indicates that 4092 bytes of data can be sent in 1tick(10 millsec).   
+Therefore, the SPI transmission potential of ESP-IDF is 400Kbytes/Sec.   
+This has a significant impact on the nRF24L01, which has a small maximum payload size.   
+
+Unfortunately, nRF24L01's maximum payload size is 32 bytes.
 1 tick (10 MillSec) is required to send payload and receive ack packet.   
 This has nothing to do with SPI bus speed.   
 The maximum payload size of nRF24L01 is 32 bytes.   
