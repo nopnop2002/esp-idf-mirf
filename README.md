@@ -154,5 +154,5 @@ RF data rate of nRF24L01 affects the radio range, but not the speed.
 # About Si24R1 clone   
 Si24R1 is marketed as a nRF24L01 compatible.   
 __Si24R1 clone cannot send and receive correctly.__   
-
-
+After purchasing the nRF24L01, be sure to check the markings on the chip.   
+Many suppliers sell Si24R1 as nRF24L01.   
