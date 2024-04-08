@@ -156,7 +156,7 @@ Unfortunately, nRF24L01's maximum payload size is 32 bytes.
 This has nothing to do with SPI bus speed.   
 The maximum payload size of nRF24L01 is 32 bytes.   
 The throughput of nRF24L01 is 3,200 bytes/sec.   
-RF data rate of nRF24L01 affects the radio range, but not the speed.   
+RF data rate of nRF24L01 affects the radio range, but not the throughput.   
 
 # About Si24R1 clone   
 Si24R1 is marketed as a nRF24L01 compatible.   
