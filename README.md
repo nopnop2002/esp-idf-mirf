@@ -152,7 +152,7 @@ Therefore, the SPI transmission potential of ESP-IDF is 400Kbytes/Sec.
 This has a significant impact on the nRF24L01, which has a small maximum payload size.   
 
 Unfortunately, nRF24L01's maximum payload size is 32 bytes.   
-1 tick (10 MillSec) is required to send payload and receive ack packet.   
+1 tick (10 millsec) is required to send payload and receive ack packet.   
 This has nothing to do with SPI bus speed.   
 The maximum payload size of nRF24L01 is 32 bytes.   
 The throughput of nRF24L01 is 3,200 bytes/sec.   
