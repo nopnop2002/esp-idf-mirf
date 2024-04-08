@@ -35,6 +35,7 @@ __Note for Channel__
 Channels range from 0 to 127.   
 The channel number of the sender and receiver must be the same.   
 Channel = 0 uses the frequency of 2.4000GHz, channel = 127 uses the frequency of 2.4127GHz.   
+The width of one channel is only 0.01GHz.   
 Using multiple radio node at the same time will almost always cause interference, even if you change channels.   
 
 # SPI BUS selection   
