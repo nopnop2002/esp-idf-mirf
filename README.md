@@ -6,6 +6,7 @@ I ported from [here](https://github.com/nopnop2002/Arduino-STM32-nRF24L01).
 
 ![Standard](https://user-images.githubusercontent.com/6020549/154830046-77f034cf-ce30-4cbc-838c-66734656cd8e.JPG)
 ![SMD-3](https://user-images.githubusercontent.com/6020549/154830127-366ee996-751d-48c0-879f-b201b1bb31f7.JPG)
+![SMD-Pinout](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/4566928d-7fb8-4569-b780-4a502b77cc34)
 
 # Software requirements
 ESP-IDF V4.4/V5.x.   
