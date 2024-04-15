@@ -101,7 +101,7 @@ I used [this](https://github.com/nopnop2002/Raspberry-Mirf) library on Raspberry
 
 # Using binary data
 When you work with binary data, you need to be careful about the endianness of integers and the internal format of real numbers.   
-The internal format of real numbers depends on the architecture of the MCU, so different architectures cannot communicate with each other.
+The internal format of real numbers depends on the architecture of the MCU, so different architectures cannot communicate with each other.   
 When sending and receiving real numbers, it is necessary to encode them into a CSV format string like this.   
 ```123.0,-123.0```
 
