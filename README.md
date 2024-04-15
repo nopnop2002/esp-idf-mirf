@@ -99,6 +99,11 @@ Nrf24_config(&dev, channel, payload);
 # Communicat with Raspberry Pi
 I used [this](https://github.com/nopnop2002/Raspberry-Mirf) library on Raspberry Pi.   
 
+# Using binary data
+When you work with binary data, you need to be careful about the endianness of integers and the internal format of real numbers.   
+The internal format of real numbers depends on the architecture of the MCU, so different architectures cannot communicate with each other.
+
+
 # Important
 When changing the settings of the nRF24L01, it is necessary to power cycle the nRF24L01 before executing.   
 Because nRF24L01 remembers the previous setting.   
