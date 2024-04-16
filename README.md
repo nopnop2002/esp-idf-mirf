@@ -103,7 +103,7 @@ I used [this](https://github.com/nopnop2002/Raspberry-Mirf) library on Raspberry
 nRF24L01 is not interested in the contents of the payload.   
 Therefore, nRF24L01 can send and receive binary data.   
 But the internal format of the binary data depends on the MCU architecture, so communication between different architectures is not possible.   
-When sending and receiving binary data, it is necessary to encode them into a CSV format string like this.   
+If you want to send or receive binary data between different architectures, you need to encode it into a CSV format string like this.   
 ```123,-123,1234.5,-1234.5```
 
 
