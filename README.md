@@ -105,6 +105,7 @@ Therefore, nRF24L01 can send and receive binary data.
 But the internal format of the binary data depends on the MCU architecture, so communication between different architectures is not possible.   
 If you want to send or receive binary data between different architectures, you need to encode it into a CSV format string like this.   
 ```123,-123,1234.5,-1234.5```
+nRF24L01 can send and receive up to 32 characters, but by adding an index to the sent data, it can send and receive 256 types of data.   
 
 
 # Important
