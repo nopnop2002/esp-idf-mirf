@@ -120,7 +120,7 @@ void sender(void *pvParameters)
 		vTaskDelay(1);
 		ESP_LOGI(pcTaskGetName(0), "Wait for sending.....");
 		if (Nrf24_isSend(&dev, 1000)) {
-			ESP_LOGI(pcTaskGetName(0),"Send success:%s", buf);
+			ESP_LOGI(pcTaskGetName(0),"Send success:%d [%s]", buf[0], &buf[1]);
 			index++;
 		} else {
 			ESP_LOGW(pcTaskGetName(0),"Send fail:");
