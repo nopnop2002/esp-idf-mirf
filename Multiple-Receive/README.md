@@ -1,7 +1,7 @@
 # Multiple Receive Example   
 The nRF24L01 has 6 receive data pipes(PTX1-PTX6).   
 In this library, the first datapipe(PTX1) is used for automatic ACK reception on transmission.   
-The second(PTX2) to sixth(PTX6) data pipes are used for data reception.   
+The second (PTX2) to sixth (PTX6) data pipes are used to transmit the payload.   
 Therefore, it is possible to receive from up to 5 senders simultaneously.
 
 ![MultiCast](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/14ac392c-fc93-43d9-9575-39696bbab59e)
