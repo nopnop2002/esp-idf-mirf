@@ -23,9 +23,11 @@ static const int SPI_Frequency = 4000000; // Stable even with a long jumper cabl
 //static const int SPI_Frequency = 8000000; // Requires a short jumper cable
 //static const int SPI_Frequency = 10000000; // Unstable even with a short jumper cable
 
-const char rf24_datarates[][8] = {"1Mbps", "2Mbps", "250Kbps"};
+//const char rf24_datarates[][8] = {"1Mbps", "2Mbps", "250Kbps"};
+char rf24_datarates[][8] = {"1Mbps", "2Mbps", "250Kbps"};
 const char rf24_crclength[][10] = {"Disabled", "8 bits", "16 bits"};
-const char rf24_pa_dbm[][8] = {"PA_MIN", "PA_LOW", "PA_HIGH", "PA_MAX"};
+//const char rf24_pa_dbm[][8] = {"PA_MIN", "PA_LOW", "PA_HIGH", "PA_MAX"};
+char rf24_pa_dbm[][8] = {"PA_MIN", "PA_LOW", "PA_HIGH", "PA_MAX"};
 
 void Nrf24_init(NRF24_t * dev)
 {
@@ -209,7 +211,12 @@ extern bool Nrf24_dataReady(NRF24_t * dev)
 {
 	// See note in getData() function - just checking RX_DR isn't good enough
 	uint8_t status = Nrf24_getStatus(dev);
-	if ( status & (1 << RX_DR) ) return 1;
+	//printf("Nrf24_dataReady status=0x%x\n", status);
+	if ( status & (1 << RX_DR) ) {
+		// Save status
+		dev->status = status;
+		return 1;
+	}
 	// We can short circuit on RX_DR, but if it's not set, we still need
 	// to check the FIFO for any pending packets
 	//return !Nrf24_rxFifoEmpty(dev);
@@ -218,8 +225,9 @@ extern bool Nrf24_dataReady(NRF24_t * dev)
 
 // Get pipe number for reading
 uint8_t Nrf24_getDataPipe(NRF24_t * dev) {
-	uint8_t status = Nrf24_getStatus(dev);
-	return ((status & 0x0E) >> 1);
+	//uint8_t status = Nrf24_getStatus(dev);
+	//printf("dev->status=0x%x\n",dev->status);
+	return ((dev->status & 0x0E) >> 1);
 }
 
 extern bool Nrf24_rxFifoEmpty(NRF24_t * dev)
@@ -546,6 +554,11 @@ uint8_t Nrf24_getDataRate(NRF24_t * dev)
 	return result;
 }
 
+char * Nrf24_getDataRateString(NRF24_t * dev)
+{
+	return rf24_datarates[Nrf24_getDataRate(dev)];
+}
+
 uint8_t Nrf24_getCRCLength(NRF24_t * dev)
 {
 	rf24_crclength_e result = RF24_CRC_DISABLED;
@@ -577,9 +590,24 @@ uint8_t Nrf24_getPALevel(NRF24_t * dev)
 	return (level);
 }
 
+char * Nrf24_getPALevelString(NRF24_t * dev)
+{
+	return rf24_pa_dbm[Nrf24_getPALevel(dev)];
+}
+
 uint8_t Nrf24_getRetransmitDelay(NRF24_t * dev)
 {
 	uint8_t value;
 	Nrf24_readRegister(dev, SETUP_RETR, &value, 1);
 	return (value >> 4);
+}
+
+uint8_t Nrf24_getChannle(NRF24_t * dev)
+{
+	return dev->channel;
+}
+
+uint8_t Nrf24_getPayload(NRF24_t * dev)
+{
+	return dev->payload;
 }

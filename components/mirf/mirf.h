@@ -10,6 +10,7 @@ typedef struct {
     uint8_t channel;//Channel 0 - 127 or 0 - 84 in the US.
     uint8_t payload;// Payload width in bytes default 16 max 32.
     spi_device_handle_t _SPIHandle;
+    uint8_t status;// Receive status
 } NRF24_t;
 
 /* Memory Map */
@@ -198,9 +199,13 @@ void      Nrf24_print_status(uint8_t status);
 void      Nrf24_print_address_register(NRF24_t * dev, const char* name, uint8_t reg, uint8_t qty);
 void      Nrf24_print_byte_register(NRF24_t * dev, const char* name, uint8_t reg, uint8_t qty);
 uint8_t   Nrf24_getDataRate(NRF24_t * dev);
+char *    Nrf24_getDataRateString(NRF24_t * dev);
 uint8_t   Nrf24_getCRCLength(NRF24_t * dev);
 uint8_t   Nrf24_getPALevel(NRF24_t * dev);
+char *    Nrf24_getPALevelString(NRF24_t * dev);
 uint8_t   Nrf24_getRetransmitDelay(NRF24_t * dev);
+uint8_t   Nrf24_getChannle(NRF24_t * dev);
+uint8_t   Nrf24_getPayload(NRF24_t * dev);
 
 #endif /* MAIN_MIRF_H_ */
 
