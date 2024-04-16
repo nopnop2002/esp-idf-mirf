@@ -20,7 +20,8 @@ Run this sketch.
 ArduinoCode\Multiple-Receive/EmitterX   
 
 
-# ScreenShot    
+# Receiver screenshot    
 
-This is received from 3 units at the same time.   
-![ScreenShot](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/e679eb1b-8c67-4998-9fa3-1d4e5627a4b4)
+This is received from 5 units at the same time.   
+![ScreenShot](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/d763f44f-9ca2-4ed8-a841-90272aa18032)
+
