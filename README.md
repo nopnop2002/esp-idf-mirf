@@ -100,10 +100,11 @@ Nrf24_config(&dev, channel, payload);
 I used [this](https://github.com/nopnop2002/Raspberry-Mirf) library on Raspberry Pi.   
 
 # Using binary data
-When you work with binary data, you need to be careful about the endianness of integers and the internal format of real numbers.   
-The internal format of real numbers depends on the architecture of the MCU, so different architectures cannot communicate with each other.   
-When sending and receiving real numbers, it is necessary to encode them into a CSV format string like this.   
-```123.0,-123.0```
+nRF24L01 is not interested in the contents of the payload.   
+Therefore, nRF24L01 can send and receive binary data.   
+But the internal format of the binary data depends on the MCU architecture, so communication between different architectures is not possible.
+When sending and receiving binary data, it is necessary to encode them into a CSV format string like this.   
+```123,-123,1234.5,-1234.5```
 
 
 # Important
