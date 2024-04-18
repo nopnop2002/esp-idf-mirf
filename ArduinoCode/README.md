@@ -13,8 +13,10 @@
 |CSN(*2)|--|D9|IO9|IO16|(*3)|
 
 (*1)   
-Since the 3.3V output current capacity of UNO compatible devices is smaller than the official product, it may not work properly if 3.3V is supplied directly from the board.   
-If you use an external regulator to convert from 5V to 3.3V and supply it to nRF24L01, it will operate stably.   
+UNO's 3.3V output can only supply 50mA.   
+In addition, the output current capacity of UNO-compatible devices is smaller than that of official products.   
+___So nRF24L01 may not work normally when supplied from the on-board 3v3___.   
+nRF24L01+PA+LNA(nRF24L01+RFX24C01) needs 115mA.   
 
 
 (*2)   
