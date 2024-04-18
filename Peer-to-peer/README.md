@@ -7,6 +7,7 @@ One-way communication for transmission or reception.
 
 ![config-app](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/73e39ee3-9f25-44de-93d4-b46f70ce4c14)
 
+# Parameter Setting
 The following parameters must match on the sender and receiver.   
 
 ## Payload size & channel
