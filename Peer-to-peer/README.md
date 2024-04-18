@@ -35,6 +35,11 @@ The following parameters must match on the sender and receiver.
 |(Send Data)|->|->|->|->|->|(Get Data)|Data to Receiver|
 ||(Get Ack)|<-|<-|<-|<-|(Send Ack)|Ack to Emitter|
 
+
+# Screen Shot
+![Peer-to-peer](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/f0a7a3f8-692b-4890-a0eb-97244c4e64db)
+
+
 # Communicat with Arduino Environment   
 Run this sketch.   
 ArduinoCode\Peer-to-peer\StringTest   
