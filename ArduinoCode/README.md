@@ -7,10 +7,10 @@
 |VCC|--|3.3V|3.3V|3.3V|(*1)|
 |GND|--|GND|GND|GND||
 |MISO|--|D12|IO50|IO12||
-|MOSI|--|D11|IO51|IO13|(*2)|
-|SCK|--|D13|IO52|IO14|(*2)|
-|CE|--|D10|IO10|IO15|(*2)(*3)|
-|CSN|--|D9|IO9|IO16|(*2)(*3)|
+|MOSI(*2)|--|D11|IO51|IO13||
+|SCK(*2)|--|D13|IO52|IO14||
+|CE(*2)|--|D10|IO10|IO15|(*3)|
+|CSN(*2)|--|D9|IO9|IO16|(*3)|
 
 (*1)   
 Since the 3.3V output current capacity of UNO compatible devices is smaller than the official product, it may not work properly if 3.3V is supplied directly from the board.   
