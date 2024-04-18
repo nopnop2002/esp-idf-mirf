@@ -17,15 +17,15 @@ void setup()
   Serial.begin(115200);
   Mirf.spi = &MirfHardwareSpi;
   Mirf.init();
-  //Set your own address (sender address) using 5 characters
-  Mirf.payload = sizeof(mydata.value);
-  Mirf.channel = 90;              //Set the channel used
+  Mirf.payload = sizeof(mydata.value); // Set the payload size
+  Mirf.channel = 90;                   //Set the channel used
   Mirf.config();
 
-  //Set your own address using 5 characters
+  // Set my own address to RX_ADDR_P1
   Mirf.setRADDR((byte *)"ABCDE");
 
-  //Set the receiver address using 5 characters
+  // Set destination address to TX_ADDR
+  // Set ACK waiting address to RX_ADDR_P0
   Mirf.setTADDR((byte *)"FGHIJ");
 
   // Print current settings
@@ -46,12 +46,12 @@ void loop()
   unsigned long startMillis = millis();
   Mirf.send(mydata.value);
   Serial.print("Wait for sending.....");
-  //Test you send successfully
+  // Verify send was successful
   if (Mirf.isSend()) {
     Serial.print("Send success:");
     Serial.println(mydata.now_time);
 
-    //Wait for response
+    // Wait for received data
     Serial.print("Wait for response.....");
     while(1) {
       if (Mirf.dataReady()) break;

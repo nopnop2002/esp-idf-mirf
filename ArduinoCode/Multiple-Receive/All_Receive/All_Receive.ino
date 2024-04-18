@@ -21,14 +21,22 @@ void setup()
   Mirf.channel = 90;                   // Set the used channel
   Mirf.config();
 
-  //Set your own address using 5 characters
+  // Set my own address to RX_ADDR_P1
   Mirf.setRADDR((byte *)"1RECV");
-
-  //Add your own address using 1 characters
+  // Add my own address to RX_ADDR_P2
   Mirf.addRADDR(2, '2'); // 2RECV
+  // Add my own address to RX_ADDR_P3
   Mirf.addRADDR(3, '3'); // 3RECV
+  // Add my own address to RX_ADDR_P4
   Mirf.addRADDR(4, '4'); // 4RECV
+  // Add my own address to RX_ADDR_P5
   Mirf.addRADDR(5, '5'); // 5RECV
+
+  // Clear RX FiFo
+  while(1) {
+    if (Mirf.dataReady() == false) break;
+    Mirf.getData(mydata.value);
+  }
 
   // Print current settings
   printf_begin();
@@ -38,7 +46,7 @@ void setup()
 
 void loop()
 {
-  //When the program is received, the received data is output from the serial port
+  // Wait for received data
   if (Mirf.dataReady()) {
     uint8_t pipe = Mirf.getDataPipe();
     Mirf.getData(mydata.value);

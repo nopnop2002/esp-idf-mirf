@@ -26,30 +26,29 @@ void setup()
   Mirf.payload = sizeof(mydata.value); // Set the payload size
   Mirf.channel = 90;                   // Set the channel used
   Mirf.config();
-  Serial.print("PackSize=");
-  Serial.println(PackSize);
   
-  //Set the receiver address using 5 characters
+  // Set destination address to TX_ADDR
+  // Set ACK waiting address to RX_ADDR_P0
   Mirf.setTADDR((byte *)"FGHIJ");
-
 }
 
 void loop()
 {
-  static int index = 0x41; // 'A'
-  mydata.pack.index = index;
+  static int payload = 0x41; // 'A'
+  mydata.pack.index = payload - 0x41; // 0
   for (int i=0;i<30;i++) {
-    mydata.pack.payload[i] = index;
+    mydata.pack.payload[i] = payload;
   }
   mydata.pack.payload[30] = 0;
   Mirf.send(mydata.value);
   Serial.print("Wait for sending.....");
-  //Test you send successfully
+  // Verify send was successfuly
   if (Mirf.isSend()) {
-    Serial.println("Send success:");
-    index++;
-    if(index == 0x7e) {
-      index = 0x41;
+    Serial.print("Send success:");
+    Serial.println(mydata.pack.index);
+    payload++;
+    if(payload == 0x7e) {
+      payload = 0x41;
     }
   } else {
     Serial.println("Send fail:");
