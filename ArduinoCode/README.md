@@ -2,15 +2,15 @@
 
 ### Wirering
 
-|nRF24L01||ATMega328||
-|:-:|:-:|:-:|:-:|
-|VCC|--|3.3V|(*1)|
-|GND|--|GND||
-|MISO|--|D12||
-|MOSI|--|D11|(*2)|
-|SCK|--|D13|(*2)|
-|CE|--|D10|(*2)(*3)|
-|CSN|--|D9|(*2)(*3)|
+|nRF24L01||ATMega328|ATMega2560|ESP8266||
+|:-:|:-:|:-:|:-:|:-:|:-:|
+|VCC|--|3.3V|3.3V|3.3V|(*1)|
+|GND|--|GND||GND|GND||
+|MISO|--|D12|IO50|IO12||
+|MOSI|--|D11|IO51|IO13|(*2)|
+|SCK|--|D13|IO52|IO14|(*2)|
+|CE|--|D10|IO10|IO15|(*2)(*3)|
+|CSN|--|D9|IO9|IO16|(*2)(*3)|
 
 (*1)   
 Since the 3.3V output current capacity of UNO compatible devices is smaller than the official product, it may not work properly if 3.3V is supplied directly from the board.   
