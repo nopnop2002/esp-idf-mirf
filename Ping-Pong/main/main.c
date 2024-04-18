@@ -50,14 +50,14 @@ void primary(void *pvParameters)
 	uint8_t channel = CONFIG_RADIO_CHANNEL;
 	Nrf24_config(&dev, channel, payload);
 
-	//Set own address using 5 characters
+	// Set my own address using 5 characters
 	esp_err_t ret = Nrf24_setRADDR(&dev, (uint8_t *)"ABCDE");
 	if (ret != ESP_OK) {
 		ESP_LOGE(pcTaskGetName(0), "nrf24l01 not installed");
 		while(1) { vTaskDelay(1); }
 	}
 
-	//Set the receiver address using 5 characters
+	// Set destination address using 5 characters
 	ret = Nrf24_setTADDR(&dev, (uint8_t *)"FGHIJ");
 	if (ret != ESP_OK) {
 		ESP_LOGE(pcTaskGetName(0), "nrf24l01 not installed");
@@ -68,7 +68,7 @@ void primary(void *pvParameters)
 	AdvancedSettings(&dev);
 #endif // CONFIG_ADVANCED
 
-	//Print settings
+	// Print settings
 	Nrf24_printDetails(&dev);
 
 	uint8_t buf[32];
@@ -81,15 +81,23 @@ void primary(void *pvParameters)
 		if (Nrf24_isSend(&dev, 1000)) {
 			ESP_LOGI(pcTaskGetName(0),"Send success:%s", buf);
 
-			//Wait for response
+			// Wait for response
 			//ESP_LOGI(pcTaskGetName(0), "Wait for response.....");
-			while(1) {
-				if (Nrf24_dataReady(&dev)) break;
+			bool received = false;
+			for(int i=0;i<100;i++) {
+				if (Nrf24_dataReady(&dev)) {
+					received = true;
+					break;
+				}
 				vTaskDelay(1);
 			}
-			Nrf24_getData(&dev, buf);
-			TickType_t diffTick = xTaskGetTickCount() - nowTick;
-			ESP_LOGI(pcTaskGetName(0), "Got response:[%s] Elapsed:%"PRIu32" ticks", buf, diffTick);
+			if (received) {
+				Nrf24_getData(&dev, buf);
+				TickType_t diffTick = xTaskGetTickCount() - nowTick;
+				ESP_LOGI(pcTaskGetName(0), "Got response:[%s] Elapsed:%"PRIu32" ticks", buf, diffTick);
+			} else {
+				ESP_LOGW(pcTaskGetName(0), "No response");
+			}
 
 		} else {
 			ESP_LOGW(pcTaskGetName(0),"Send fail:");
@@ -109,15 +117,15 @@ void secondary(void *pvParameters)
 	uint8_t channel = CONFIG_RADIO_CHANNEL;
 	Nrf24_config(&dev, channel, payload);
 
-	//Set own address using 5 characters
-	esp_err_t ret = Nrf24_setRADDR(&dev, (uint8_t *)"ABCDE");
+	// Set my own address using 5 characters
+	esp_err_t ret = Nrf24_setRADDR(&dev, (uint8_t *)"FGHIJ");
 	if (ret != ESP_OK) {
 		ESP_LOGE(pcTaskGetName(0), "nrf24l01 not installed");
 		while(1) { vTaskDelay(1); }
 	}
 
-	//Set the receiver address using 5 characters
-	ret = Nrf24_setTADDR(&dev, (uint8_t *)"FGHIJ");
+	// Set destination address using 5 characters
+	ret = Nrf24_setTADDR(&dev, (uint8_t *)"ABCDE");
 	if (ret != ESP_OK) {
 		ESP_LOGE(pcTaskGetName(0), "nrf24l01 not installed");
 		while(1) { vTaskDelay(1); }
@@ -127,7 +135,7 @@ void secondary(void *pvParameters)
 	AdvancedSettings(&dev);
 #endif // CONFIG_ADVANCED
 
-	//Print settings
+	// Print settings
 	Nrf24_printDetails(&dev);
 	ESP_LOGI(pcTaskGetName(0), "Listening...");
 
@@ -140,7 +148,7 @@ void secondary(void *pvParameters)
 	}
 
 	while(1) {
-		//When the program is received, the received data is output from the serial port
+		// Wait for received data
 		if (Nrf24_dataReady(&dev)) {
 			Nrf24_getData(&dev, buf);
 			ESP_LOGI(pcTaskGetName(0), "Got data:%s", buf);

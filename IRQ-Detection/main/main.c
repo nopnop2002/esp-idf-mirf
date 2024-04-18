@@ -65,7 +65,7 @@ void receiver(void *pvParameters)
 	uint8_t channel = CONFIG_RADIO_CHANNEL;
 	Nrf24_config(&dev, channel, payload);
 
-	//Set own address using 5 characters
+	// Set my own address using 5 characters
 	esp_err_t ret = Nrf24_setRADDR(&dev, (uint8_t *)"FGHIJ");
 	if (ret != ESP_OK) {
 		ESP_LOGE(pcTaskGetName(0), "nrf24l01 not installed");
@@ -76,7 +76,7 @@ void receiver(void *pvParameters)
 	AdvancedSettings(&dev);
 #endif // CONFIG_ADVANCED
 
-	//Print settings
+	// Print settings
 	Nrf24_printDetails(&dev);
 	ESP_LOGI(pcTaskGetName(0), "Listening...");
 
@@ -112,7 +112,7 @@ void sender(void *pvParameters)
 	uint8_t channel = CONFIG_RADIO_CHANNEL;
 	Nrf24_config(&dev, channel, payload);
 
-	//Set the receiver address using 5 characters
+	// Set destination address using 5 characters
 	esp_err_t ret = Nrf24_setTADDR(&dev, (uint8_t *)"FGHIJ");
 	if (ret != ESP_OK) {
 		ESP_LOGE(pcTaskGetName(0), "nrf24l01 not installed");
@@ -136,6 +136,7 @@ void sender(void *pvParameters)
 		// Wait for assertion of TX transmit retry over(MAX_RT)
 		if(xQueueReceive(gpio_evt_queue, &io_num, 1000/portTICK_PERIOD_MS)) {
 			ESP_LOGW(pcTaskGetName(0),"Send fail:");
+
 		// Assert does not occur after successful transmission
 		} else {
 			ESP_LOGD(pcTaskGetName(0), "GPIO[%"PRIu32"] intr, val: %d", io_num, gpio_get_level(io_num));

@@ -221,7 +221,7 @@ void receiver(void *pvParameters)
 	uint8_t channel = CONFIG_RADIO_CHANNEL;
 	Nrf24_config(&dev, channel, payload);
 
-	//Set own address
+	// Set my own address using 5 characters
 	esp_err_t ret = Nrf24_setRADDR(&dev, (uint8_t *)"FGHIJ");
 	if (ret != ESP_OK) {
 		ESP_LOGE(pcTaskGetName(0), "nrf24l01 not installed");
@@ -232,7 +232,7 @@ void receiver(void *pvParameters)
 	AdvancedSettings(&dev);
 #endif // CONFIG_ADVANCED
 
-	//Print settings
+	// Print settings
 	Nrf24_printDetails(&dev);
 
 	uint8_t buf[xItemSize];
@@ -244,7 +244,7 @@ void receiver(void *pvParameters)
 	}
 
 	while(1) {
-		//When the program is received, the received data is output from the serial port
+		// Wait for received data
 		if (Nrf24_dataReady(&dev)) {
 			Nrf24_getData(&dev, buf);
 			ESP_LOGI(pcTaskGetName(NULL), "Nrf24_getData buf=[%.*s]",payload, buf);
@@ -275,7 +275,7 @@ void sender(void *pvParameters)
 	uint8_t channel = CONFIG_RADIO_CHANNEL;
 	Nrf24_config(&dev, channel, payload);
 
-	//Set the receiver address using 5 characters
+	// Set destination address using 5 characters
 	esp_err_t ret = Nrf24_setTADDR(&dev, (uint8_t *)"FGHIJ");
 	if (ret != ESP_OK) {
 		ESP_LOGE(pcTaskGetName(0), "nrf24l01 not installed");
@@ -286,7 +286,7 @@ void sender(void *pvParameters)
 	AdvancedSettings(&dev);
 #endif // CONFIG_ADVANCED
 
-	//Print settings
+	// Print settings
 	Nrf24_printDetails(&dev);
 
 	ESP_LOGI(pcTaskGetName(0), "Wait for mqtt...");
