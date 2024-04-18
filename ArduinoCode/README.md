@@ -5,7 +5,7 @@
 |nRF24L01||ATMega328|ATMega2560|ESP8266||
 |:-:|:-:|:-:|:-:|:-:|:-:|
 |VCC|--|3.3V|3.3V|3.3V|(*1)|
-|GND|--|GND||GND|GND||
+|GND|--|GND|GND|GND||
 |MISO|--|D12|IO50|IO12||
 |MOSI|--|D11|IO51|IO13|(*2)|
 |SCK|--|D13|IO52|IO14|(*2)|
