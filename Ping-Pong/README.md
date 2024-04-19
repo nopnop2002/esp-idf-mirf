@@ -19,6 +19,15 @@ In the secondary, sent back received data.
 |||(Get Data)|<-|(Send Data)|||Data to Primary|
 |||(Send Ack)|->|->|(Get Ack)||Ack to Secondary|
 
+# Setting Register
+The underlined address match on the sending and receiving sides.
+
+### Primary Register
+![Register-Primary](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/fa2929cb-13cd-4aea-8022-db92d427bf18)
+
+### Secondary Register
+![Register-Secondary](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/b30bc789-0802-4c67-8586-67ca52a2051c)
+
 
 # Communicat with Arduino Environment   
 Run this sketch.   
