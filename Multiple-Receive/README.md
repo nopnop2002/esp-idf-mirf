@@ -25,6 +25,11 @@ This example receive from ```1RECV/2RECV/3RECV/4RECV/5RECV```.
 
 ![config-app](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/e289c28c-72e5-4490-9db1-40163c9db5a0)
 
+# Receiver Register
+RX_ADDR_P1 is 0x3152454356.   
+RX_ADDR_P2 will be 0x3252454356. The same value is used for the last 4 bytes.
+![Register-Receiver](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/e8e0812a-8fa2-43ae-a2be-fd346c2e6da2)
+
 # Communicat with Arduino Environment   
 Run this sketch.   
 ArduinoCode\Multiple-Receive/EmitterX   
