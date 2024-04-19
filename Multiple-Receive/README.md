@@ -6,17 +6,17 @@ Therefore, it is possible to receive from a maximum of five transmitting sides.
 This example receive from ```1RECV/2RECV/3RECV/4RECV/5RECV```.   
 
 # nRF24L01 Address Register Setting
-|Emitter|||||Receiver||||||
+|Sender|||||Receiver||||||
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 |#1|TX_ADDR<br>"1RECV"|RX_ADDR_P0<br>"1RECV"|RX_ADDR_P1<br>NONE||TX_ADDR<br>NONE|RX_ADDR_P0<br>NONE|RX_ADDR_P1<br>"1RECV"|RX_ADDR_P2<br>"2RECV"|RX_ADDR_P5<br>"5RECV"||
 ||(Send Data)|->|->|->|->|->|(Get Data)|||Data to Receiver|
-|||(Get Ack)|<-|<-|<-|<-|(Send Ack)|||Ack to Emitter|
+|||(Get Ack)|<-|<-|<-|<-|(Send Ack)|||Ack to Sender|
 |#2|TX_ADDR<br>"2RECV"|RX_ADDR_P0<br>"2RECV"|RX_ADDR_P1<br>NONE||TX_ADDR<br>NONE|RX_ADDR_P0<br>NONE|RX_ADDR_P1<br>"1RECV"|RX_ADDR_P2<br>"2RECV"|RX_ADDR_P5<br>"5RECV"||
 ||(Send Data)|->|->|->|->|->|->|(Get Data)||Data to Receiver|
-|||(Get Ack)|<-|<-|<-|<-|<-|(Send Ack)||Ack to Emitter|
+|||(Get Ack)|<-|<-|<-|<-|<-|(Send Ack)||Ack to Sender|
 |#5|TX_ADDR<br>"5RECV"|RX_ADDR_P0<br>"5RECV"|RX_ADDR_P1<br>NONE||TX_ADDR<br>NONE|RX_ADDR_P0<br>NONE|RX_ADDR_P1<br>"1RECV"|RX_ADDR_P2<br>"2RECV"|RX_ADDR_P5<br>"5RECV"||
 ||(Send Data)|->|->|->|->|->|->|->|(Get Data)|Data to Receiver|
-|||(Get Ack)|<-|<-|<-|<-|<-|<-|(Send Ack)|Ack to Emitter|
+|||(Get Ack)|<-|<-|<-|<-|<-|<-|(Send Ack)|Ack to Sender|
 
 
 # Configuration   
