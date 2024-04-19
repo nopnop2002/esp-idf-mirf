@@ -29,12 +29,21 @@ The following parameters must match on the sender and receiver.
 ```
 
 # nRF24L01 Address Register Setting
-|Emitter||||Receiver||||
+|Sender||||Receiver||||
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 |TX_ADDR<br>"FGHIJ"|RX_ADDR_P0<br>"FGHIJ"|RX_ADDR_P1<br>NONE||TX_ADDR<br>NONE|RX_ADDR_P0<br>NONE|RX_ADDR_P1<br>"FGHIJ"||
 |(Send Data)|->|->|->|->|->|(Get Data)|Data to Receiver|
-||(Get Ack)|<-|<-|<-|<-|(Send Ack)|Ack to Emitter|
+||(Get Ack)|<-|<-|<-|<-|(Send Ack)|Ack to Sender|
 
+# Setting Register
+The underlined address match on the sending and receiving sides.   
+No other addresses are used.   
+
+### Sender Register
+![Register-Sender](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/b534f7b9-f3b5-4bb3-a065-716dc81f5888)
+
+### Receiver Register
+![Register-Receiver](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/4025b2c5-24fe-4fc2-8e9c-8ab38d301149)
 
 # Screen Shot
 ![Peer-to-peer](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/f0a7a3f8-692b-4890-a0eb-97244c4e64db)
