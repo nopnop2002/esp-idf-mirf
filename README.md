@@ -156,6 +156,10 @@ If the delay of automatic retransmission is not increased, it is considered as a
 
 See the data sheet for details on Enhanced ShockBurst.   
 
+# About antena
+Standard PCB antenna is designed for 2MBps frequency.   
+If you want to change the frequency, you need to use an IPEX antenna type module and use an IPEX antenna that matches the frequency.   
+
 # Throughput   
 spi_device_transmit is executed by the SPI driver and consumes 1tick of CPU time.   
 When DMA is enabled, SPI max_transfer_sz defaults to 4092(4K).   
