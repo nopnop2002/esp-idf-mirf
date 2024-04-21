@@ -121,7 +121,7 @@ nRF24L01 has "Enhanced ShockBurst" features.
 |ESP32||nRF24L01[PTX]||nRF24L01[PRX]||ESP32|
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 |ESP32|-->|nRF24L01|||||
-|||nRF24L01|--(Payload)-->|nRF24L01|||||
+|||nRF24L01|--(Payload Packet)-->|nRF24L01|||||
 ||||wait 250uS||||||
 |||nRF24L01|<--(Ack Packet)--|nRF24L01|||||
 |ESP32|<--|nRF24L01|||||||
@@ -132,11 +132,11 @@ PTX waits for an ACK packet for 250uS and retransmits 3 times.
 |ESP32||nRF24L01[PTX]||nRF24L01[PRX]||ESP32|
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 |ESP32|-->|nRF24L01|||||
-|||nRF24L01|--(Payload)-->|nRF24L01|||||
+|||nRF24L01|--(Payload Packet)-->|nRF24L01|||||
 ||||wait 250uS||||||
-|||nRF24L01|--(Payload)-->|nRF24L01|||||
+|||nRF24L01|--(Payload Packet)-->|nRF24L01|||||
 ||||wait 250uS||||||
-|||nRF24L01|--(Payload)-->|nRF24L01|||||
+|||nRF24L01|--(Payload Packet)-->|nRF24L01|||||
 ||||wait 250uS||||||
 |ESP32|<--|nRF24L01|||||||
 
@@ -148,7 +148,7 @@ If the delay of automatic retransmission is not increased, it is considered as a
 |ESP32||nRF24L01[PTX]||nRF24L01[PRX]||ESP32|
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 |ESP32|-->|nRF24L01|||||
-|||nRF24L01|--(Payload)-->|nRF24L01|||||
+|||nRF24L01|--(Payload Packet)-->|nRF24L01|||||
 ||||Over 250uS||||||
 |||nRF24L01|<--(Ack Packet)--|nRF24L01|||||
 |ESP32|<--|nRF24L01|||||||
