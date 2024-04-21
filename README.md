@@ -157,8 +157,8 @@ If the delay of automatic retransmission is not increased, it is considered as a
 See the data sheet for details on Enhanced ShockBurst.   
 
 # About antena
-Standard PCB antenna is designed for 2MBps frequency.   
-If you want to change the frequency, you need to use an IPEX antenna type module and use an IPEX antenna that matches the frequency.   
+Standard PCB antenna is designed for 2MBps RF Data Ratio.   
+If you want to change the RF Data Ratio , you need to use an IPEX antenna type module and use an IPEX antenna that matches the frequency.   
 
 ![nRF24L01+RFX2401C-1](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/2fe40289-c16b-426d-b127-00de1ee16758)
 
