@@ -156,14 +156,6 @@ If the delay of automatic retransmission is not increased, it is considered as a
 
 See the data sheet for details on Enhanced ShockBurst.   
 
-# About antena
-Standard PCB antenna is designed for 2MBps RF Data Ratio.   
-If you want to change the RF Data Ratio , you need to use an IPEX antenna type module and use an IPEX antenna that matches the frequency.   
-
-![nRF24L01+RFX2401C-1](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/2fe40289-c16b-426d-b127-00de1ee16758)
-
-Remove the jumper here and replace it with the lower land to enable the IPX connector.
-![nRF24L01+RFX2401C-2](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/2f9af44c-d85f-4591-823c-41c90da1b1b1)
 
 # Throughput   
 spi_device_transmit is executed by the SPI driver and consumes 1tick of CPU time.   
