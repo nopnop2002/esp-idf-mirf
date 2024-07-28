@@ -27,14 +27,17 @@ idf.py flash
 When using with PlatformIO, the paragraph above is not relevant. Within PlatfromIO the files are automatically downloaded.
 
 Add in the platform .ini file
-```lib_deps = https://github.com/nopnop2002/esp-idf-mirf
+```
+lib_deps = https://github.com/nopnop2002/esp-idf-mirf
 ```
 Optionally a specific tag can be added. At this moment no tag is available.
-```https://github.com/nopnop2002/esp-idf-mirf#v1.0
+```
+https://github.com/nopnop2002/esp-idf-mirf#v1.0
 ```
 
 Add to the CMakeList.txt in the root of the project
-```get_filename_component(configName "${CMAKE_BINARY_DIR}" NAME)
+```
+get_filename_component(configName "${CMAKE_BINARY_DIR}" NAME)
 list(APPEND EXTRA_COMPONENT_DIRS "${CMAKE_SOURCE_DIR}/.pio/libdeps/${configName}/esp-idf-mirf/components/mirf")
 ```
 
