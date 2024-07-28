@@ -23,6 +23,24 @@ idf.py menuconfig
 idf.py flash
 ```
 
+# use with PlatformIO
+When using with PlatformIO, the paragraph above is not relevant. Within PlatfromIO the files are automatically downloaded.
+
+Add in the platform .ini file
+```lib_deps = https://github.com/nopnop2002/esp-idf-mirf
+```
+Optionally a specific tag can be added. At this moment no tag is available.
+```https://github.com/nopnop2002/esp-idf-mirf#v1.0
+```
+
+Add to the CMakeList.txt in the root of the project
+```get_filename_component(configName "${CMAKE_BINARY_DIR}" NAME)
+list(APPEND EXTRA_COMPONENT_DIRS "${CMAKE_SOURCE_DIR}/.pio/libdeps/${configName}/esp-idf-mirf/components/mirf")
+```
+
+When setup correctly, PlatformIO will download the library automaticlly during build. From that moment you can include ```#include "mirf.h"```, run menuconfig and use the library.
+In case you are experimenting with the build environment, it sometimes helps to solve errors to do a full clean within PlatformIO. This deletes all downloaded files. 
+
 __Note for ESP32C3__   
 For some reason, there are development boards that cannot use GPIO06, GPIO08, GPIO09, GPIO19 for SPI clock pins.   
 According to the ESP32C3 specifications, these pins can also be used as SPI clocks.   
