@@ -42,7 +42,7 @@ list(APPEND EXTRA_COMPONENT_DIRS "${CMAKE_SOURCE_DIR}/.pio/libdeps/${configName}
 ```
 
 When setup correctly, PlatformIO will download the library automaticlly during build. From that moment you can include ```#include "mirf.h"```, run menuconfig and use the library.
-In case you are experimenting with the build environment, it sometimes helps to solve errors to do a full clean within PlatformIO. This deletes all downloaded files. 
+In case you are experimenting with the build environment, it sometimes helps to do a full clean within PlatformIO when faced with errors . This deletes all downloaded files. 
 
 __Note for ESP32C3__   
 For some reason, there are development boards that cannot use GPIO06, GPIO08, GPIO09, GPIO19 for SPI clock pins.   
