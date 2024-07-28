@@ -5,7 +5,7 @@
   "frameworks": "espidf",
   "platforms": "*",
   "build": {
-    "srcFilter": "-<*> +<components/mirf>",
+    "srcFilter": "-<*> +<components/mirf/*.c>",
     "flags": [
       "-I ./components/mirf/"
     ]
