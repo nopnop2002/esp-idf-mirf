@@ -1,0 +1,13 @@
+{
+  "name": "esp-idf-mirf",
+  "version": "1.0.0",
+  "description": "The library provides basic control of the Nordic nRF24L01/nRF24L01+ RF modules.",
+  "frameworks": "espidf",
+  "platforms": "*",
+  "build": {
+    "srcFilter": "+<*> -<components/mirf>",
+    "flags": [
+      "-I ./components/mirf/"
+    ]
+  }
+}
