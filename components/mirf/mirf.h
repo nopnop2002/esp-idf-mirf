@@ -3,6 +3,10 @@
 
 #include "driver/spi_master.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct {
     uint8_t PTX;  //In sending mode.
     uint8_t cePin;// CE Pin controls RX / TX, default 8.
@@ -206,6 +210,10 @@ char *    Nrf24_getPALevelString(NRF24_t * dev);
 uint8_t   Nrf24_getRetransmitDelay(NRF24_t * dev);
 uint8_t   Nrf24_getChannle(NRF24_t * dev);
 uint8_t   Nrf24_getPayload(NRF24_t * dev);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* MAIN_MIRF_H_ */
 
