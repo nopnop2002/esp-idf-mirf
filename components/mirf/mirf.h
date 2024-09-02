@@ -113,7 +113,7 @@ typedef struct {
 /* Device addrees length:3~5 bytes */
 #define mirf_ADDR_LEN    5
 
-/* 
+/*
  enable interrupt caused by RX_DR.
  enable interrupt caused by TX_DS.
  enable interrupt caused by MAX_RT.

@@ -9,6 +9,13 @@ menu "nRF24L01 Configuration"
 		default 19 if IDF_TARGET_ESP32C3
 		default 30 if IDF_TARGET_ESP32C6
 
+	config SPI_FREQUENCY
+		int "SPI Frenquency"
+		range 4000000 10000000
+		default 4000000
+		help
+			SPI Frenquency in Hz.
+
 	config RADIO_CHANNEL
 		int "Channel number"
 		range 0 127
@@ -127,4 +134,4 @@ menu "nRF24L01 Configuration"
 			Set Auto Retransmit Delay.
 			Delay = value * 250us.
 
-endmenu 
+endmenu

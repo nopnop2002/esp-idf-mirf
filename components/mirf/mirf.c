@@ -18,20 +18,14 @@
 #define HOST_ID SPI3_HOST
 #endif
 
-static const int SPI_Frequency = 4000000; // Stable even with a long jumper cable
-//static const int SPI_Frequency = 6000000;
-//static const int SPI_Frequency = 8000000; // Requires a short jumper cable
-//static const int SPI_Frequency = 10000000; // Unstable even with a short jumper cable
-
-//const char rf24_datarates[][8] = {"1Mbps", "2Mbps", "250Kbps"};
 char rf24_datarates[][8] = {"1Mbps", "2Mbps", "250Kbps"};
 const char rf24_crclength[][10] = {"Disabled", "8 bits", "16 bits"};
-//const char rf24_pa_dbm[][8] = {"PA_MIN", "PA_LOW", "PA_HIGH", "PA_MAX"};
 char rf24_pa_dbm[][8] = {"PA_MIN", "PA_LOW", "PA_HIGH", "PA_MAX"};
 
 void Nrf24_init(NRF24_t * dev)
 {
 	esp_err_t ret;
+	spi_device_handle_t handle;
 
 	ESP_LOGI(TAG, "CONFIG_MISO_GPIO=%d", CONFIG_MISO_GPIO);
 	ESP_LOGI(TAG, "CONFIG_MOSI_GPIO=%d", CONFIG_MOSI_GPIO);
@@ -39,12 +33,10 @@ void Nrf24_init(NRF24_t * dev)
 	ESP_LOGI(TAG, "CONFIG_CE_GPIO=%d", CONFIG_CE_GPIO);
 	ESP_LOGI(TAG, "CONFIG_CSN_GPIO=%d", CONFIG_CSN_GPIO);
 
-	//gpio_pad_select_gpio(CONFIG_CE_GPIO);
 	gpio_reset_pin(CONFIG_CE_GPIO);
 	gpio_set_direction(CONFIG_CE_GPIO, GPIO_MODE_OUTPUT);
 	gpio_set_level(CONFIG_CE_GPIO, 0);
 
-	//gpio_pad_select_gpio(CONFIG_CSN_GPIO);
 	gpio_reset_pin(CONFIG_CSN_GPIO);
 	gpio_set_direction(CONFIG_CSN_GPIO, GPIO_MODE_OUTPUT);
 	gpio_set_level(CONFIG_CSN_GPIO, 1);
@@ -57,33 +49,33 @@ void Nrf24_init(NRF24_t * dev)
 		.quadhd_io_num = -1
 	};
 
-	ret = spi_bus_initialize( HOST_ID, &spi_bus_config, SPI_DMA_CH_AUTO );
+	ret = spi_bus_initialize(HOST_ID, &spi_bus_config, SPI_DMA_CH_AUTO);
 	ESP_LOGI(TAG, "spi_bus_initialize=%d",ret);
-	assert(ret==ESP_OK);
+	assert(ret == ESP_OK);
 
-	spi_device_interface_config_t devcfg;
-	memset( &devcfg, 0, sizeof( spi_device_interface_config_t ) );
-	devcfg.clock_speed_hz = SPI_Frequency;
-	// It does not work with hardware CS control.
-	//devcfg.spics_io_num = csn_pin;
-	// It does work with software CS control.
-	devcfg.spics_io_num = -1;
-	devcfg.queue_size = 7;
-	devcfg.mode = 0;
-	devcfg.flags = SPI_DEVICE_NO_DUMMY;
+	spi_device_interface_config_t devcfg = {
+		.clock_speed_hz = CONFIG_SPI_FREQUENCY,
+		.spics_io_num = -1,
+		.queue_size = 7,
+		.mode = 0,
+		.flags = SPI_DEVICE_NO_DUMMY
+	};
 
-	spi_device_handle_t handle;
-	ret = spi_bus_add_device( HOST_ID, &devcfg, &handle);
-	ESP_LOGI(TAG, "spi_bus_add_device=%d",ret);
-	assert(ret==ESP_OK);
+	ret = spi_bus_add_device(HOST_ID, &devcfg, &handle);
+	ESP_LOGI(TAG, "spi_bus_add_device=%d", ret);
+	assert(ret == ESP_OK);
 
 	dev->cePin = CONFIG_CE_GPIO;
 	dev->csnPin = CONFIG_CSN_GPIO;
-	dev->channel = 1;
-	dev->payload = 16;
+	dev->channel = 0;
+	dev->payload = 32;
 	dev->_SPIHandle = handle;
 }
 
+void Nrf24_deinit(NRF24_t *dev) {
+	memset(dev, 0, sizeof(NRF24_t));
+	spi_bus_free(HOST_ID);
+}
 
 bool spi_write_byte(NRF24_t * dev, uint8_t* Dataout, size_t DataLength )
 {
@@ -439,7 +431,7 @@ void Nrf24_SetSpeedDataRates(NRF24_t * dev, uint8_t val)
 		//Nrf24_configRegister(dev, RF_SETUP,	(val << RF_DR_HIGH) );
 		Nrf24_configRegister(dev, RF_SETUP,	value);
 	}
-} 
+}
 
 //Set Auto Retransmit Delay 0=250us, 1=500us, ... 15=4000us
 void Nrf24_setRetransmitDelay(NRF24_t * dev, uint8_t val)
@@ -458,7 +450,7 @@ void Nrf24_printDetails(NRF24_t * dev)
 	printf("================ SPI Configuration ================\n" );
 	printf("CSN Pin  \t = GPIO%d\n",dev->csnPin);
 	printf("CE Pin	\t = GPIO%d\n", dev->cePin);
-	printf("Clock Speed\t = %d\n", SPI_Frequency);
+	printf("Clock Speed\t = %d\n", CONFIG_SPI_FREQUENCY);
 	printf("================ NRF Configuration ================\n");
 
 	Nrf24_print_status(Nrf24_getStatus(dev));
