@@ -28,21 +28,21 @@ static QueueHandle_t gpio_evt_queue = NULL;
 void AdvancedSettings(NRF24_t * dev)
 {
 #if CONFIG_RF_RATIO_2M
-	ESP_LOGW(pcTaskGetName(0), "Set RF Data Ratio to 2MBps");
+	ESP_LOGW(pcTaskGetName(NULL), "Set RF Data Ratio to 2MBps");
 	Nrf24_SetSpeedDataRates(dev, 1);
 #endif // CONFIG_RF_RATIO_2M
 
 #if CONFIG_RF_RATIO_1M
-	ESP_LOGW(pcTaskGetName(0), "Set RF Data Ratio to 1MBps");
+	ESP_LOGW(pcTaskGetName(NULL), "Set RF Data Ratio to 1MBps");
 	Nrf24_SetSpeedDataRates(dev, 0);
 #endif // CONFIG_RF_RATIO_2M
 
 #if CONFIG_RF_RATIO_250K
-	ESP_LOGW(pcTaskGetName(0), "Set RF Data Ratio to 250KBps");
+	ESP_LOGW(pcTaskGetName(NULL), "Set RF Data Ratio to 250KBps");
 	Nrf24_SetSpeedDataRates(dev, 2);
 #endif // CONFIG_RF_RATIO_2M
 
-	ESP_LOGW(pcTaskGetName(0), "CONFIG_RETRANSMIT_DELAY=%d", CONFIG_RETRANSMIT_DELAY);
+	ESP_LOGW(pcTaskGetName(NULL), "CONFIG_RETRANSMIT_DELAY=%d", CONFIG_RETRANSMIT_DELAY);
 	Nrf24_setRetransmitDelay(dev, CONFIG_RETRANSMIT_DELAY);
 }
 #endif // CONFIG_ADVANCED
@@ -58,7 +58,7 @@ static void IRAM_ATTR gpio_isr_handler(void* arg)
 #if CONFIG_RECEIVER
 void receiver(void *pvParameters)
 {
-	ESP_LOGI(pcTaskGetName(0), "Start");
+	ESP_LOGI(pcTaskGetName(NULL), "Start");
 	NRF24_t dev;
 	Nrf24_init(&dev);
 	uint8_t payload = 32;
@@ -68,7 +68,7 @@ void receiver(void *pvParameters)
 	// Set my own address using 5 characters
 	esp_err_t ret = Nrf24_setRADDR(&dev, (uint8_t *)"FGHIJ");
 	if (ret != ESP_OK) {
-		ESP_LOGE(pcTaskGetName(0), "nrf24l01 not installed");
+		ESP_LOGE(pcTaskGetName(NULL), "nrf24l01 not installed");
 		while(1) { vTaskDelay(1); }
 	}
 
@@ -78,7 +78,7 @@ void receiver(void *pvParameters)
 
 	// Print settings
 	Nrf24_printDetails(&dev);
-	ESP_LOGI(pcTaskGetName(0), "Listening...");
+	ESP_LOGI(pcTaskGetName(NULL), "Listening...");
 
     uint8_t buf[32];
 
@@ -93,9 +93,9 @@ void receiver(void *pvParameters)
 	while(1) {
 		// Wait for assertion of RX receive complete(RX_DR)
 		if(xQueueReceive(gpio_evt_queue, &io_num, portMAX_DELAY)) {
-			ESP_LOGD(pcTaskGetName(0), "GPIO[%"PRIu32"] intr, val: %d", io_num, gpio_get_level(io_num));
+			ESP_LOGD(pcTaskGetName(NULL), "GPIO[%"PRIu32"] intr, val: %d", io_num, gpio_get_level(io_num));
 			Nrf24_getData(&dev, buf);
-			ESP_LOGI(pcTaskGetName(0), "Got data:%s", buf);
+			ESP_LOGI(pcTaskGetName(NULL), "Got data:%s", buf);
 		}
 	}
 }
@@ -105,7 +105,7 @@ void receiver(void *pvParameters)
 #if CONFIG_SENDER
 void sender(void *pvParameters)
 {
-	ESP_LOGI(pcTaskGetName(0), "Start");
+	ESP_LOGI(pcTaskGetName(NULL), "Start");
 	NRF24_t dev;
 	Nrf24_init(&dev);
 	uint8_t payload = 32;
@@ -115,7 +115,7 @@ void sender(void *pvParameters)
 	// Set destination address using 5 characters
 	esp_err_t ret = Nrf24_setTADDR(&dev, (uint8_t *)"FGHIJ");
 	if (ret != ESP_OK) {
-		ESP_LOGE(pcTaskGetName(0), "nrf24l01 not installed");
+		ESP_LOGE(pcTaskGetName(NULL), "nrf24l01 not installed");
 		while(1) { vTaskDelay(1); }
 	}
 
@@ -132,15 +132,15 @@ void sender(void *pvParameters)
 		TickType_t nowTick = xTaskGetTickCount();
 		sprintf((char *)buf, "Hello World %"PRIu32, nowTick);
 		Nrf24_send(&dev, buf);
-		ESP_LOGI(pcTaskGetName(0), "Wait for sending.....");
+		ESP_LOGI(pcTaskGetName(NULL), "Wait for sending.....");
 		// Wait for assertion of TX transmit retry over(MAX_RT)
 		if(xQueueReceive(gpio_evt_queue, &io_num, 1000/portTICK_PERIOD_MS)) {
-			ESP_LOGW(pcTaskGetName(0),"Send fail:");
+			ESP_LOGW(pcTaskGetName(NULL),"Send fail:");
 
 		// Assert does not occur after successful transmission
 		} else {
-			ESP_LOGD(pcTaskGetName(0), "GPIO[%"PRIu32"] intr, val: %d", io_num, gpio_get_level(io_num));
-			ESP_LOGI(pcTaskGetName(0),"Send success:%s", buf);
+			ESP_LOGD(pcTaskGetName(NULL), "GPIO[%"PRIu32"] intr, val: %d", io_num, gpio_get_level(io_num));
+			ESP_LOGI(pcTaskGetName(NULL),"Send success:%s", buf);
 		}
 		vTaskDelay(1000/portTICK_PERIOD_MS);
 	}
