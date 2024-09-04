@@ -43,11 +43,11 @@ You can use this script as USB Writer.
 ```python3 ./write.py```
 
 ```
-           +------------+          +------------+           +------------+
-           |            |          |            |           |            |
-           | USB Writer |--(USB)-->|    ESP32   |--(SPI)--->|  nRF24L01  |==(Radio)==>
-           |            |          |            |           |            |
-           +------------+          +------------+           +------------+
+            +------------+          +------------+           +------------+
+            |            |          |            |           |            |
+            | USB Writer |--(USB)-->|    ESP32   |--(SPI)--->|  nRF24L01  |==(Radio)==>
+            |            |          |            |           |            |
+            +------------+          +------------+           +------------+
 ```
 
 ![config-radio-1](https://github.com/user-attachments/assets/0cbdb9e2-a897-44ca-afe7-7007be0f41f2)
@@ -64,11 +64,11 @@ You can use this script as USB Reader.
 ```python3 ./read.py```
 
 ```
-           +------------+           +------------+          +------------+
-           |            |           |            |          |            |
-==(LoRa)==>|  nRF24L01  |--(SPI)--->|    ESP32   |--(USB)-->| USB Reader |
-           |            |           |            |          |            |
-           +------------+           +------------+          +------------+
+            +------------+           +------------+          +------------+
+            |            |           |            |          |            |
+==(Radio)==>|  nRF24L01  |--(SPI)--->|    ESP32   |--(USB)-->| USB Reader |
+            |            |           |            |          |            |
+            +------------+           +------------+          +------------+
 ```
 
 ![config-radio-2](https://github.com/user-attachments/assets/af909869-b5e0-4038-acae-cfca06a44e9f)
