@@ -261,19 +261,18 @@ void receiver(void *pvParameters)
 		if (Nrf24_dataReady(&dev)) {
 			Nrf24_getData(&dev, buf);
 			ESP_LOGI(pcTaskGetName(NULL), "Nrf24_getData buf=[%.*s]",payload, buf);
+
 			size_t spacesAvailable = xMessageBufferSpacesAvailable( xMessageBufferTrans );
 			ESP_LOGI(pcTaskGetName(NULL), "spacesAvailable=%d", spacesAvailable);
-			if (spacesAvailable < xItemSize*2) {
-				ESP_LOGW(pcTaskGetName(NULL), "xMessageBuffer available less than %d", xItemSize*2);
-			} else {
-				size_t sended = xMessageBufferSend(xMessageBufferTrans, buf, payload, portMAX_DELAY);
-				if (sended != payload) {
-					ESP_LOGE(pcTaskGetName(NULL), "xMessageBufferSend fail");
-				}
+			size_t sended = xMessageBufferSend(xMessageBufferTrans, buf, payload, 100);
+			if (sended != payload) {
+				ESP_LOGE(pcTaskGetName(NULL), "xMessageBufferSend fail");
+				break;
 			}
 		}
 		vTaskDelay(1); // Avoid WatchDog alerts
 	} // end while
+	vTaskDelete(NULL);
 }
 #endif // CONFIG_RECEIVER
 
@@ -307,6 +306,7 @@ void sender(void *pvParameters)
 	while(1) {
 		size_t received = xMessageBufferReceive(xMessageBufferRecv, buf, sizeof(buf), portMAX_DELAY);
 		ESP_LOGI(pcTaskGetName(NULL), "xMessageBufferReceive received=%d", received);
+		buf[received] = 0;
 		Nrf24_send(&dev, buf);
 		vTaskDelay(1);
 		ESP_LOGI(pcTaskGetName(0), "Wait for sending.....");
