@@ -168,6 +168,7 @@ typedef enum {
 
 
 void      Nrf24_init(NRF24_t * dev);
+void      Nrf24_deinit(NRF24_t *dev);
 bool      spi_write_byte(NRF24_t * dev, uint8_t* Dataout, size_t DataLength );
 bool      spi_read_byte(NRF24_t * dev, uint8_t* Datain, uint8_t* Dataout, size_t DataLength );
 uint8_t   spi_transfer(NRF24_t * dev, uint8_t address);

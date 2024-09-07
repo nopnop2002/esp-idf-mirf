@@ -84,6 +84,10 @@ void Nrf24_init(NRF24_t * dev)
 	dev->_SPIHandle = handle;
 }
 
+void Nrf24_deinit(NRF24_t *dev) {
+	memset(dev, 0, sizeof(NRF24_t));
+	spi_bus_free(HOST_ID);
+}
 
 bool spi_write_byte(NRF24_t * dev, uint8_t* Dataout, size_t DataLength )
 {
