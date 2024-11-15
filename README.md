@@ -115,7 +115,7 @@ nRF24L01 does not have Software Reset function.
 
 # Enhanced ShockBurst overview
 The following is reprinted from nRF24L01 Single Chip 2.4GHz Transceiver Product Specification.   
----
+
 Enhanced ShockBurst uses ShockBurst for automatic packet handling and timing.   
 During transmit, ShockBurst assembles the packet and clocks the bits in the data packet into the transmitter for transmission.   
 During receive, ShockBurst constantly searches for a valid address in the demodulated signal.   
@@ -133,7 +133,6 @@ The automatic packet transaction handling works as follows:
 The PRX can attach user data to the ACK packet enabling a bi-directional data link.   
 The Enhanced Shock-Burst is highly configurable; it is possible to configure parameters such as maximum number of retransmits and the delay from one transmission to the next retransmission.   
 All automatic handling is done without involvement of the MCU.   
----
 
 ## Transmission Successful   
 |ESP32||nRF24L01[PTX]||nRF24L01[PRX]||ESP32|
