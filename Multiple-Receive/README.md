@@ -30,7 +30,6 @@ RX_ADDR_P1 is 0x3152454356.
 RX_ADDR_P2 will be 0x3252454356.   
 The last 4 bytes use the same value as RX_ADDR_P1.   
 
-![Register-Receiver](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/e8e0812a-8fa2-43ae-a2be-fd346c2e6da2)
 |RX-ADDR|Byte0|Byte1|Byte2|Byte3|Byte4|
 |:-:|:-:|:-:|:-:|:-:|:-:|
 |P1|0x31|0x52|0x45|0x43|0x56|
@@ -38,6 +37,8 @@ The last 4 bytes use the same value as RX_ADDR_P1.
 |P3|0x33|(0x52)|(0x45)|(0x43)|(0x56)|
 |P4|0x34|(0x52)|(0x45)|(0x43)|(0x56)|
 |P5|0x35|(0x52)|(0x45)|(0x43)|(0x56)|
+
+![Register-Receiver](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/e8e0812a-8fa2-43ae-a2be-fd346c2e6da2)
 
 # Communicat with Arduino Environment   
 Run this sketch.   
