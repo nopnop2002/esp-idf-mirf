@@ -30,7 +30,7 @@ RX_ADDR_P1 is 0x3152454356.
 RX_ADDR_P2 will be 0x3252454356.   
 The last 4 bytes use the same value as RX_ADDR_P1.   
 
-|RX-ADDR|Byte0|Byte1|Byte2|Byte3|Byte4|
+|RX_ADDR|Byte0|Byte1|Byte2|Byte3|Byte4|
 |:-:|:-:|:-:|:-:|:-:|:-:|
 |P1|0x31|0x52|0x45|0x43|0x56|
 |P2|0x32|(0x52)|(0x45)|(0x43)|(0x56)|
