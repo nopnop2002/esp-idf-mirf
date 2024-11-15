@@ -50,6 +50,11 @@ When using this module at the same time as SDSPI or other SPI device using SPI2_
 When you don't use SDSPI, both SPI2_HOST and SPI3_HOST will work.   
 Previously it was called HSPI_HOST / VSPI_HOST, but now it is called SPI2_HOST / SPI3_HOST.   
 
+# SPI Clock speed   
+According to the nRF24L01 datasheet, maximum data rate of 8MHz.   
+The SPI clock frequency used by this project is 4MHz.   
+Changing it to 8MHz has almost no effect.   
+
 # Using Advanced Settings   
 When used at long distances, lowering the RF data rate stabilizes it.   
 When changing the RF data rate, the sender and receiver must have the same value.   
@@ -63,11 +68,6 @@ I tested it with [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01/tre
 __If you want to initialize the nRF24L01 settings after using the Advanced Settings, you need to power cycle the nRF24L01 before executing.__   
 Because nRF24L01 remembers the previous setting.   
 nRF24L01 does not have Software Reset function.   
-
-# SPI Clock speed   
-According to the nRF24L01 datasheet, maximum data rate of 8MHz.   
-The SPI clock frequency used by this project is 4MHz.   
-Changing it to 8MHz has almost no effect.   
 
 # Wirering
 
