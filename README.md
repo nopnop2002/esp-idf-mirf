@@ -119,6 +119,7 @@ nRF24L01 does not have Software Reset function.
 
 # Enhanced ShockBurst overview
 The following is reprinted from nRF24L01 Single Chip 2.4GHz Transceiver Product Specification.   
+Enhanced ShockBurst is a trademark of NORDIC.   
 
 Enhanced ShockBurst features automatic packet transaction handling that enables the implementation of a reliable bi-directional data link.   
 An Enhanced ShockBurst packet transaction is a packet exchange between to transceivers, where one transceiver is the Primary Receiver (PRX) and the other is the Primary Transmitter (PTX).   
