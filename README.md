@@ -64,6 +64,10 @@ __If you want to initialize the nRF24L01 settings after using the Advanced Setti
 Because nRF24L01 remembers the previous setting.   
 nRF24L01 does not have Software Reset function.   
 
+# SPI Clock speed   
+According to the nRF24L01 datasheet, maximum data rate of 8MHz.   
+The SPI clock frequency used by this project is 4MHz.   
+Changing it to 8MHz has almost no effect.   
 
 # Wirering
 
