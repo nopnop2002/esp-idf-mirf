@@ -79,9 +79,12 @@ nRF24L01 does not have Software Reset function.
 |CE|--|GPIO16|GPIO34|GPIO1|(*1)|
 |CSN|--|GPIO17|GPIO33|GPIO0|(*1)|
 |GND|--|GND|GND|GND||
-|VCC|--|3.3V|3.3V|3.3V||
+|VCC|--|3.3V|3.3V|3.3V|(*2)|
 
 (*1)You can change it to any pin using menuconfig.   
+
+(*2)nRF24L01+PA+LNA(nRF24L01+RFX24C01) needs 115mA.   
+Depending on the regulator being used, operation may become unstable due to insufficient current.
 
 # Communicat with Arduino Environment  
 I used [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01) library on Arduino environment.   
