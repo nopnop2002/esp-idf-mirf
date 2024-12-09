@@ -1,0 +1,34 @@
+menu "Application Configuration"
+
+	choice DIRECTION
+		prompt "Communication polarity"
+		default SENDER
+		help
+			Select Communication polarity.
+		config SENDER
+			bool "As the sender"
+			help
+				As the sender.
+		config RECEIVER
+			bool "As the receiver"
+			help
+				As the receiver.
+	endchoice
+
+	choice RADDR
+		prompt "Receiver's address"
+		depends on RECEIVER
+		default RADDR1
+		help
+			Select receiver's address.
+		config RADDR1
+			bool "Use 11111 as receiver's address"
+			help
+				Use 11111 as receiver's address
+		config RADDR2
+			bool "Use 22222 as receiver's address"
+			help
+				Use 22222 as receiver's address
+	endchoice
+
+endmenu 

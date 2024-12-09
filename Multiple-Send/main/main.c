@@ -1,0 +1,161 @@
+/*	Mirf Example
+
+	This example code is in the Public Domain (or CC0 licensed, at your option.)
+
+	Unless required by applicable law or agreed to in writing, this
+	software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+	CONDITIONS OF ANY KIND, either express or implied.
+*/
+
+#include <stdio.h>
+#include <inttypes.h>
+#include <stdlib.h>
+#include <string.h>
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "esp_log.h"
+
+#include "mirf.h"
+
+#if CONFIG_ADVANCED
+void AdvancedSettings(NRF24_t * dev)
+{
+#if CONFIG_RF_RATIO_2M
+	ESP_LOGW(pcTaskGetName(NULL), "Set RF Data Ratio to 2MBps");
+	Nrf24_SetSpeedDataRates(dev, 1);
+#endif // CONFIG_RF_RATIO_2M
+
+#if CONFIG_RF_RATIO_1M
+	ESP_LOGW(pcTaskGetName(NULL), "Set RF Data Ratio to 1MBps");
+	Nrf24_SetSpeedDataRates(dev, 0);
+#endif // CONFIG_RF_RATIO_2M
+
+#if CONFIG_RF_RATIO_250K
+	ESP_LOGW(pcTaskGetName(NULL), "Set RF Data Ratio to 250KBps");
+	Nrf24_SetSpeedDataRates(dev, 2);
+#endif // CONFIG_RF_RATIO_2M
+
+	ESP_LOGW(pcTaskGetName(NULL), "CONFIG_RETRANSMIT_DELAY=%d", CONFIG_RETRANSMIT_DELAY);
+	Nrf24_setRetransmitDelay(dev, CONFIG_RETRANSMIT_DELAY);
+}
+#endif // CONFIG_ADVANCED
+
+#if CONFIG_RECEIVER
+void receiver(void *pvParameters)
+{
+	ESP_LOGI(pcTaskGetName(NULL), "Start");
+	NRF24_t dev;
+	Nrf24_init(&dev);
+	uint8_t payload = 32;
+	uint8_t channel = CONFIG_RADIO_CHANNEL;
+	Nrf24_config(&dev, channel, payload);
+
+	// Set my own address using 5 characters
+#if CONFIG_RADDR1
+	esp_err_t ret = Nrf24_setRADDR(&dev, (uint8_t *)"11111");
+#endif
+#if CONFIG_RADDR2
+	esp_err_t ret = Nrf24_setRADDR(&dev, (uint8_t *)"22222");
+#endif
+	if (ret != ESP_OK) {
+		ESP_LOGE(pcTaskGetName(NULL), "nrf24l01 not installed");
+		while(1) { vTaskDelay(1); }
+	}
+
+#if CONFIG_ADVANCED
+	AdvancedSettings(&dev);
+#endif // CONFIG_ADVANCED
+
+	// Print settings
+	Nrf24_printDetails(&dev);
+	ESP_LOGI(pcTaskGetName(NULL), "Listening...");
+
+	uint8_t buf[32];
+
+	// Clear RX FiFo
+	while(1) {
+		if (Nrf24_dataReady(&dev) == false) break;
+		Nrf24_getData(&dev, buf);
+	}
+
+	while(1) {
+		// Wait for received data
+		if (Nrf24_dataReady(&dev)) {
+			Nrf24_getData(&dev, buf);
+			ESP_LOGI(pcTaskGetName(NULL), "Got data:%s", buf);
+			//ESP_LOG_BUFFER_HEXDUMP(pcTaskGetName(NULL), buf, payload, ESP_LOG_INFO);
+		}
+		vTaskDelay(1); // Avoid WatchDog alerts
+	}
+}
+#endif // CONFIG_RECEIVER
+
+
+#if CONFIG_SENDER
+void sender(void *pvParameters)
+{
+	ESP_LOGI(pcTaskGetName(NULL), "Start");
+	NRF24_t dev;
+	Nrf24_init(&dev);
+	uint8_t payload = 32;
+	uint8_t channel = CONFIG_RADIO_CHANNEL;
+	Nrf24_config(&dev, channel, payload);
+
+#if 0
+	// Set destination address using 5 characters
+	esp_err_t ret = Nrf24_setTADDR(&dev, (uint8_t *)"11111");
+	if (ret != ESP_OK) {
+		ESP_LOGE(pcTaskGetName(NULL), "nrf24l01 not installed");
+		while(1) { vTaskDelay(1); }
+	}
+#endif
+
+#if CONFIG_ADVANCED
+	AdvancedSettings(&dev);
+#endif // CONFIG_ADVANCED
+
+	// Print settings
+	Nrf24_printDetails(&dev);
+
+	uint8_t buf[32];
+	int counter = 0;
+	esp_err_t ret = 0;
+	uint8_t addr[2][6];
+	strcpy((char *)addr[0], "11111");
+	strcpy((char *)addr[1], "22222");
+	while(1) {
+		ret = Nrf24_setTADDR(&dev, addr[counter]);
+		if (ret != ESP_OK) {
+			ESP_LOGE(pcTaskGetName(NULL), "nrf24l01 not installed");
+			while(1) { vTaskDelay(1); }
+		}
+
+		TickType_t nowTick = xTaskGetTickCount();
+		sprintf((char *)buf, "Hello World %"PRIu32, nowTick);
+		Nrf24_send(&dev, buf);
+		//vTaskDelay(1);
+		ESP_LOGI(pcTaskGetName(NULL), "Wait for sending.....");
+		if (Nrf24_isSend(&dev, 1000)) {
+			ESP_LOGI(pcTaskGetName(NULL),"Send success:%s", buf);
+		} else {
+			ESP_LOGW(pcTaskGetName(NULL),"Send fail to %s", addr[counter]);
+		}
+		counter++;
+		if (counter == 2) counter = 0;
+		vTaskDelay(1000/portTICK_PERIOD_MS);
+	}
+}
+#endif // CONFIG_SENDER
+
+
+void app_main(void)
+{
+#if CONFIG_RECEIVER
+	xTaskCreate(&receiver, "RECEIVER", 1024*3, NULL, 2, NULL);
+#endif
+
+#if CONFIG_SENDER
+	xTaskCreate(&sender, "SENDER", 1024*3, NULL, 2, NULL);
+#endif
+
+}
