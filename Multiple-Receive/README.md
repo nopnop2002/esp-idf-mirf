@@ -23,7 +23,11 @@ This example receive from ```1RECV/2RECV/3RECV/4RECV/5RECV```.
 
 ![config-top](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/cd5392c4-a6d5-4e55-bc8b-372050573a2b)
 
-![config-app](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/e289c28c-72e5-4490-9db1-40163c9db5a0)
+## As Sender
+![config-sender](https://github.com/user-attachments/assets/9f58ea67-11d9-4993-957d-749157018b8a)
+
+## As Receiver
+![config-receiver](https://github.com/user-attachments/assets/c4a53e17-7ad0-4a52-8a5c-14ec77e5a216)
 
 # Receiver Register
 RX_ADDR_P1 is 0x3152454356.   
