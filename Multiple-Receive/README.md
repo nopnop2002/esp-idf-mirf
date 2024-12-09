@@ -1,5 +1,5 @@
 # Multiple Receive Example   
-The nRF24L01 has 6 receive data pipes (RX_ADDR_P0-P6).   
+nRF24L01 has 6 receive data pipes (RX_ADDR_P0-P6).   
 In this library, the first data pipe(RX_ADDR_P0) is used for automatic ACK reception on transmission.   
 The second(RX_ADDR_P1) to sixth(RX_ADDR_P5) data pipes are used for data reception.   
 Therefore, it is possible to receive from a maximum of five transmitting sides.   
@@ -24,10 +24,10 @@ This example receive from ```1RECV/2RECV/3RECV/4RECV/5RECV```.
 ![config-top](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/cd5392c4-a6d5-4e55-bc8b-372050573a2b)
 
 ## As Sender
-![config-sender](https://github.com/user-attachments/assets/9f58ea67-11d9-4993-957d-749157018b8a)
+![config-sender](https://github.com/user-attachments/assets/bec1f1a6-525a-4271-b3fa-5c1a0cca61a5)
 
 ## As Receiver
-![config-receiver](https://github.com/user-attachments/assets/c4a53e17-7ad0-4a52-8a5c-14ec77e5a216)
+![config-receiver](https://github.com/user-attachments/assets/b249e6ce-d903-4ddb-871d-67686dc87f67)
 
 # Receiver Register
 RX_ADDR_P1 is 0x3152454356.   
