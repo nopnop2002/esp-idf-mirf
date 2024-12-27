@@ -253,7 +253,7 @@ void receiver(void *pvParameters)
 			ESP_LOGI(pcTaskGetName(NULL), "spacesAvailable=%d", spacesAvailable);
 			size_t sended = xMessageBufferSend(xMessageBufferTrans, buf, payload, 100);
 			if (sended != payload) {
-				ESP_LOGE(pcTaskGetName(NULL), "xMessageBufferSend fail");
+				ESP_LOGE(pcTaskGetName(NULL), "xMessageBufferSend fail payload=%d sended=%d", payload, sended);
 				break;
 			}
 		}
