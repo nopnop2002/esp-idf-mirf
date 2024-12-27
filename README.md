@@ -85,8 +85,6 @@ nRF24L01 does not have Software Reset function.
 
 (*2)nRF24L01+PA+LNA(nRF24L01+RFX24C01) needs 115mA.   
 Depending on the regulator being used, operation may become unstable due to insufficient current.   
-The absolute maximum current drawn per GPIO is ```40mA``` according to the "Recommended Operating Conditions" section in the ESP32 datasheet.   
-
 
 
 # Communicat with Arduino Environment  
