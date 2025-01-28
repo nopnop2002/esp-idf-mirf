@@ -62,6 +62,7 @@ You can use mosquitto_sub as Subscriber.
 ### Select Transport   
 This project supports TCP,SSL/TLS,WebSocket and WebSocket Secure Port.   
 - Using TCP Port.   
+ TCP Port uses the MQTT protocol.   
  ![config-mqtt-tcp](https://github.com/user-attachments/assets/a20aafa5-a814-49c3-8304-9aa5ba0af4e3)
 
 - Using SSL/TLS Port.   
