@@ -39,6 +39,10 @@ menu "Application Configuration"
 					Radio to MQTT.
 		endchoice
 
+	endmenu
+
+	menu "Broker Setting"
+
 		choice MQTT_TRANSPORT
 			prompt "MQTT Transport"
 			default MQTT_TRANSPORT_OVER_TCP
@@ -100,6 +104,35 @@ menu "Application Configuration"
 			help
 				Port number of the broker to connect to.
 
+        choice MQTT_PROTOCOL
+            prompt "MQTT Protocol"
+            default MQTT_PROTOCOL_V_3_1_1
+            help
+                Select Protocol.
+            config MQTT_PROTOCOL_V_3_1_1
+                bool "PROTOCOL_V_3_1_1"
+                help
+                    PROTOCOL_V_3_1_1
+            config MQTT_PROTOCOL_V_5
+                bool "PROTOCOL_V_5"
+                help
+                    PROTOCOL_V_5.
+        endchoice
+
+		config MQTT_PUB_TOPIC
+			depends on RECEIVER
+			string "Publish Topic"
+			default "/topic/mirf/test"
+			help
+				Topic of publish
+
+		config MQTT_SUB_TOPIC
+			depends on SENDER
+			string "Subscribe Topic"
+			default "/topic/mirf/test"
+			help
+				Topic of subscribe
+
 		config BROKER_AUTHENTICATION
 			bool "Server requests for password when connecting"
 			default false
@@ -119,20 +152,6 @@ menu "Application Configuration"
 			default "password"
 			help
 				Username used for connecting to the broker.
-
-		config MQTT_PUB_TOPIC
-			depends on RECEIVER
-			string "Publish Topic"
-			default "/topic/mirf/test"
-			help
-				Topic of publish
-
-		config MQTT_SUB_TOPIC
-			depends on SENDER
-			string "Subscribe Topic"
-			default "/topic/mirf/test"
-			help
-				Topic of subscribe
 
 	endmenu
 
