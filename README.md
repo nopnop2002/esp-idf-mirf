@@ -195,3 +195,29 @@ Si24R1 is marketed as a nRF24L01 compatible.
 __Si24R1 clone cannot send and receive correctly.__   
 After purchasing the nRF24L01, be sure to check the markings on the chip.   
 Many suppliers sell Si24R1 as nRF24L01.   
+
+# How to use this component in your project   
+Create idf_component.yml in the same directory as main.c.   
+```
+YourProject --+-- CMakeLists.txt
+              +-- main --+-- main.c
+                         +-- CMakeLists.txt
+                         +-- idf_component.yml
+```
+
+Contents of idf_component.yml.
+```
+dependencies:
+  nopnop2002/mirf:
+    path: components/mirf/
+    git: https://github.com/nopnop2002/esp-idf-mirf.git
+```
+
+When you build a projects esp-idf will automaticly fetch repository to managed_components dir and link with your code.   
+```
+YourProject --+-- CMakeLists.txt
+              +-- main --+-- main.c
+              |          +-- CMakeLists.txt
+              |          +-- idf_component.yml
+              +-- managed_components ----- nopnop2002__mirf
+```
