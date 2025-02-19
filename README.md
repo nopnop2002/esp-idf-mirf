@@ -92,17 +92,17 @@ I used [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01) library on A
 __You need to match the payload size and channel with Arduino and esp-idf.__   
 
 - Arduino environment   
-```C++
-Mirf.payload = sizeof(mydata.value);
-Mirf.channel = 90;
-Mirf.config();
-```
+	```C++
+	Mirf.payload = sizeof(mydata.value);
+	Mirf.channel = 90;
+	Mirf.config();
+	```
 - esp-idf   
-```C
-uint8_t payload = sizeof(value);
-uint8_t channel = 90;
-Nrf24_config(&dev, channel, payload);
-```
+	```C
+	uint8_t payload = sizeof(value);
+	uint8_t channel = 90;
+	Nrf24_config(&dev, channel, payload);
+	```
 
 # Communicat with Raspberry Pi
 I used [this](https://github.com/nopnop2002/Raspberry-Mirf) library on Raspberry Pi.   
