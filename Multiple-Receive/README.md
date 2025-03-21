@@ -34,8 +34,8 @@ You can configure up to five senders.
 # Receiver Register
 The Receiver has six receiving address registers (RX_ADDR_P0 - RX_ADDR_P5).   
 The first receive address register (RX_ADDR_P0) is used for Enhanced ShockBurst.   
-RX_ADDR_P1 is a 10-byte register and the listening address is 0x3152454356.   
-RX_ADDR_P1 can be set to any 10 bytes.   
+RX_ADDR_P1 is a 10-byte register, and any 10 bytes can be set here.   
+In this project, set RX_ADDR_P1 to 0x3152454356.   
 RX_ADDR_P2 through RX_ADDR_P5 are 2-byte registers.   
 RX_ADDR_P2 will be 0x3252454356.   
 The last 8 bytes use the same value as RX_ADDR_P1.   
