@@ -26,6 +26,7 @@ This example receive from ```1RECV/2RECV/3RECV/4RECV/5RECV```.
 ![config-top](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/cd5392c4-a6d5-4e55-bc8b-372050573a2b)
 
 ## As Sender
+You can configure up to five senders.   
 ![config-sender](https://github.com/user-attachments/assets/bec1f1a6-525a-4271-b3fa-5c1a0cca61a5)
 
 ## As Receiver
