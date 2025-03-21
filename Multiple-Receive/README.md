@@ -4,8 +4,7 @@ In this library, the first data pipe(RX_ADDR_P0) is used for automatic ACK recep
 The second(RX_ADDR_P1) to sixth(RX_ADDR_P5) data pipes are used for data reception.   
 Therefore, it is possible to receive from a maximum of five transmitting sides.   
 This example receive from ```1RECV/2RECV/3RECV/4RECV/5RECV```.   
-
-![Image](https://github.com/user-attachments/assets/5f0fce3a-34a2-4c0a-aecc-f351cbefb081)
+![Image](https://github.com/user-attachments/assets/bf6902a2-f7cc-4fe0-bb1c-ee5d78950765)
 
 # nRF24L01 Address Register Setting
 |Sender|||||Receiver||||||
