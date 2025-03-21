@@ -38,7 +38,7 @@ RX_ADDR_P2 through RX_ADDR_P6 are 2-byte registers.
 RX_ADDR_P2 will be 0x3252454356.   
 The last 8 bytes use the same value as RX_ADDR_P1.   
 When performing multiple receives, the sender must follow this rule.   
-In other words, you can communicate with 1RECV/2RECV/3RECV/4RECV/5RECV, but you cannot communicate with RECV1/RECV2/RECV3/RECV4/RECV5.   
+That is, one receiver can communicate with 1RECV/2RECV/3RECV/4RECV/5RECV, but one receiver cannot communicate with RECV1/RECV2/RECV3/RECV4/RECV5.   
 
 |RX_ADDR|Byte0|Byte1|Byte2|Byte3|Byte4|
 |:-:|:-:|:-:|:-:|:-:|:-:|
