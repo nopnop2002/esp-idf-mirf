@@ -34,7 +34,7 @@ You can configure up to five senders.
 # Receiver Register
 RX_ADDR_P1 is a 10-byte register and the listening address is 0x3152454356.   
 RX_ADDR_P1 can be set to any 10 bytes.   
-RX_ADDR_P2 through RX_ADDR_P6 are 2-byte registers.   
+RX_ADDR_P2 through RX_ADDR_P5 are 2-byte registers.   
 RX_ADDR_P2 will be 0x3252454356.   
 The last 8 bytes use the same value as RX_ADDR_P1.   
 When performing multiple receives, the sender must follow this rule.   
