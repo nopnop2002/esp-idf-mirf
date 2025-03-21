@@ -32,7 +32,7 @@ You can configure up to five senders.
 ![config-receiver](https://github.com/user-attachments/assets/b249e6ce-d903-4ddb-871d-67686dc87f67)
 
 # Receiver Register
-RX_ADDR_P1 is a 10-byte register and has an address of 0x3152454356.   
+RX_ADDR_P1 is a 10-byte register and the listening address is 0x3152454356.   
 RX_ADDR_P2 through RX_ADDR_P6 are 2-byte registers.   
 RX_ADDR_P2 will be 0x3252454356.   
 The last 8 bytes use the same value as RX_ADDR_P1.   
