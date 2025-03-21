@@ -1,6 +1,8 @@
 # Multiple Send Example   
 nRF24L01 has only one transmit data pipe.   
 You can send to multiple destinations by switching the destination address.   
+There is no limit to the number of destinations.   
+In this project, we communicate with two destinations.   
 ![Image](https://github.com/user-attachments/assets/c64799ec-2f15-41f4-8b48-ed0859bf7b53)
 
 # Configuration   
