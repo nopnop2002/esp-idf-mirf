@@ -313,6 +313,36 @@ void Nrf24_send(NRF24_t * dev, uint8_t * value)
 	Nrf24_ceHi(dev); // Start transmission
 }
 
+
+// Sends payload without expecting an ACK from the receiver effectively turning off retransmission of failed payloads.
+// See Nrf24l01 "PTX Operation" flowchart in the datasheet.
+// NOTE: Make sure to call Nrf24_enableNoAckFeature() before calling this function.
+// Is useful when achieving maximum throughput without caring much about losses.
+void Nrf24_sendNoAck(NRF24_t * dev, uint8_t * value)
+{
+	uint8_t status;
+	status = Nrf24_getStatus(dev);
+	while (dev->PTX) // Wait until last paket is sent
+	{
+		status = Nrf24_getStatus(dev);
+		if ((status & ((1 << TX_DS)  | (1 << MAX_RT))))
+		{
+			dev->PTX = 0;
+			break;
+		}
+	}
+	Nrf24_ceLow(dev);
+	Nrf24_powerUpTx(dev); // Set to transmitter mode , Power up
+	spi_csnLow(dev); // Pull down chip select
+	spi_transfer(dev, FLUSH_TX ); // Write cmd to flush tx fifo
+	spi_csnHi(dev); // Pull up chip select
+	spi_csnLow(dev); // Pull down chip select
+	spi_transfer(dev, W_TX_PAYLOAD_NO_ACK ); // Write cmd to write payload
+	spi_write_byte(dev, value, dev->payload); // Write payload
+	spi_csnHi(dev); // Pull up chip select
+	Nrf24_ceHi(dev); // Start transmission
+}
+
 // Test if chip is still sending.
 // When sending has finished return chip to listening.
 bool Nrf24_isSending(NRF24_t * dev) {
@@ -366,6 +396,19 @@ bool Nrf24_isSend(NRF24_t * dev, int timeout) {
 	}
 	return false;
 }
+
+// Enables the W_TX_PAYLOAD command
+// NOTE: Make sure to call this before using Nrf24_sendNoAck().
+// Can be called anytime after the call to Nrf24_init() and preferably only once.
+void Nrf24_enableNoAckFeature(NRF24_t * dev)
+{
+	uint8_t value;
+
+	Nrf24_readRegister(dev, FEATURE, &value, 1);
+	value = value | 1; 
+	Nrf24_configRegister(dev, FEATURE, value);
+}
+
 
 
 uint8_t Nrf24_getStatus(NRF24_t * dev) {

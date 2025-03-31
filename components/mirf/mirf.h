@@ -176,6 +176,8 @@ void      spi_csnLow(NRF24_t * dev);
 void      spi_csnHi(NRF24_t * dev);
 void      Nrf24_config(NRF24_t * dev, uint8_t channel, uint8_t payload);
 void      Nrf24_send(NRF24_t * dev, uint8_t *value);
+void      Nrf24_enableNoAckFeature(NRF24_t * dev);
+void      Nrf24_sendNoAck(NRF24_t * dev, uint8_t *value);
 esp_err_t Nrf24_setRADDR(NRF24_t * dev, uint8_t * adr);
 esp_err_t Nrf24_setTADDR(NRF24_t * dev, uint8_t * adr);
 void      Nrf24_addRADDR(NRF24_t * dev, uint8_t pipe, uint8_t adr);
