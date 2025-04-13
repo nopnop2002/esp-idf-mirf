@@ -196,6 +196,7 @@ void      Nrf24_powerDown(NRF24_t * dev);
 void      Nrf24_SetOutputRF_PWR(NRF24_t * dev, uint8_t val);
 void      Nrf24_SetSpeedDataRates(NRF24_t * dev, uint8_t val);
 void      Nrf24_setRetransmitDelay(NRF24_t * dev, uint8_t val);
+void      Nrf24_setRetransmitCount(NRF24_t * dev, uint8_t val);
 void      Nrf24_ceHi(NRF24_t * dev);
 void      Nrf24_ceLow(NRF24_t * dev);
 void      Nrf24_flushRx(NRF24_t * dev);
@@ -209,6 +210,7 @@ uint8_t   Nrf24_getCRCLength(NRF24_t * dev);
 uint8_t   Nrf24_getPALevel(NRF24_t * dev);
 char *    Nrf24_getPALevelString(NRF24_t * dev);
 uint8_t   Nrf24_getRetransmitDelay(NRF24_t * dev);
+uint8_t   Nrf24_getRetransmitCount(NRF24_t * dev);
 uint8_t   Nrf24_getChannle(NRF24_t * dev);
 uint8_t   Nrf24_getPayload(NRF24_t * dev);
 

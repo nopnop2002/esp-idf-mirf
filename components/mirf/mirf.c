@@ -455,6 +455,16 @@ void Nrf24_setRetransmitDelay(NRF24_t * dev, uint8_t val)
 	Nrf24_configRegister(dev, SETUP_RETR, value);
 }
 
+void Nrf24_setRetransmitCount(NRF24_t * dev, uint8_t val)
+{
+	uint8_t value;
+	Nrf24_readRegister(dev, SETUP_RETR, &value, 1);
+	value = value & 0xF0;
+	value = value | val;
+	Nrf24_configRegister(dev, SETUP_RETR, value);
+}
+
+
 
 void Nrf24_printDetails(NRF24_t * dev)
 {
@@ -605,6 +615,14 @@ uint8_t Nrf24_getRetransmitDelay(NRF24_t * dev)
 	Nrf24_readRegister(dev, SETUP_RETR, &value, 1);
 	return (value >> 4);
 }
+
+uint8_t Nrf24_getRetransmitCount(NRF24_t * dev)
+{
+	uint8_t value;
+	Nrf24_readRegister(dev, SETUP_RETR, &value, 1);
+	return (value & 0x0F);
+}
+
 
 uint8_t Nrf24_getChannle(NRF24_t * dev)
 {
