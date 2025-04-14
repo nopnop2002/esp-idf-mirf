@@ -9,8 +9,8 @@ I ported from [here](https://github.com/nopnop2002/Arduino-STM32-nRF24L01).
 ![SMD-Pinout](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/4566928d-7fb8-4569-b780-4a502b77cc34)
 
 # Software requirements
-ESP-IDF V4.4/V5.x.   
-ESP-IDF V5.0 is required when using ESP32-C2.   
+ESP-IDF V5.0 or later.   
+ESP-IDF V4.4 release branch reached EOL in July 2024.   
 ESP-IDF V5.1 is required when using ESP32-C6.   
 
 # Installation
