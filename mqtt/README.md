@@ -102,6 +102,9 @@ You can specify your MQTT broker in one of the following ways:
 - Fully Qualified Domain Name   
  ```broker.emqx.io```
 
+You can use this as broker.   
+https://github.com/nopnop2002/esp-idf-mqtt-broker
+
 ### Select MQTT Protocol   
 This project supports MQTT Protocol V3.1.1/V5.   
 ![Image](https://github.com/user-attachments/assets/e55e0894-8c0c-4dc9-b843-8a56a5137ca6)
