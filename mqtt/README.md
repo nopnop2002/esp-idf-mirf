@@ -31,7 +31,7 @@ Set the wireless communication direction.
 ### MQTT to Radio
 Subscribe with MQTT and send to Radio.   
 You can use mosquitto_pub as Publisher.   
-```sh ./mqtt_pub.sh```
+```mosquitto_pub -h broker.emqx.io -p 1883 -t "/topic/mirf/test" -m "test"```
 
 ```
             +----------+           +----------+           +----------+           +----------+
@@ -49,7 +49,7 @@ ArduinoCode\Peer-to-peer\StringTest\Receive
 ### Radio to MQTT
 Receive from Radio and publish as MQTT.   
 You can use mosquitto_sub as Subscriber.   
-```sh ./mqtt_sub.sh```
+```mosquitto_sub -h broker.emqx.io -p 1883 -t "/topic/mirf/test"```
 
 ```
             +----------+           +----------+           +----------+           +----------+
@@ -109,7 +109,7 @@ https://github.com/nopnop2002/esp-idf-mqtt-broker
 This project supports MQTT Protocol V3.1.1/V5.   
 ![Image](https://github.com/user-attachments/assets/e55e0894-8c0c-4dc9-b843-8a56a5137ca6)
 
-### Enable Secure Option
+### Enable Secure Option   
 Specifies the username and password if the server requires a password when connecting.   
 [Here's](https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-the-mosquitto-mqtt-messaging-broker-on-debian-10) how to install and secure the Mosquitto MQTT messaging broker on Debian 10.   
 ![Image](https://github.com/user-attachments/assets/c3eee361-10d0-421a-85e7-879df7bfc8a5)
