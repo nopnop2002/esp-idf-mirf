@@ -121,10 +121,6 @@ void mqtt_pub(void *pvParameters)
 		.credentials.username = CONFIG_AUTHENTICATION_USERNAME,
 		.credentials.authentication.password = CONFIG_AUTHENTICATION_PASSWORD,
 #endif
-#if CONFIG_BROKER_AUTHENTICATION
-		.credentials.username = CONFIG_AUTHENTICATION_USERNAME,
-		.credentials.authentication.password = CONFIG_AUTHENTICATION_PASSWORD,
-#endif
 		.credentials.client_id = client_id
 	};
 
