@@ -1,5 +1,8 @@
 # USB Serial Device Example   
 This is nRF24L01 and USB Serial Device gateway application.   
+
+ESP-IDF supports USB Serial Device.   
+As a USB stack, a TinyUSB component is used.   
 ```
             +---------------+          +---------------+          +---------------+
             |               |          |               |          |               |
