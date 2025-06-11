@@ -86,7 +86,7 @@ When you connect the USB cable to the USB port on your Windows machine and build
 Open a new COM port in the terminal software.   
 When set to Radio to USB, the data received from Radio will be displayed on the terminal.   
 When set to USB to Radio, input data from the keyboard is sent to Radio.   
-Please note that the maximum payload length for nRF24L01 is 32 bytes.
+Please note that the maximum payload length for nRF24L01 is 32 bytes.   
 I used TeraTerm as terminal software.   
 ![tusb-TeraTerm](https://github.com/user-attachments/assets/b6298033-77f3-480e-8305-c65fb672fddc)
 
@@ -96,7 +96,7 @@ Open a new tty device in the terminal software.
 Most occasions, the device is /dev/ttyACM0.   
 When set to Radio to USB, the data received from Radio will be displayed on the terminal.   
 When set to USB to Radio, input data from the keyboard is sent to Radio.   
-Please note that the maximum payload length for nRF24L01 is 32 bytes.
+Please note that the maximum payload length for nRF24L01 is 32 bytes.   
 I used screen as terminal software.   
 ![tusb-screen](https://github.com/user-attachments/assets/2a212599-4831-4583-86c9-ffbb936066e8)
 
