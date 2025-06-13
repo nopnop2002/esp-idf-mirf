@@ -22,18 +22,17 @@ if __name__=='__main__':
 
 	try:
 		ser = serial.Serial(args.device, 115200, timeout=1)
-		ser.reset_input_buffer()
 	except:
 		print("Unable to open {}".format(args.device))
 		sys.exit()
 
+	ser.reset_input_buffer()
 	while running:
-		try:
-			msg = ser.readline()
-			if (type(msg) is bytes):
-				msg=msg.decode('utf-8')
-			print(msg, end='') 
-		except:
-			running = False
+		msg = ser.readline()
+		#print(len(msg))
+		if (len(msg) == 0): continue
+		if (type(msg) is bytes):
+			msg=msg.decode('utf-8')
+		print(msg, end='') 
 
 	ser.close()
