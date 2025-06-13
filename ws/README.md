@@ -21,10 +21,11 @@ This is nRF24L01 and WebSocket gateway application.
 ![config-app](https://github.com/user-attachments/assets/11ee35bd-3f59-4b95-9ab3-1c07241751ae)
 
 ## WiFi Setting
-
+Set the information of your access point.   
 ![config-wifi](https://github.com/user-attachments/assets/8654b6a8-9dbe-46f7-825c-0928b1a0e9e1)
 
 ## Radio Setting
+Set the wireless communication direction.   
 
 ### WebSocket to Radio
 Subscribe with WebSocket and send to Radio.   
