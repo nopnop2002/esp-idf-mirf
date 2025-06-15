@@ -26,7 +26,7 @@ MessageBufferHandle_t xMessageBufferRx;
 // The total number of bytes (not messages) the message buffer will be able to hold at any one time.
 size_t xBufferSizeBytes = 1024;
 // The size, in bytes, required to hold each item in the message,
-size_t xItemSize = 34; // Maximum Payload size of nRF24L01 is 32
+size_t xItemSize = 32; // Maximum Payload size of nRF24L01 is 32
 
 #if CONFIG_ADVANCED
 void AdvancedSettings(NRF24_t * dev)
@@ -76,7 +76,7 @@ void receiver(void *pvParameters)
 	Nrf24_printDetails(&dev);
 	ESP_LOGI(pcTaskGetName(NULL), "Listening...");
 
-	uint8_t buf[xItemSize];
+	uint8_t buf[xItemSize+1];
 
 	// Clear RX FiFo
 	while(1) {
@@ -91,15 +91,17 @@ void receiver(void *pvParameters)
 			ESP_LOGI(pcTaskGetName(NULL), "Got data:%s", buf);
 			ESP_LOG_BUFFER_HEXDUMP(pcTaskGetName(NULL), buf, payload, ESP_LOG_INFO);
 
-			int txLen = strlen((char *)buf);
-			ESP_LOGI(pcTaskGetName(NULL), "txLen=%d", txLen);
-			buf[txLen] = 0x0a;
-			txLen++;
+			int rxLen = strlen((char *)buf);
+			ESP_LOGI(pcTaskGetName(NULL), "rxLen=%d", rxLen);
+			if (buf[rxLen-1] != 0x0a) {
+				buf[rxLen] = 0x0a;
+				rxLen++;
+			}
 			size_t spacesAvailable = xMessageBufferSpacesAvailable( xMessageBufferTx );
 			ESP_LOGI(pcTaskGetName(NULL), "spacesAvailable=%d", spacesAvailable);
-			size_t sended = xMessageBufferSend(xMessageBufferTx, buf, txLen, 100);
-			if (sended != txLen) {
-				ESP_LOGE(pcTaskGetName(NULL), "xMessageBufferSend fail txLen=%d sended=%d", txLen, sended);
+			size_t sended = xMessageBufferSend(xMessageBufferTx, buf, rxLen, 100);
+			if (sended != rxLen) {
+				ESP_LOGE(pcTaskGetName(NULL), "xMessageBufferSend fail rxLen=%d sended=%d", rxLen, sended);
 				break;
 			}
 			
