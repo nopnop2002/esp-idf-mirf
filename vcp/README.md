@@ -114,12 +114,12 @@ void loop() {
 Strings from Arduino to ESP32 are terminated with CR(0x0d)+LF(0x0a).   
 This project will remove the termination character and send to Radio.   
 ```
-I (6020) VCP: Receiving data through CdcAcmDevice
-I (6020) VCP: 0x3fca1c04   48 65 6c 6c 6f 20 57 6f  72 6c 64 20 31 35 30 30  |Hello World 1500|
-I (6020) VCP: 0x3fca1c14   30 0d 0a                                          |0..|
-I (6030) TX: xMessageBufferReceive received=19
-I (6040) TX: 0x3fc9e230   48 65 6c 6c 6f 20 57 6f  72 6c 64 20 31 35 30 30  |Hello World 1500|
-I (6040) TX: 0x3fc9e240   30
+I (24869) VCP: Receiving data through CdcAcmDevice
+I (24869) VCP: 0x3fca1804   48 65 6c 6c 6f 20 57 6f  72 6c 64 20 34 30 31 30  |Hello World 4010|
+I (24869) VCP: 0x3fca1814   30 30 0d 0a                                       |00..|
+I (25429) SEND: xMessageBufferReceive received=18
+I (25429) SEND: 0x3fc9d970   48 65 6c 6c 6f 20 57 6f  72 6c 64 20 34 30 31 30  |Hello World 4010|
+I (25429) SEND: 0x3fc9d980   30 30 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |00..............|
 ```
 
 The Arduino sketch inputs data with LF as the terminator.   

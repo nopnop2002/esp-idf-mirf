@@ -76,7 +76,7 @@ void receiver(void *pvParameters)
 	Nrf24_printDetails(&dev);
 	ESP_LOGI(pcTaskGetName(NULL), "Listening...");
 
-	uint8_t buf[xItemSize+1];
+	uint8_t buf[xItemSize];
 
 	// Clear RX FiFo
 	while(1) {
@@ -93,10 +93,6 @@ void receiver(void *pvParameters)
 
 			int rxLen = strlen((char *)buf);
 			ESP_LOGI(pcTaskGetName(NULL), "rxLen=%d", rxLen);
-			if (buf[rxLen-1] != 0x0a) {
-				buf[rxLen] = 0x0a;
-				rxLen++;
-			}
 			size_t spacesAvailable = xMessageBufferSpacesAvailable( xMessageBufferTx );
 			ESP_LOGI(pcTaskGetName(NULL), "spacesAvailable=%d", spacesAvailable);
 			size_t sended = xMessageBufferSend(xMessageBufferTx, buf, rxLen, 100);
@@ -138,15 +134,10 @@ void sender(void *pvParameters)
 
 	uint8_t buf[xItemSize];
 	while(1) {
+		memset(buf, 0x00, xItemSize);
 		size_t received = xMessageBufferReceive(xMessageBufferRx, buf, sizeof(buf), portMAX_DELAY);
 		ESP_LOGI(pcTaskGetName(NULL), "xMessageBufferReceive received=%d", received);
-
-		// The VCP termination character is CR+LF. So Remove CR/LF.
-		for (int i=0;i<received;i++) {
-			if (buf[i] == 0x0d) buf[i] = 0;
-			if (buf[i] == 0x0a) buf[i] = 0;
-		}
-		ESP_LOG_BUFFER_HEXDUMP(pcTaskGetName(NULL), buf, received, ESP_LOG_INFO);
+		ESP_LOG_BUFFER_HEXDUMP(pcTaskGetName(NULL), buf, payload, ESP_LOG_INFO);
 		Nrf24_send(&dev, buf);
 		//vTaskDelay(1);
 		ESP_LOGI(pcTaskGetName(NULL), "Wait for sending.....");
