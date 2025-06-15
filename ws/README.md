@@ -28,7 +28,7 @@ Set the information of your access point.
 Set the wireless communication direction.   
 
 ### WebSocket to Radio
-Subscribe with WebSocket and send to Radio.   
+Receive from WebSocket and send to Radio.   
 ESP32 acts as Web Server.   
 You can use ws-client.py as Web Client.   
 You need to install websockets from here.   
@@ -47,7 +47,7 @@ https://github.com/python-websockets/websockets
 
 
 ### Radio to WebSocket
-Receive from Radio and publish as WebSocket.   
+Receive from Radio and send to WebSocket.   
 ESP32 acts as Web Client.   
 You can use ws-server.py as Web Server.   
 You need to install websocket-server from here.   
