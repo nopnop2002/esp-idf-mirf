@@ -161,13 +161,13 @@ void app_main(void)
 	configASSERT( xMessageBufferRx );
 
 #if CONFIG_RECEIVER
-	xTaskCreate(&receiver, "RECEIVE", 1024*3, NULL, 2, NULL);
+	xTaskCreate(&receiver, "RECEIVE", 1024*3, NULL, 5, NULL);
 #endif
 
 #if CONFIG_SENDER
-	xTaskCreate(&sender, "SEND", 1024*3, NULL, 2, NULL);
+	xTaskCreate(&sender, "SEND", 1024*3, NULL, 5, NULL);
 #endif
 
 	// Start CDC_ACM_VCP
-	xTaskCreate(cdc_acm_vcp_task, "CDC_ACM_VCP", 1024*4, NULL, 2, NULL);
+	xTaskCreate(&cdc_acm_vcp_task, "CDC_ACM_VCP", 1024*4, NULL, 5, NULL);
 }
