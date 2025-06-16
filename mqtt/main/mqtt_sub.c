@@ -177,7 +177,7 @@ void mqtt_sub(void *pvParameters)
 
 			// Queries a message buffer to see how much free space it contains
 			size_t spacesAvailable = xMessageBufferSpacesAvailable( xMessageBufferRecv );
-			ESP_LOGI(pcTaskGetName(NULL), "spacesAvailable=%d", spacesAvailable);
+			ESP_LOGI(TAG, "spacesAvailable=%d", spacesAvailable);
 			size_t sended = xMessageBufferSend(xMessageBufferRecv, mqttBuf.data, mqttBuf.data_len, 100);
 			if (sended != mqttBuf.data_len) {
 				ESP_LOGE(TAG, "xMessageBufferSend fail");

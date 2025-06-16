@@ -245,13 +245,15 @@ void receiver(void *pvParameters)
 		// Wait for received data
 		if (Nrf24_dataReady(&dev)) {
 			Nrf24_getData(&dev, buf);
-			ESP_LOGI(pcTaskGetName(NULL), "Nrf24_getData buf=[%.*s]",payload, buf);
+			ESP_LOG_BUFFER_HEXDUMP(pcTaskGetName(NULL), buf, payload, ESP_LOG_INFO);
 
+			int rxLen = strlen((char *)buf);
+			ESP_LOGI(pcTaskGetName(NULL), "rxLen=%d", rxLen);
 			size_t spacesAvailable = xMessageBufferSpacesAvailable( xMessageBufferTrans );
 			ESP_LOGI(pcTaskGetName(NULL), "spacesAvailable=%d", spacesAvailable);
-			size_t sended = xMessageBufferSend(xMessageBufferTrans, buf, payload, 100);
-			if (sended != payload) {
-				ESP_LOGE(pcTaskGetName(NULL), "xMessageBufferSend fail payload=%d sended=%d", payload, sended);
+			size_t sended = xMessageBufferSend(xMessageBufferTrans, buf, rxLen, 100);
+			if (sended != rxLen) {
+				ESP_LOGE(pcTaskGetName(NULL), "xMessageBufferSend fail rxLen=%d sended=%d", rxLen, sended);
 				break;
 			}
 		}
@@ -286,11 +288,12 @@ void sender(void *pvParameters)
 	// Print settings
 	Nrf24_printDetails(&dev);
 
-	ESP_LOGI(pcTaskGetName(NULL), "Wait for mqtt...");
 	uint8_t buf[xItemSize];
 	while(1) {
+		memset(buf, 0x00, xItemSize);
 		size_t received = xMessageBufferReceive(xMessageBufferRecv, buf, sizeof(buf), portMAX_DELAY);
 		ESP_LOGI(pcTaskGetName(NULL), "xMessageBufferReceive received=%d", received);
+		ESP_LOG_BUFFER_HEXDUMP(pcTaskGetName(NULL), buf, payload, ESP_LOG_INFO);
 		Nrf24_send(&dev, buf);
 		//vTaskDelay(1);
 		ESP_LOGI(pcTaskGetName(NULL), "Wait for sending.....");
@@ -299,7 +302,8 @@ void sender(void *pvParameters)
 		} else {
 			ESP_LOGW(pcTaskGetName(NULL),"Send fail");
 		}
-	}
+	} // end while
+	vTaskDelete(NULL);
 }
 #endif // CONFIG_SENDER
 

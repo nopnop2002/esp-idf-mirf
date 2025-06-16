@@ -142,6 +142,7 @@ void mqtt_pub(void *pvParameters)
 	while (1) {
 		size_t received = xMessageBufferReceive(xMessageBufferTrans, buffer, sizeof(buffer), portMAX_DELAY);
 		ESP_LOGI(TAG, "xMessageBufferReceive received=%d", received);
+		ESP_LOG_BUFFER_HEXDUMP(TAG, buffer, received, ESP_LOG_INFO);
 		if (received > 0) {
 			ESP_LOGI(TAG, "xMessageBufferReceive buffer=[%.*s]",received, buffer);
 			EventBits_t EventBits = xEventGroupGetBits(mqtt_status_event_group);
