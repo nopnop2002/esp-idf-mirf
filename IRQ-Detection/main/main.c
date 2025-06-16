@@ -169,13 +169,12 @@ void app_main(void)
 	//create a queue to handle gpio event from isr
 	gpio_evt_queue = xQueueCreate(10, sizeof(uint32_t));
 
-
 #if CONFIG_RECEIVER
-	xTaskCreate(&receiver, "RECEIVER", 1024*3, NULL, 2, NULL);
+	xTaskCreate(&receiver, "RECEIVER", 1024*3, NULL, 5, NULL);
 #endif
 
 #if CONFIG_SENDER
-	xTaskCreate(&sender, "SENDER", 1024*3, NULL, 2, NULL);
+	xTaskCreate(&sender, "SENDER", 1024*3, NULL, 5, NULL);
 #endif
 
 }
