@@ -103,7 +103,7 @@ void receiver(void *pvParameters)
 			
 		}
 		vTaskDelay(1); // Avoid WatchDog alerts
-	}
+	} // end while
 }
 #endif // CONFIG_RECEIVER
 
@@ -146,8 +146,7 @@ void sender(void *pvParameters)
 		} else {
 			ESP_LOGW(pcTaskGetName(NULL),"Send fail:");
 		}
-		vTaskDelay(1000/portTICK_PERIOD_MS);
-	}
+	} // end while
 }
 #endif // CONFIG_SENDER
 
