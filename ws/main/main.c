@@ -42,7 +42,7 @@ MessageBufferHandle_t xMessageBufferRecv;
 // The total number of bytes (not single messages) the message buffer will be able to hold at any one time.
 size_t xBufferSizeBytes = 1024;
 // The size, in bytes, required to hold each item in the message,
-size_t xItemSize = 256;
+size_t xItemSize = 32; // Maximum Payload size of nRF24L01 is 32
 
 static void event_handler(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data)
 {
@@ -245,7 +245,7 @@ void receiver(void *pvParameters)
 	Nrf24_printDetails(&dev);
 	ESP_LOGI(pcTaskGetName(NULL), "Listening...");
 
-	uint8_t buf[32];
+	uint8_t buf[xItemSize];
 
 	// Clear RX FiFo
 	while(1) {
@@ -257,7 +257,6 @@ void receiver(void *pvParameters)
 		// Wait for received data
 		if (Nrf24_dataReady(&dev)) {
 			Nrf24_getData(&dev, buf);
-			ESP_LOGI(pcTaskGetName(NULL), "Got data:%s", buf);
 			ESP_LOG_BUFFER_HEXDUMP(pcTaskGetName(NULL), buf, payload, ESP_LOG_INFO);
 
 			int rxLen = strlen((char *)buf);
@@ -300,12 +299,12 @@ void sender(void *pvParameters)
 	// Print settings
 	Nrf24_printDetails(&dev);
 
-	uint8_t buf[32];
+	uint8_t buf[xItemSize];
 	while(1) {
+		memset(buf, 0x00, xItemSize);
 		size_t received = xMessageBufferReceive(xMessageBufferRecv, buf, sizeof(buf), portMAX_DELAY);
 		ESP_LOGI(pcTaskGetName(NULL), "xMessageBufferReceive received=%d", received);
 		ESP_LOG_BUFFER_HEXDUMP(pcTaskGetName(NULL), buf, payload, ESP_LOG_INFO);
-
 		Nrf24_send(&dev, buf);
 		//vTaskDelay(1);
 		ESP_LOGI(pcTaskGetName(NULL), "Wait for sending.....");
@@ -314,8 +313,8 @@ void sender(void *pvParameters)
 		} else {
 			ESP_LOGW(pcTaskGetName(NULL),"Send fail:");
 		}
-		vTaskDelay(1000/portTICK_PERIOD_MS);
 	} // end while
+	vTaskDelete(NULL);
 }
 #endif // CONFIG_SENDER
 

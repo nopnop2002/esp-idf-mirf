@@ -157,6 +157,7 @@ void ws_client(void *pvParameters)
 	while (1) {
 		size_t received = xMessageBufferReceive(xMessageBufferTrans, buffer, sizeof(buffer), portMAX_DELAY);
 		ESP_LOGI(TAG, "xMessageBufferReceive received=%d", received);
+		ESP_LOG_BUFFER_HEXDUMP(TAG, buffer, received, ESP_LOG_INFO);
 		if (received > 0) {
 
 			// WebSockets can only handle printable characters.
