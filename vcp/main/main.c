@@ -88,7 +88,6 @@ void receiver(void *pvParameters)
 		// Wait for received data
 		if (Nrf24_dataReady(&dev)) {
 			Nrf24_getData(&dev, buf);
-			ESP_LOGI(pcTaskGetName(NULL), "Got data:%s", buf);
 			ESP_LOG_BUFFER_HEXDUMP(pcTaskGetName(NULL), buf, payload, ESP_LOG_INFO);
 
 			int rxLen = strlen((char *)buf);
@@ -100,10 +99,10 @@ void receiver(void *pvParameters)
 				ESP_LOGE(pcTaskGetName(NULL), "xMessageBufferSend fail rxLen=%d sended=%d", rxLen, sended);
 				break;
 			}
-			
 		}
 		vTaskDelay(1); // Avoid WatchDog alerts
 	} // end while
+	vTaskDelete(NULL);
 }
 #endif // CONFIG_RECEIVER
 
@@ -147,6 +146,7 @@ void sender(void *pvParameters)
 			ESP_LOGW(pcTaskGetName(NULL),"Send fail:");
 		}
 	} // end while
+	vTaskDelete(NULL);
 }
 #endif // CONFIG_SENDER
 
