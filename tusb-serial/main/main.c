@@ -28,6 +28,8 @@ QueueHandle_t xQueueTinyusb;
 
 // The total number of bytes (not single messages) the message buffer will be able to hold at any one time.
 size_t xBufferSizeBytes = 1024;
+// The size, in bytes, required to hold each item in the message,
+size_t xItemSize = 32; // Maximum Payload size of nRF24L01 is 32
 
 void tinyusb_cdc_rx_callback(int itf, cdcacm_event_t *event)
 {
@@ -105,8 +107,9 @@ void receiver(void *pvParameters)
 	Nrf24_printDetails(&dev);
 	ESP_LOGI(pcTaskGetName(NULL), "Listening...");
 
+	uint8_t buf[xItemSize];
+
 	// Clear RX FiFo
-	uint8_t buf[32]; // Maximum Payload size of nRF24L01 is 32
 	while(1) {
 		if (Nrf24_dataReady(&dev) == false) break;
 		Nrf24_getData(&dev, buf);
@@ -116,26 +119,27 @@ void receiver(void *pvParameters)
 		// Wait for received data
 		if (Nrf24_dataReady(&dev)) {
 			Nrf24_getData(&dev, buf);
-			ESP_LOGI(pcTaskGetName(NULL), "Got data:%s", buf);
-			//ESP_LOG_BUFFER_HEXDUMP(pcTaskGetName(NULL), buf, payload, ESP_LOG_INFO);
+			ESP_LOG_BUFFER_HEXDUMP(pcTaskGetName(NULL), buf, payload, ESP_LOG_INFO);
 
+			int rxLen = strlen((char *)buf);
+			ESP_LOGI(pcTaskGetName(NULL), "rxLen=%d", rxLen);
 			size_t spacesAvailable = xMessageBufferSpacesAvailable( xMessageBufferTrans );
 			ESP_LOGI(pcTaskGetName(NULL), "spacesAvailable=%d", spacesAvailable);
-			size_t sended = xMessageBufferSend(xMessageBufferTrans, buf, payload, 100);
-			if (sended != payload) {
-				ESP_LOGE(pcTaskGetName(NULL), "xMessageBufferSend fail payload=%d sended=%d", payload, sended);
+			size_t sended = xMessageBufferSend(xMessageBufferTrans, buf, rxLen, 100);
+			if (sended != rxLen) {
+				ESP_LOGE(pcTaskGetName(NULL), "xMessageBufferSend fail rxLen=%d sended=%d", rxLen, sended);
 				break;
 			}
 		}
 		vTaskDelay(1); // Avoid WatchDog alerts
-	}
+	} // end while
 	vTaskDelete(NULL);
 }
 
 void usb_tx(void *pvParameters)
 {
 	ESP_LOGI(pcTaskGetName(NULL), "Start");
-	uint8_t buf[32]; // Maximum Payload size of nRF24L01 is 32
+	uint8_t buf[xItemSize];
 	uint8_t crlf[2] = { 0x0d, 0x0a };
 	while(1) {
 		size_t received = xMessageBufferReceive(xMessageBufferTrans, buf, sizeof(buf), portMAX_DELAY);
@@ -174,13 +178,12 @@ void sender(void *pvParameters)
 	// Print settings
 	Nrf24_printDetails(&dev);
 
-	uint8_t buf[32]; // Maximum Payload size of nRF24L01 is 32
+	uint8_t buf[xItemSize];
 	while(1) {
 		memset(buf, 0x00, sizeof(buf));
 		size_t received = xMessageBufferReceive(xMessageBufferRecv, buf, sizeof(buf), portMAX_DELAY);
 		ESP_LOGI(pcTaskGetName(NULL), "xMessageBufferReceive received=%d", received);
 		ESP_LOG_BUFFER_HEXDUMP(pcTaskGetName(NULL), buf, payload, ESP_LOG_INFO);
-
 		Nrf24_send(&dev, buf);
 		//vTaskDelay(1);
 		ESP_LOGI(pcTaskGetName(NULL), "Wait for sending.....");
@@ -189,14 +192,14 @@ void sender(void *pvParameters)
 		} else {
 			ESP_LOGW(pcTaskGetName(NULL),"Send fail:");
 		}
-		vTaskDelay(1000/portTICK_PERIOD_MS);
-	}
+	} // end while
+	vTaskDelete(NULL);
 }
 
 void usb_rx(void *pvParameters)
 {
 	ESP_LOGI(pcTaskGetName(NULL), "Start");
-	char buffer[32]; // Maximum Payload size of nRF24L01 is 32
+	char buffer[xItemSize];
 	int index = 0;
 	while(1) {
 		char ch;
@@ -215,7 +218,7 @@ void usb_rx(void *pvParameters)
 					index = 0;
 				}
 			} else {
-				if (index == 32) continue;
+				if (index == xItemSize) continue;
 				buffer[index++] = ch;
 			}
 		}
