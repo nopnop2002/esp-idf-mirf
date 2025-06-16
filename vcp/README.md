@@ -129,12 +129,12 @@ The default input timeout for Arduino sketches is 1000 milliseconds.
 This project will add a LF to the end and send to Arduino.   
 The Arduino sketch will blink the on-board LED.   
 ```
-I (3280) RX: 18 byte packet received:[Hello World 133865]
-I (3280) RX: 0x3fc9e120   48 65 6c 6c 6f 20 57 6f  72 6c 64 20 31 33 33 38  |Hello World 1338|
-I (3280) RX: 0x3fc9e130   36 35                                             |65|
-I (3290) VCP: Sending data through CdcAcmDevice
-I (3300) VCP: 0x3fc9f260   48 65 6c 6c 6f 20 57 6f  72 6c 64 20 31 33 33 38  |Hello World 1338|
-I (3300) VCP: 0x3fc9f270   36 35 0a
+I (2269) RECEIVE: Got data:now is 11028188
+I (2269) RECEIVE: 0x3fc9d860   6e 6f 77 20 69 73 20 31  31 30 32 38 31 38 38 00  |now is 11028188.|
+I (2269) RECEIVE: 0x3fc9d870   00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+I (2279) VCP: Sending data through CdcAcmDevice
+I (2289) VCP: 0x3fc9ef40   6e 6f 77 20 69 73 20 31  31 30 32 38 31 38 38     |now is 11028188|
+I (2289) VCP: 0x3fc9ef40   6e 6f 77 20 69 73 20 31  31 30 32 38 31 38 38 0a  |now is 11028188.|
 ```
 
 # Wireing   
