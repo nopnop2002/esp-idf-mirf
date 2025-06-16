@@ -329,12 +329,12 @@ void app_main(void)
 	ESP_ERROR_CHECK( mdns_init() );
 
 #if CONFIG_SENDER
-	xTaskCreate(&sender, "TX", 1024*3, NULL, 2, NULL);
-	xTaskCreate(&mqtt_sub, "SUB", 1024*4, NULL, 2, NULL);
+	xTaskCreate(&sender, "TX", 1024*3, NULL, 5, NULL);
+	xTaskCreate(&mqtt_sub, "SUB", 1024*4, NULL, 5, NULL);
 #endif
 #if CONFIG_RECEIVER
-	xTaskCreate(&receiver, "RX", 1024*3, NULL, 2, NULL);
-	xTaskCreate(&mqtt_pub, "PUB", 1024*4, NULL, 2, NULL);
+	xTaskCreate(&receiver, "RX", 1024*3, NULL, 5, NULL);
+	xTaskCreate(&mqtt_pub, "PUB", 1024*4, NULL, 5, NULL);
 #endif
 
 
