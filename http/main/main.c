@@ -351,11 +351,11 @@ void app_main(void)
 	ESP_LOGI(TAG, "cparam0=[%s]", cparam0);
 
 #if CONFIG_SENDER
-	xTaskCreate(&sender, "TX", 1024*3, NULL, 2, NULL);
+	xTaskCreate(&sender, "TX", 1024*3, NULL, 5, NULL);
 	xTaskCreate(&http_server, "HTTP_SERVER", 1024*4, (void *)cparam0, 5, NULL);
 #endif
 #if CONFIG_RECEIVER
-	xTaskCreate(&receiver, "RX", 1024*3, NULL, 2, NULL);
+	xTaskCreate(&receiver, "RX", 1024*3, NULL, 5, NULL);
 	xTaskCreate(&http_client, "HTTP_CLIENT", 1024*4, NULL, 5, NULL);
 #endif
 
