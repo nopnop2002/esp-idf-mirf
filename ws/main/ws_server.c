@@ -21,6 +21,7 @@
 static const char *TAG = "SERVER";
 
 extern MessageBufferHandle_t xMessageBufferRecv;
+extern size_t xItemSize;
 
 static esp_err_t root_get_handler(httpd_req_t *req)
 {
@@ -59,6 +60,7 @@ static esp_err_t root_get_handler(httpd_req_t *req)
 		// Queries a message buffer to see how much free space it contains
 		size_t spacesAvailable = xMessageBufferSpacesAvailable( xMessageBufferRecv );
 		ESP_LOGI(TAG, "spacesAvailable=%d", spacesAvailable);
+		if (ws_pkt.len > xItemSize) ws_pkt.len = xItemSize;
 		size_t sended = xMessageBufferSend(xMessageBufferRecv, ws_pkt.payload, ws_pkt.len, 100);
 		if (sended != ws_pkt.len) {
 			ESP_LOGE(TAG, "xMessageBufferSend fail. ws_pkt.len=%d sended=%d", ws_pkt.len, sended);
@@ -108,12 +110,12 @@ esp_err_t start_server(int port)
 
 void ws_server(void *pvParameters)
 {
-    char *task_parameter = (char *)pvParameters;
-    ESP_LOGI(TAG, "Start task_parameter=%s", task_parameter);
-    char url[64];
-    int port = CONFIG_WEB_SERVER_PORT;
-    sprintf(url, "ws://%s:%d", task_parameter, port);
-    ESP_LOGI(TAG, "Starting HTTP server on %s", url);
-    ESP_ERROR_CHECK(start_server(port));
-    vTaskDelete(NULL);
+	char *task_parameter = (char *)pvParameters;
+	ESP_LOGI(TAG, "Start task_parameter=%s", task_parameter);
+	char url[64];
+	int port = CONFIG_WEB_SERVER_PORT;
+	sprintf(url, "ws://%s:%d", task_parameter, port);
+	ESP_LOGI(TAG, "Starting HTTP server on %s", url);
+	ESP_ERROR_CHECK(start_server(port));
+	vTaskDelete(NULL);
 }
