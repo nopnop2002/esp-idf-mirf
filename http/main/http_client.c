@@ -23,7 +23,6 @@ static const char *TAG = "CLIENT";
 extern MessageBufferHandle_t xMessageBufferTrans;
 extern size_t xItemSize;
 
-
 esp_err_t _http_event_handler(esp_http_client_event_t *evt)
 {
 	static char *output_buffer;  // Buffer to store response of http request from event handler
@@ -134,6 +133,7 @@ esp_err_t http_post_with_url(char *url, char * post_data, size_t post_len)
 	};
 #endif
 
+
 	esp_http_client_handle_t client = esp_http_client_init(&config);
 
 	// POST
@@ -175,7 +175,6 @@ void http_client(void *pvParameters)
 	while (1) {
 		size_t received = xMessageBufferReceive(xMessageBufferTrans, buffer, sizeof(buffer), portMAX_DELAY);
 		ESP_LOGI(TAG, "xMessageBufferReceive received=%d", received);
-		ESP_LOG_BUFFER_HEXDUMP(TAG, buffer, received, ESP_LOG_INFO);
 		if (received > 0) {
 			ESP_LOGI(TAG, "xMessageBufferReceive buffer=[%.*s]",received, buffer);
 			//http_post_with_url("http://192.168.10.46:8000", buffer, received);
