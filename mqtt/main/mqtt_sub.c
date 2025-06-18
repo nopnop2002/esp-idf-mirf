@@ -60,20 +60,14 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
 			ESP_LOGI(TAG, "TOPIC=[%.*s] DATA=[%.*s]", event->topic_len, event->topic, event->data_len, event->data);
 
 			mqttBuf->topic_len = event->topic_len;
-			if (mqttBuf->topic_len > sizeof(mqttBuf->topic)) {
-				ESP_LOGW(TAG, "topic length too big");
-				mqttBuf->topic_len = sizeof(mqttBuf->topic);
-			}
-			for(int i=0;i<mqttBuf->topic_len;i++) {
+			for(int i=0;i<event->topic_len;i++) {
 				mqttBuf->topic[i] = event->topic[i];
+				mqttBuf->topic[i+1] = 0;
 			}
 			mqttBuf->data_len = event->data_len;
-			if (mqttBuf->data_len > sizeof(mqttBuf->data)) {
-				ESP_LOGW(TAG, "payload length too big");
-				mqttBuf->data_len = sizeof(mqttBuf->data);
-			}
-			for(int i=0;i<mqttBuf->data_len;i++) {
+			for(int i=0;i<event->data_len;i++) {
 				mqttBuf->data[i] = event->data[i];
+				mqttBuf->data[i+1] = 0;
 			}
 			xTaskNotifyGive( mqttBuf->taskHandle );
 			break;
@@ -178,9 +172,10 @@ void mqtt_sub(void *pvParameters)
 			// Queries a message buffer to see how much free space it contains
 			size_t spacesAvailable = xMessageBufferSpacesAvailable( xMessageBufferRecv );
 			ESP_LOGI(TAG, "spacesAvailable=%d", spacesAvailable);
+			if (mqttBuf.data_len > xItemSize) mqttBuf.data_len = xItemSize;
 			size_t sended = xMessageBufferSend(xMessageBufferRecv, mqttBuf.data, mqttBuf.data_len, 100);
 			if (sended != mqttBuf.data_len) {
-				ESP_LOGE(TAG, "xMessageBufferSend fail");
+				ESP_LOGE(TAG, "xMessageBufferSend fail mqttBuf.data_len=%d sended=%d", mqttBuf.data_len, sended);
 				break;
 			}
 		} else if (mqttBuf.event_id == MQTT_EVENT_ERROR) {
