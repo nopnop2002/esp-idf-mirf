@@ -2,6 +2,30 @@
 Send data from primary to secondary.   
 In the secondary, sent back received data.   
 
+- ESP32 is Primary   
+```
++-----------+           +-----------+             +-----------+           +-----------+
+|           |           |           |             |           |           |           |
+|  Primary  |===(SPI)==>| nRF24L01  |---(Radio)-->| nRF24L01  |===(SPI)==>| Secondary |
+|   ESP32   |           |           |             |           |           |           |
+|           |           |           |             |           |           |           |
+|           |<==(SPI)===|           |<--(Radio)---|           |<==(SPI)===|           |
+|           |           |           |             |           |           |           |
++-----------+           +-----------+             +-----------+           +-----------+
+```
+
+- ESP32 is Secondary   
+
+```
++-----------+           +-----------+             +-----------+           +-----------+
+|           |           |           |             |           |           |           |
+|  Primary  |===(SPI)==>| nRF24L01  |---(Radio)-->| nRF24L01  |===(SPI)==>| Secondary |
+|           |           |           |             |           |           |   ESP32   |
+|           |           |           |             |           |           |           |
+|           |<==(SPI)===|           |<--(Radio)---|           |<==(SPI)===|           |
+|           |           |           |             |           |           |           |
++-----------+           +-----------+             +-----------+           +-----------+
+```
 
 # Configuration   
 
@@ -30,6 +54,10 @@ The underlined address match on the sending and receiving sides.
 
 
 # Communicat with Arduino Environment   
-Run this sketch.   
-ArduinoCode/Ping-Pong   
+- ESP32 is the primary   
+I tested it with [this](https://github.com/nopnop2002/esp-idf-mirf/tree/master/ArduinoCode/Ping-Pong/Secondary).   
+
+- ESP32 is the secondary   
+I tested it with [this](https://github.com/nopnop2002/esp-idf-mirf/tree/master/ArduinoCode/Ping-Pong/Primary).   
+
 
