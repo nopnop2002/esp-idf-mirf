@@ -1,6 +1,7 @@
-# Arduino code for nRF24L01
+# Example of Arduino environment   
+I used [this](https://github.com/nopnop2002/Arduino-STM32-nRF24L01) library on Arduino environment.   
 
-### Wirering
+# Wirering
 
 |nRF24L01||ATMega328|ATMega2560|ESP8266||
 |:-:|:-:|:-:|:-:|:-:|:-:|
@@ -19,10 +20,8 @@ __So nRF24L01 may not work normally when supplied from the on-board 3v3__.
 nRF24L01+PA+LNA(nRF24L01+RFX24C01) needs 115mA.   
 You will need to power it from the 5V pin using a regulator.   
 
-
 (*2)   
 These pins are 5V Tolerant and can accept up to 5.25V.   
-
 
 (*3)   
 These pins can be changed in the sketch.   
