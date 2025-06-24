@@ -314,6 +314,8 @@ void sender(void *pvParameters)
 			ESP_LOGW(pcTaskGetName(NULL),"Send fail:");
 		}
 	} // end while
+
+	// never reach here
 	vTaskDelete(NULL);
 }
 #endif // CONFIG_SENDER
