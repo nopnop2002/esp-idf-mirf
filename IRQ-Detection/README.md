@@ -25,7 +25,8 @@ RX_DX is asserted when reception is complete.
 Nothing is asserted when the transmission is complete.   
 MAX_RT is asserted when transmission fails.   
 Therefore, if there is no assertion after the transmission, the transmission succeeds, and if there is an assertion, the transmission fails.   
-If TX_DS is enabled, the assertion occurs whether the transmission was successful or unsuccessful, and you must again check the register to distinguish between the two.   
+If you enable TX_DS, an assertion will occur regardless of whether the transmission was successful or unsuccessful.   
+You will need to check the register again to distinguish between successful and unsuccessful transmission.   
 
 # Configuration   
 
