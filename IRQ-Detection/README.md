@@ -35,6 +35,12 @@ To enable TX_DS, change the following in components/mirf/mirf.h:
 #define mirf_CONFIG ((0<<MASK_TX_DS) | (1<<EN_CRC) | (0<<CRCO) )
 ```
 
+To determine the type of assertion in your application, use the following function:   
+This function reads the STATUS register.   
+```
+status = Nrf24_getStatus(&dev);
+```
+
 # Configuration   
 
 ![config-top](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/3aabd6f8-7477-4b71-b6c4-950d18402a87)
