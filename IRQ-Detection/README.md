@@ -22,7 +22,7 @@ See the nrf24l01 datasheet for more details.
 
 In this project, RX_DX and MAX_RT are enabled, and TX_DS is disabled.   
 RX_DX is asserted when reception is complete.   
-No signal is asserted when transmission is complete.   
+Nothing is asserted when the transmission is complete.   
 MAX_RT is asserted when transmission fails.   
 Therefore, if there is no assertion after the transmission, the transmission succeeds, and if there is an assertion, the transmission fails.   
 If TX_DS is enabled, the assertion occurs whether the transmission was successful or unsuccessful, and you must again check the register to distinguish between the two.   
