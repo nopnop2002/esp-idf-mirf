@@ -28,6 +28,13 @@ Therefore, if there is no assertion after the transmission, the transmission suc
 If you enable TX_DS, an assertion will occur regardless of whether the transmission was successful or unsuccessful.   
 You will need to check the register again to distinguish between successful and unsuccessful transmission.   
 
+However, if you want to know when transmission is complete sooner, you can enable TX_DS and determine the type of assertion within your application.   
+To enable TX_DS, change the following in components/mirf/mirf.h:   
+```
+//#define mirf_CONFIG ((1<<MASK_TX_DS) | (1<<EN_CRC) | (0<<CRCO) )
+#define mirf_CONFIG ((0<<MASK_TX_DS) | (1<<EN_CRC) | (0<<CRCO) )
+```
+
 # Configuration   
 
 ![config-top](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/3aabd6f8-7477-4b71-b6c4-950d18402a87)
