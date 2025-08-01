@@ -24,6 +24,28 @@ static QueueHandle_t gpio_evt_queue = NULL;
 #define GPIO_INPUT_PIN_SEL (1ULL<<CONFIG_IRQ_GPIO)
 #define ESP_INTR_FLAG_DEFAULT 0
 
+// GPIO interrupt handler
+static void IRAM_ATTR gpio_isr_handler(void* arg)
+{
+	uint32_t gpio_num = (uint32_t) arg;
+	xQueueSendFromISR(gpio_evt_queue, &gpio_num, NULL);
+}
+
+void gpio(void *pvParameters)
+{
+	ESP_LOGI(pcTaskGetName(NULL), "Start");
+	uint32_t io_num;
+	while (1) {
+		if(xQueuePeek(gpio_evt_queue, &io_num, portMAX_DELAY)) {
+			ESP_LOGW(pcTaskGetName(NULL), "GPIO[%"PRIu32"] intr, val: %d", io_num, gpio_get_level(io_num));
+		} else {
+			ESP_LOGE(pcTaskGetName(NULL), "xQueuePeek fail");
+			break;
+		}
+	}
+	vTaskDelete( NULL );
+}
+
 #if CONFIG_ADVANCED
 void AdvancedSettings(NRF24_t * dev)
 {
@@ -46,14 +68,6 @@ void AdvancedSettings(NRF24_t * dev)
 	Nrf24_setRetransmitDelay(dev, CONFIG_RETRANSMIT_DELAY);
 }
 #endif // CONFIG_ADVANCED
-
-// GPIO interrupt handler
-static void IRAM_ATTR gpio_isr_handler(void* arg)
-{
-	uint32_t gpio_num = (uint32_t) arg;
-	xQueueSendFromISR(gpio_evt_queue, &gpio_num, NULL);
-}
-
 
 #if CONFIG_RECEIVER
 void receiver(void *pvParameters)
@@ -80,13 +94,13 @@ void receiver(void *pvParameters)
 	Nrf24_printDetails(&dev);
 	ESP_LOGI(pcTaskGetName(NULL), "Listening...");
 
-    uint8_t buf[32];
+	uint8_t buf[32];
 
-    // Clear RX FiFo
-    while(1) {
-        if (Nrf24_dataReady(&dev) == false) break;
-        Nrf24_getData(&dev, buf);
-    }
+	// Clear RX FiFo
+	while(1) {
+		if (Nrf24_dataReady(&dev) == false) break;
+		Nrf24_getData(&dev, buf);
+	}
 
 	uint32_t io_num;
 
@@ -150,25 +164,28 @@ void sender(void *pvParameters)
 
 void app_main(void)
 {
-	// Initialize gpio
+	//Initialize gpio
 	//zero-initialize the config structure.
 	gpio_config_t io_conf = {};
 	//interrupt of falling edge
 	io_conf.intr_type = GPIO_INTR_NEGEDGE;
-	//bit mask of the pins, use GPIO4/5 here
+	//bit mask of the pins
 	io_conf.pin_bit_mask = GPIO_INPUT_PIN_SEL;
 	//set as input mode
 	io_conf.mode = GPIO_MODE_INPUT;
 	//enable pull-up mode
 	io_conf.pull_up_en = 1;
 	gpio_config(&io_conf);
+
+	//create a queue to handle gpio event from isr
+	gpio_evt_queue = xQueueCreate(10, sizeof(uint32_t));
+
 	//install gpio isr service
 	gpio_install_isr_service(ESP_INTR_FLAG_DEFAULT);
 	//hook isr handler for specific gpio pin
 	gpio_isr_handler_add(CONFIG_IRQ_GPIO, gpio_isr_handler, (void*) CONFIG_IRQ_GPIO);
-	//create a queue to handle gpio event from isr
-	gpio_evt_queue = xQueueCreate(10, sizeof(uint32_t));
 
+	//xTaskCreate(&gpio, "GPIO", 1024*2, NULL, 5, NULL);
 #if CONFIG_RECEIVER
 	xTaskCreate(&receiver, "RECEIVER", 1024*3, NULL, 5, NULL);
 #endif

@@ -1,14 +1,5 @@
 menu "Application Configuration"
 
-	config GPIO_RANGE_MAX
-		int
-		default 33 if IDF_TARGET_ESP32
-		default 46 if IDF_TARGET_ESP32S2
-		default 48 if IDF_TARGET_ESP32S3
-		default 18 if IDF_TARGET_ESP32C2
-		default 19 if IDF_TARGET_ESP32C3
-		default 30 if IDF_TARGET_ESP32C6
-
 	choice DIRECTION
 		prompt "Communication polarity"
 		default SENDER

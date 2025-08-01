@@ -20,10 +20,12 @@ the ACK packet is lost and a retransmission is needed before the TX_DS IRQ is as
 MAX_RT IRQ is asserted if the auto retransmit counter(ARC_CNT) exceeds the programmed maximum limit(ARC).   
 See the nrf24l01 datasheet for more details.   
 
-This project treats RX_DR as received completion.   
-This project treats MAX_RT as transmission failure.   
+In this project, RX_DX and MAX_RT are enabled, and TX_DS is disabled.   
+RX_DX is asserted when reception is complete.   
+No signal is asserted when transmission is complete.   
+MAX_RT is asserted when transmission fails.   
 Therefore, if there is no assertion after the transmission, the transmission succeeds, and if there is an assertion, the transmission fails.   
-This project does not deal with TX_DS.
+If TX_DS is enabled, the assertion occurs whether the transmission was successful or unsuccessful, and you must again check the register to distinguish between the two.   
 
 # Configuration   
 
