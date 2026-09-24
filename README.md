@@ -18,7 +18,6 @@ ESP-IDF V5.1 is required when using ESP32-C6.
 ```Shell
 git clone https://github.com/nopnop2002/esp-idf-mirf
 cd esp-idf-mirf/Peer-to-peer
-idf.py set-target {esp32/esp32s2/esp32s3/esp32c2/esp32c3/esp32c6}
 idf.py menuconfig
 idf.py flash
 ```
@@ -71,7 +70,7 @@ nRF24L01 does not have Software Reset function.
 
 # Wiring
 
-|nRF24L01||ESP32|ESP32-S2/S3|ESP32-C2/C3/C6||
+|nRF24L01||ESP32|ESP32-S2/S3|ESP32-Cx||
 |:-:|:-:|:-:|:-:|:-:|:-:|
 |MISO|--|GPIO19|GPIO37|GPIO4|(*1)|
 |SCK|--|GPIO18|GPIO36|GPIO3|(*1)|
