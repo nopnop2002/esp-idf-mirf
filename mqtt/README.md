@@ -42,8 +42,7 @@ You can use mosquitto_pub as Publisher.
 ```
 
 Communicate with Arduino Environment   
-Run this sketch.   
-ArduinoCode\Peer-to-peer\StringTest\Receive   
+I tested it with [this](https://github.com/nopnop2002/esp-idf-mirf/tree/master/ArduinoCode/Peer-to-peer/StringTest/Receive).   
 
 
 ### Radio to MQTT
@@ -60,8 +59,7 @@ You can use mosquitto_sub as Subscriber.
 ```
 
 Communicate with Arduino Environment   
-Run this sketch.   
-ArduinoCode\Peer-to-peer\StringTest\Emitter   
+I tested it with [this](https://github.com/nopnop2002/esp-idf-mirf/tree/master/ArduinoCode/Peer-to-peer/StringTest/Emitter).   
 
 ## Broker Setting
 Set the information of your MQTT broker.   
