@@ -67,8 +67,7 @@ You can use this script as USB Serial Host for writing.
 ![config-radio-1](https://github.com/user-attachments/assets/0cbdb9e2-a897-44ca-afe7-7007be0f41f2)
 
 Communicate with Arduino Environment.   
-Run this sketch.   
-ArduinoCode\Ra01S_RX   
+I tested it with [this](https://github.com/nopnop2002/esp-idf-mirf/tree/master/ArduinoCode/Peer-to-peer/StringTest/Receive).   
 
 
 ### Radio to USB
@@ -88,8 +87,7 @@ You can use this script as USB Serial Host for reading.
 ![config-radio-2](https://github.com/user-attachments/assets/af909869-b5e0-4038-acae-cfca06a44e9f)
 
 Communicate with Arduino Environment.   
-Run this sketch.   
-ArduinoCode\Ra01S_TX   
+I tested it with [this](https://github.com/nopnop2002/esp-idf-mirf/tree/master/ArduinoCode/Peer-to-peer/StringTest/Emitter).   
 
 
 # Using Windows Terminal Software
