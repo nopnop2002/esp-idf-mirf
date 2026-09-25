@@ -9,7 +9,6 @@
 
 #include <stdio.h>
 #include <inttypes.h>
-#include <stdlib.h>
 #include <string.h>
 
 #include "freertos/FreeRTOS.h"
@@ -24,7 +23,6 @@
 #include "mdns.h"
 
 #include "mirf.h"
-#include "mqtt.h"
 
 /* FreeRTOS event group to signal when we are connected*/
 static EventGroupHandle_t s_wifi_event_group;
@@ -108,9 +106,9 @@ esp_err_t wifi_init_sta(void)
 		},
 	};
 	ESP_ERROR_CHECK(esp_wifi_set_ps(WIFI_PS_NONE));
-	ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA) );
-	ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_config) );
-	ESP_ERROR_CHECK(esp_wifi_start() );
+	ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
+	ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_config));
+	ESP_ERROR_CHECK(esp_wifi_start());
 
 	/* Waiting until either the connection is established (WIFI_CONNECTED_BIT) or connection failed for the maximum
 	 * number of re-tries (WIFI_FAIL_BIT). The bits are set by event_handler() (see above) */
@@ -263,7 +261,6 @@ void receiver(void *pvParameters)
 }
 #endif // CONFIG_RECEIVER
 
-
 #if CONFIG_SENDER
 void sender(void *pvParameters)
 {
@@ -340,6 +337,4 @@ void app_main(void)
 	xTaskCreate(&receiver, "RX", 1024*3, NULL, 5, NULL);
 	xTaskCreate(&mqtt_pub, "PUB", 1024*4, NULL, 5, NULL);
 #endif
-
-
 }
