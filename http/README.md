@@ -24,7 +24,7 @@ This is nRF24L01 and HTTP gateway application.
 Set the information of your access point.   
 ![config-wifi](https://github.com/nopnop2002/esp-idf-mirf/assets/6020549/49cba564-dd2b-46b9-bcc4-c928a816697c)
 
-## Radioi Setting
+## Radio Setting
 Set the wireless communication direction.   
 
 ### HTTP to Radio

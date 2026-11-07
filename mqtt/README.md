@@ -24,7 +24,7 @@ This is nRF24L01 and MQTT gateway application.
 Set the information of your access point.   
 ![Image](https://github.com/user-attachments/assets/f2d89418-2619-438c-a4ef-6174b7710e6d)
 
-## Radioi Setting
+## Radio Setting
 Set the wireless communication direction.   
 ![Image](https://github.com/user-attachments/assets/baf1c2c9-cbd0-44e3-831d-fb03603d34a4)
 
